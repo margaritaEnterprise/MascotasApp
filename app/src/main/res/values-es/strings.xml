@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MascotasApp</string>
+
+    <string name="emailForm">Correo electronico</string>
+    <string name="passwordForm">Contraseña</string>
+    <string name="btnLogin">Entrar</string>
+    <string name="btnLogup">Registrarse</string>
+    <string name="btnLogout">Salir</string>
+    <string name="txt_title">Bienvenidx</string>
+
+</resources>
