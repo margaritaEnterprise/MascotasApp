@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "48243989884",
-    "project_id": "aplicaciones-moviles-ec984",
-    "storage_bucket": "aplicaciones-moviles-ec984.appspot.com"
+    "project_number": "908840568893",
+    "project_id": "mascotasapp-3a73e",
+    "storage_bucket": "mascotasapp-3a73e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:48243989884:android:3d0a790b62d4b8bb7698f9",
+        "mobilesdk_app_id": "1:908840568893:android:bb3f2ee7327ca1aaa78254",
         "android_client_info": {
           "package_name": "com.example.mascotasapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAHd2pKuVkBmC8kbLfcMz37nx8FyfzoVNE"
+          "current_key": "AIzaSyCwJHWcQBoTUCCwSrezJjHcHWFHTmwN7Ig"
         }
       ],
       "services": {
