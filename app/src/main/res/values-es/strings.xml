@@ -8,5 +8,9 @@
     <string name="btnLogup">Registrarse</string>
     <string name="btnLogout">Salir</string>
     <string name="txt_title">Bienvenidx</string>
+    <string name="error_mail">Ingrese un mail válido.</string>
+    <string name="error_password">Ingrese una contraseña válida.</string>
+    <string name="create_fail">Error al crear la cuenta.</string>
+    <string name="auth_fail">Error en la autenticación.</string>
 
 </resources>

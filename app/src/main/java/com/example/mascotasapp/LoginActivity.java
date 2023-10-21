@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setAppLanguage(this, "es");
+        setAppLanguage(this, "en");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -136,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
         context.getResources().updateConfiguration(config, resources.getDisplayMetrics());
     }
     private void updateUI(FirebaseUser user) {
-
         if (user != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             Bundle b = new Bundle();
@@ -144,7 +143,6 @@ public class LoginActivity extends AppCompatActivity {
             b.putString("id", user.getUid());
             intent.putExtras(b);
             startActivity(intent);
-
         }
     }
 }

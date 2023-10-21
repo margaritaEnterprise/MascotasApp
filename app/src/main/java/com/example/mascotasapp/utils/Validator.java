@@ -1,23 +1,24 @@
 package com.example.mascotasapp.utils;
 
+import com.example.mascotasapp.R;
+
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
 public class Validator {
-    public String errorMsg;
+    public int errorMsg;
 
     public boolean ValidateAuth(String email, String pass){
-        errorMsg = "";
         return ValidateEmail(email) && ValidatePass(pass);
     }
     public boolean ValidateEmail(String email) {
-        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        String regex = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
         if(matcher.find()){
             return true;
         }
-        errorMsg += "Ingrese un mail valido.";
+        errorMsg = R.string.error_mail;
         return false;
     }
     public boolean ValidatePass(String pass) {
@@ -27,7 +28,7 @@ public class Validator {
         if(matcher.find()){
             return true;
         }
-        errorMsg += "Ingrese una contraseña valida.";
+        errorMsg = R.string.error_password;
         return false;
     }
 }

@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         mAuth.signOut();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
-        Toast.makeText(this, "Gracias", Toast.LENGTH_SHORT).show();
     }
 
 }
