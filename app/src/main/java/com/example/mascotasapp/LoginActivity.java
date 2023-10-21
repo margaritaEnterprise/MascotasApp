@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mascotasapp.utils.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     EditText emailForm;
     EditText passwordForm;
+    Validator validator = new Validator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,9 @@ public class LoginActivity extends AppCompatActivity {
         String email = emailForm.getText().toString();
         String password = passwordForm.getText().toString();
 
-        if(email.equals("") || password.equals("")){
-            Toast.makeText(LoginActivity.this, "Bad values",
+        //validate
+        if(!validator.ValidateAuth(email, password)){
+            Toast.makeText(LoginActivity.this, validator.errorMsg,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -100,9 +103,9 @@ public class LoginActivity extends AppCompatActivity {
     private void signUp(){
         String email = emailForm.getText().toString();
         String password = passwordForm.getText().toString();
-
-        if(email.equals("") || password.equals("")){
-            Toast.makeText(LoginActivity.this, "Bad values",
+        //validate
+        if(!validator.ValidateAuth(email, password)){
+            Toast.makeText(LoginActivity.this, validator.errorMsg,
                     Toast.LENGTH_SHORT).show();
             return;
         }
