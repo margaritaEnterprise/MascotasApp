@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setAppLanguage(this, "en");
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -92,7 +92,7 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            Toast.makeText(LoginActivity.this, R.string.auth_fail,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -125,23 +125,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-    public static void setAppLanguage(Context context, String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
-
-        Resources resources = context.getResources();
-        Configuration config = new Configuration(resources.getConfiguration());
-        config.setLocale(locale);
-
-        context.getResources().updateConfiguration(config, resources.getDisplayMetrics());
-    }
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            Bundle b = new Bundle();
-            b.putString("mail", user.getEmail());
-            b.putString("id", user.getUid());
-            intent.putExtras(b);
             startActivity(intent);
         }
     }
