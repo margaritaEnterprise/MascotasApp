@@ -12,5 +12,6 @@
     <string name="error_password">Ingrese una contraseña válida.</string>
     <string name="create_fail">Error al crear la cuenta.</string>
     <string name="auth_fail">Error en la autenticación.</string>
+    <string name="username_already_exists">El nombre de usuario ya está en uso!!!</string>
 
 </resources>

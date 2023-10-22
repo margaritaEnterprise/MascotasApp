@@ -11,5 +11,6 @@
     <string name="error_password">Enter a valid password.</string>
     <string name="create_fail">Create user failed.</string>
     <string name="auth_fail">Authentication failed.</string>
+    <string name="username_already_exists">Username already exists!!!</string>
 
 </resources>
