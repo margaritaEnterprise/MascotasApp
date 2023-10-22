@@ -16,16 +16,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mascotasapp.utils.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    FirebaseAuth mAuth;
+    FirebaseFirestore db;
     Button signInButton;
     Button signUpButton;
     LinearLayout linearLayout;
@@ -41,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         linearLayout = findViewById(R.id.loginForm);
         signInButton = findViewById(R.id.signInButton);
@@ -109,26 +121,76 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            FirebaseUser userAuth = mAuth.getCurrentUser();
+                            createUser(userAuth);
                         } else {
-                            Toast.makeText(LoginActivity.this, "Create user failed.",
+                            Toast.makeText(LoginActivity.this, R.string.create_fail,
                                     Toast.LENGTH_SHORT).show();
-                            updateUI(null);
                         }
                     }
                 });
+
+
+
     }
     private void updateUI(FirebaseUser user) {
         if (user != null) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
+    }
+
+    private void goToMainActivity(){
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void createUser(FirebaseUser userAuth){
+        String newUsername = "nicodvk";
+
+        db.collection("users")
+                .whereEqualTo("username", newUsername)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().isEmpty()) {
+                                String uid = userAuth.getUid();
+                                DocumentReference userDocRef = db.collection("users").document(uid);
+
+                                Map<String, Object> userData = new HashMap<>();
+                                userData.put("username", newUsername);
+                                userData.put("birthdate", new Timestamp(new Date()));
+
+                                userDocRef.set(userData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                // Usuario agregado exitosamente
+                                                goToMainActivity();
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                userAuth.delete();
+                                                Toast.makeText(LoginActivity.this, R.string.create_fail, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                            } else {
+                                userAuth.delete();
+                                Toast.makeText(LoginActivity.this, R.string.username_already_exists, Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(LoginActivity.this, R.string.create_fail, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 }

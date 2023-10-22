@@ -1,5 +1,6 @@
 package com.example.mascotasapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -12,15 +13,25 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
     Button signOutButton;
-    TextView emailText, idText;
+    TextView emailText, idText, usernameText, birthDateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +40,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         emailText = findViewById(R.id.text_email);
         idText = findViewById(R.id.text_id);
+        usernameText = findViewById(R.id.text_username);
+        birthDateText = findViewById(R.id.text_birthdate);
         signOutButton = findViewById(R.id.signOutButton);
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
@@ -58,11 +72,20 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         }else{
-            emailText.setText(user.getEmail());
-            idText.setText(user.getUid());
+            getUserData(user);
         }
     }
 
+    private void loadDataUI(Map<String, Object> data, FirebaseUser user){
+        emailText.setText(user.getEmail());
+        idText.setText(user.getUid());
+        usernameText.setText((String)data.get("username"));
+        Timestamp timestamp = (Timestamp) data.get("birthdate");
+        Date birthdate = timestamp.toDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String birthdateString = sdf.format(birthdate);
+        birthDateText.setText(birthdateString);
+    }
     public static void setAppLanguage(Context context, String languageCode) {
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
@@ -72,5 +95,30 @@ public class MainActivity extends AppCompatActivity {
         config.setLocale(locale);
 
         context.getResources().updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
+    private void getUserData(FirebaseUser user){
+        DocumentReference docRef = db.collection("users").document(user.getUid());
+
+        docRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Map<String, Object> data = documentSnapshot.getData();
+                            loadDataUI(data, user);
+                        } else {
+                            Toast.makeText(MainActivity.this, R.string.create_fail,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, R.string.create_fail,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }
