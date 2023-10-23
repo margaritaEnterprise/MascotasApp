@@ -1,7 +1,9 @@
 package com.example.mascotasapp.signup.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,7 +25,7 @@ public class RegisterUserFragment extends Fragment {
     EditText username;
 
     public RegisterUserFragment() { }
-    @SuppressLint("MissingInflatedId")
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -30,12 +33,13 @@ public class RegisterUserFragment extends Fragment {
         date = view.findViewById(R.id.regBirthdayInput);
         username = view.findViewById(R.id.regNameInput);
         date.setOnClickListener(v -> getDate());
+        date.setKeyListener(null);
         // Inflate the layout for this fragment
         return view;
     }
 
     private void getDate() {
-        Log.d("getDate", "Entro a la funcion");
+        cerrarTeclado(requireActivity());
         int dia, mes, anio;
         final Calendar calendar = Calendar.getInstance();
         dia = calendar.get(Calendar.DAY_OF_MONTH);
@@ -51,5 +55,13 @@ public class RegisterUserFragment extends Fragment {
             }
         }, dia, mes, anio);
         picker.show();
+    }
+
+    public static void cerrarTeclado(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }
