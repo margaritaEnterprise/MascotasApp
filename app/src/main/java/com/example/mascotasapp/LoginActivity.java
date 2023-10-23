@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mascotasapp.signup.SignUpActivity;
 import com.example.mascotasapp.utils.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -113,30 +114,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void signUp(){
-        String email = emailForm.getText().toString();
-        String password = passwordForm.getText().toString();
-        //validate
-        if(!validator.ValidateAuth(email, password)){
-            Toast.makeText(LoginActivity.this, validator.errorMsg,
-                    Toast.LENGTH_SHORT).show();
-            return;
-        }
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser userAuth = mAuth.getCurrentUser();
-                            createUser(userAuth);
-                        } else {
-                            Toast.makeText(LoginActivity.this, R.string.create_fail,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
-
+        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
+        startActivity(intent);
     }
     private void updateUI(FirebaseUser user) {
         if (user != null) {
@@ -179,12 +158,12 @@ public class LoginActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                userAuth.delete();
+                                                //userAuth.delete();
                                                 Toast.makeText(LoginActivity.this, R.string.create_fail, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             } else {
-                                userAuth.delete();
+                                //userAuth.delete();
                                 Toast.makeText(LoginActivity.this, R.string.username_already_exists, Toast.LENGTH_SHORT).show();
                             }
                         } else {
