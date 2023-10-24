@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+        <!-- Otros atributos de estilo -->
+    </style>
+
+    <style name="RoundedBlueEditText">
+        <item name="android:background">@drawable/rounded_blue_edittext_background</item>
+    </style>
+
+
+</resources>

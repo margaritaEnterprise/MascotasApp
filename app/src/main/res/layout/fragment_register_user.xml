@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cardview_light_background"
+    android:visibility="visible"
     tools:context=".signup.fragments.RegisterUserFragment">
-
     <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
         android:id="@+id/loginForm"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="381dp"
+        android:layout_height="503dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:background="@drawable/rounded_edittext_background"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="20dp">
@@ -20,40 +27,46 @@
             android:layout_height="wrap_content"
             android:text="@string/register_step2"
             android:textAlignment="center"
+            android:textColor="@color/black"
             android:textSize="34sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="100dp" />
 
-        <TextView
-            android:id="@+id/regNameForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/regnameForm" />
-
-        <EditText
-            android:id="@+id/regNameInput"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="textPersonName" />
+            android:paddingTop="0dp">
 
-        <TextView
-            android:id="@+id/regBirthdayForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/regBirthdayForm" />
+            <EditText
+                android:id="@+id/regNameInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                style="@style/RoundedBlueEditText"
+                android:hint="@string/regnameForm"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/regBirthdayInput"
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:focusable="false"
-            android:clickable="true" />
+            android:paddingTop="0dp">
+
+
+            <EditText
+                android:id="@+id/regBirthdayInput"
+                style="@style/RoundedBlueEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="@string/regBirthdayForm"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/regUserButton"

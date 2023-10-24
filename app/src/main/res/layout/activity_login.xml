@@ -10,7 +10,6 @@
     android:visibility="visible"
     tools:context=".LoginActivity">
 
-
     <LinearLayout
         android:id="@+id/loginForm"
         android:layout_width="match_parent"
@@ -18,34 +17,63 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/textView"
+        <!-- Campo de entrada de correo electrónico con TextInputLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/emailForm" />
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="true"
+            android:hint="@string/emailForm"
+            android:paddingTop="-10dp">
+           <!--> <EditText
+                android:id="@+id/emailForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                style="@style/RoundedBlueEditText"/> <!-->
 
-        <EditText
-            android:id="@+id/emailForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/RoundedBlueEditText"/>
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/passwordForm" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/passwordForm"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="textPassword" />
-    </LinearLayout>
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="true"
+            android:hint="@string/emailForm"
+            android:paddingTop="0dp"> <!-- Hint aquí -->
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/RoundedBlueEditText"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Campo de entrada de contraseña con TextInputLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:hintEnabled="true"
+            android:paddingTop="0dp">
+            
+            <EditText
+                android:id="@+id/passwordForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="@string/passwordForm"
+                style="@style/RoundedBlueEditText"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,4 +101,5 @@
 
     </LinearLayout>
 
+</LinearLayout>
 </LinearLayout>

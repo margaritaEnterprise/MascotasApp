@@ -2,4 +2,19 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- Color de fondo principal -->
+    <color name="colorPrimary">#6200EE</color>
+
+    <!-- Color de fondo de la barra de aplicaciones (action bar/toolbar) -->
+    <color name="colorPrimaryDark">#3700B3</color>
+
+    <!-- Color de acento utilizado para elementos interactivos, como botones -->
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Color de texto principal -->
+    <color name="textPrimaryColor">#000000</color>
+
+    <!-- Color de texto secundario -->
+    <color name="textSecondaryColor">#757575</color>
+
 </resources>

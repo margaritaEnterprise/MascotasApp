@@ -19,54 +19,62 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register_step1"
+            android:textColor="@color/black"
             android:textAlignment="center"
-            android:textSize="34sp" />
+            android:textSize="34sp"
+            />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="100dp" />
 
-        <TextView
-            android:id="@+id/textView"
+        <!-- Campo de entrada de correo electrónico con TextInputLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/emailForm" />
+            android:layout_marginBottom="20dp">
+            <EditText
+                android:id="@+id/emailForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                android:hint="@string/emailForm"
+                style="@style/RoundedBlueEditText"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/emailForm"
+        <!-- Campo de entrada de contraseña con TextInputLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="textEmailAddress" />
+            android:layout_marginBottom="20dp">
+            <EditText
+                android:id="@+id/passwordForm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="@string/passwordForm"
+                style="@style/RoundedBlueEditText"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/textView2"
+        <!-- Campo de confirmación de contraseña con TextInputLayout -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutPassword2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/passwordForm" />
-
-        <EditText
-            android:id="@+id/passwordForm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="textPassword" />
-
-        <TextView
-            android:id="@+id/emailForm2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/passwordForm2" />
-
-        <EditText
-            android:id="@+id/passwordForm2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            android:ems="10"
-            android:inputType="textPassword" />
+            android:layout_marginBottom="50dp">
+            <EditText
+                android:id="@+id/passwordForm2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="@string/passwordForm2"
+                style="@style/RoundedBlueEditText"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/signUpButton"
