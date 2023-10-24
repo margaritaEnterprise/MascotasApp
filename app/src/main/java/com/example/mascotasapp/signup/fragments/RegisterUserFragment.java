@@ -43,6 +43,7 @@ public class RegisterUserFragment extends Fragment {
     FirebaseFirestore db;
     EditText username;
     EditText dateEdit;
+    Date date;
     Button finishBtn;
 
     public RegisterUserFragment() { }
@@ -63,6 +64,7 @@ public class RegisterUserFragment extends Fragment {
         dateEdit.setKeyListener(null);
         finishBtn.setOnClickListener(v -> createUser(currentUser));
 
+
         return view;
     }
 
@@ -77,11 +79,11 @@ public class RegisterUserFragment extends Fragment {
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
-            currentDate = day + "/" + (month + 1) + "/" + year;
+            currentDate = day + "-" + (month + 1) + "-" + year;
         }
 
         // Divide la fecha actual en día, mes y año
-        String[] dateParts = currentDate.split("/");
+        String[] dateParts = currentDate.split("-");
         int day = Integer.parseInt(dateParts[0]);
         int month = Integer.parseInt(dateParts[1]) - 1; // Resta 1 al mes porque en Calendar, enero es 0
         int year = Integer.parseInt(dateParts[2]);
@@ -93,7 +95,7 @@ public class RegisterUserFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
                         // Maneja la fecha seleccionada y la muestra en el EditText
-                        String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        String selectedDate = selectedDayOfMonth + "-" + (selectedMonth + 1) + "-" + selectedYear;
                         dateEdit.setText(selectedDate);
                     }
                 },
@@ -118,6 +120,12 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private void createUser(FirebaseUser userAuth){
+
+        if(!validate()){
+            Toast.makeText(requireActivity(), R.string.create_fail, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String newUsername = username.getText().toString();
 
         db.collection("users")
@@ -132,16 +140,7 @@ public class RegisterUserFragment extends Fragment {
                                 DocumentReference userDocRef = db.collection("users").document(uid);
                                 Map<String, Object> userData = new HashMap<>();
                                 userData.put("username", newUsername);
-                                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                                Date date;
-                                try {
-
-                                    date = format.parse(dateEdit.getText().toString());
-                                } catch (ParseException e) {
-                                    throw new RuntimeException(e);
-                                }
                                 userData.put("birthdate", new Timestamp(date));
-
                                 userDocRef.set(userData)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -153,12 +152,10 @@ public class RegisterUserFragment extends Fragment {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                //userAuth.delete();
                                                 Toast.makeText(requireActivity(), R.string.create_fail, Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             } else {
-                                //userAuth.delete();
                                 Toast.makeText(requireActivity(), R.string.username_already_exists, Toast.LENGTH_SHORT).show();
                             }
                         } else {
@@ -166,5 +163,28 @@ public class RegisterUserFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private  boolean validate(){
+        String newUsername = username.getText().toString();
+
+        boolean validUsername = !newUsername.isEmpty();
+        boolean validDate = true;
+
+        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+        date = null; // Inicializa date como nulo
+
+        String dateStr = dateEdit.getText().toString();
+        if (!dateStr.isEmpty()) {
+            try {
+                date = format.parse(dateStr);
+            } catch (ParseException e) {
+               validDate = false;
+            }
+        } else {
+            validDate = false;
+        }
+
+        return validUsername && validDate;
     }
 }
