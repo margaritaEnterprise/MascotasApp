@@ -1,6 +1,5 @@
 package com.example.mascotasapp.signup.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.mascotasapp.LoginActivity;
 import com.example.mascotasapp.MainActivity;
 import com.example.mascotasapp.R;
-import com.example.mascotasapp.utils.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,6 +32,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,7 +42,7 @@ public class RegisterUserFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     EditText username;
-    EditText date;
+    EditText dateEdit;
     Button finishBtn;
 
     public RegisterUserFragment() { }
@@ -59,11 +56,11 @@ public class RegisterUserFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
         username = view.findViewById(R.id.regNameInput);
-        date = view.findViewById(R.id.regBirthdayInput);
+        dateEdit = view.findViewById(R.id.regBirthdayInput);
         finishBtn = view.findViewById(R.id.regUserButton);
 
-        date.setOnClickListener(v -> getDate());
-        date.setKeyListener(null);
+        dateEdit.setOnClickListener(v -> getDate());
+        dateEdit.setKeyListener(null);
         finishBtn.setOnClickListener(v -> createUser(currentUser));
 
         return view;
@@ -71,20 +68,40 @@ public class RegisterUserFragment extends Fragment {
 
     private void getDate() {
         cerrarTeclado(requireActivity());
-        int dia, mes, anio;
-        final Calendar calendar = Calendar.getInstance();
-        dia = calendar.get(Calendar.DAY_OF_MONTH);
-        mes = calendar.get(Calendar.MONTH);
-        anio = calendar.get(Calendar.YEAR);
+        // Obtiene el texto actual del EditText
+        String currentDate = dateEdit.getText().toString();
 
-        DatePickerDialog picker = new DatePickerDialog(requireContext(), new DatePickerDialog.OnDateSetListener()  {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        // Si el EditText está vacío, establece la fecha actual
+        if (currentDate.isEmpty()) {
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            currentDate = day + "/" + (month + 1) + "/" + year;
+        }
 
-                date.setText(dayOfMonth + "-" + month+1 + "-" + year);
-            }
-        }, dia, mes, anio);
-        picker.show();
+        // Divide la fecha actual en día, mes y año
+        String[] dateParts = currentDate.split("/");
+        int day = Integer.parseInt(dateParts[0]);
+        int month = Integer.parseInt(dateParts[1]) - 1; // Resta 1 al mes porque en Calendar, enero es 0
+        int year = Integer.parseInt(dateParts[2]);
+
+        // Crea un DatePickerDialog
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                requireContext(), // Contexto
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
+                        // Maneja la fecha seleccionada y la muestra en el EditText
+                        String selectedDate = selectedDayOfMonth + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                        dateEdit.setText(selectedDate);
+                    }
+                },
+                year, month, day
+        );
+
+        // Muestra el diálogo
+        datePickerDialog.show();
     }
 
     public static void cerrarTeclado(Activity activity) {
@@ -101,8 +118,6 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private void createUser(FirebaseUser userAuth){
-        Toast.makeText(requireActivity(), "Finish: ", Toast.LENGTH_SHORT).show();
-
         String newUsername = username.getText().toString();
 
         db.collection("users")
@@ -115,17 +130,23 @@ public class RegisterUserFragment extends Fragment {
                             if (task.getResult().isEmpty()) {
                                 String uid = userAuth.getUid();
                                 DocumentReference userDocRef = db.collection("users").document(uid);
-
                                 Map<String, Object> userData = new HashMap<>();
                                 userData.put("username", newUsername);
-                                userData.put("birthdate", new Timestamp(new Date()));
+                                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+                                Date date;
+                                try {
+
+                                    date = format.parse(dateEdit.getText().toString());
+                                } catch (ParseException e) {
+                                    throw new RuntimeException(e);
+                                }
+                                userData.put("birthdate", new Timestamp(date));
 
                                 userDocRef.set(userData)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 // Usuario agregado exitosamente
-
                                                 goToMainActivity();
                                             }
                                         })
