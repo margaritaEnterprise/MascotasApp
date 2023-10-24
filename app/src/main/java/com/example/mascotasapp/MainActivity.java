@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mascotasapp.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -64,13 +65,11 @@ public class MainActivity extends AppCompatActivity {
     }
     private void signOut() {
         mAuth.signOut();
-        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
+        goToLoginActivity();
     }
     private void updateUI(FirebaseUser user) {
         if (user == null) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            startActivity(intent);
+           goToLoginActivity();
         }else{
             getUserData(user);
         }
@@ -108,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             Map<String, Object> data = documentSnapshot.getData();
                             loadDataUI(data, user);
                         } else {
-                            Toast.makeText(MainActivity.this, R.string.create_fail,
-                                    Toast.LENGTH_SHORT).show();
+                            goToSignUpActivity();
                         }
                     }
                 })
@@ -121,4 +119,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    private void goToSignUpActivity(){
+        Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+        intent.putExtra("goToUserForm", true);
+        startActivity(intent);
+    }
+
+    private void goToLoginActivity(){
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
 }

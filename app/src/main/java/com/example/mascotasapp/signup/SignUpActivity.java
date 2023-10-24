@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,10 +29,22 @@ public class SignUpActivity extends AppCompatActivity implements RegisterAuthFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        RegisterAuthFragment registerAuthFragment = new RegisterAuthFragment();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container_reg, registerAuthFragment)
-                .commit();
+
+        Intent intent = getIntent();
+        boolean goToUserForm = intent.getBooleanExtra("goToUserForm", false);
+
+        if(!goToUserForm){
+            RegisterAuthFragment registerAuthFragment = new RegisterAuthFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container_reg, registerAuthFragment)
+                    .commit();
+        }else {
+            RegisterUserFragment registerUserFragment = new RegisterUserFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container_reg, registerUserFragment)
+                    .commit();
+        }
+
     }  
 
     @Override
