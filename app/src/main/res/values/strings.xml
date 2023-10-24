@@ -21,5 +21,6 @@
     <string name="regBirthdayForm">Birthdate</string>
     <string name="regnameForm">Username</string>
     <string name="calendar">Picker</string>
+    <string name="btnFinish">Finish</string>
 
 </resources>

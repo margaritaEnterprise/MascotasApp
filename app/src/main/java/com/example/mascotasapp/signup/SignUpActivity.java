@@ -30,7 +30,7 @@ public class SignUpActivity extends AppCompatActivity implements RegisterAuthFra
         setContentView(R.layout.activity_sign_up);
         RegisterUserFragment registerUserFragment = new RegisterUserFragment();
         fragmentManager.beginTransaction()
-                .replace(R.id.fragment_container_reg, registerUserFragment)
+                .add(R.id.fragment_container_reg, registerUserFragment)
                 .commit();
     }
 

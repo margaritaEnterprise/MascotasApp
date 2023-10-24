@@ -54,10 +54,11 @@
             android:ems="10" />
 
         <Button
-            android:id="@+id/signUpButton"
+            android:id="@+id/regUserButton"
             android:layout_width="wrap_content"
+
             android:layout_height="wrap_content"
-            android:text="@string/btnContinue"
+            android:text="@string/btnFinish"
             android:textAlignment="gravity" />
 
     </LinearLayout>
