@@ -28,17 +28,17 @@ public class SignUpActivity extends AppCompatActivity implements RegisterAuthFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        RegisterUserFragment registerUserFragment = new RegisterUserFragment();
-        fragmentManager.beginTransaction()
-                .add(R.id.fragment_container_reg, registerUserFragment)
-                .commit();
-    }
-
-    @Override
-    public void authCreate() {
         RegisterAuthFragment registerAuthFragment = new RegisterAuthFragment();
         fragmentManager.beginTransaction()
                 .add(R.id.fragment_container_reg, registerAuthFragment)
+                .commit();
+    }  
+
+    @Override
+    public void authCreate() {
+        RegisterUserFragment registerUserFragment = new RegisterUserFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_reg, registerUserFragment)
                 .commit();
     }
 }
