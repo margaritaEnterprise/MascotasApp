@@ -25,7 +25,7 @@
             android:layout_marginBottom="16dp"
             app:hintEnabled="true"
             android:hint="@string/emailForm"
-            android:paddingTop="-10dp">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
            <!--> <EditText
                 android:id="@+id/emailForm"
                 android:layout_width="match_parent"
@@ -37,24 +37,10 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/RoundedBlueEditText"/>
-
+                android:id="@+id/emailForm"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutEmail1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:hintEnabled="true"
-            android:hint="@string/emailForm"
-            android:paddingTop="0dp"> <!-- Hint aquí -->
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/RoundedBlueEditText"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo de entrada de contraseña con TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +49,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:hintEnabled="true"
-            android:paddingTop="0dp">
+            android:paddingTop="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle">
             
             <EditText
                 android:id="@+id/passwordForm"
@@ -72,7 +60,8 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:hint="@string/passwordForm"
-                style="@style/RoundedBlueEditText"/>
+
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
     <LinearLayout
