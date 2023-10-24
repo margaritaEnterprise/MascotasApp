@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".signup.fragments.RegisterAuthFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -33,15 +34,22 @@
             android:id="@+id/textInputLayoutEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
-            <EditText
-                android:id="@+id/emailForm"
+            android:layout_marginBottom="20dp"
+
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <!-->
+                <EditText
+                    android:id="@+id/emailForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:hint="@string/emailForm" /> <!-->
+            <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                android:hint="@string/emailForm"
-                style="@style/RoundedBlueEditText"/>
+                android:id="@+id/emailForm"
+                android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo de entrada de contraseña con TextInputLayout -->
@@ -49,7 +57,9 @@
             android:id="@+id/textInputLayoutPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle">
             <EditText
                 android:id="@+id/passwordForm"
                 android:layout_width="match_parent"
@@ -57,7 +67,7 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:hint="@string/passwordForm"
-                style="@style/RoundedBlueEditText"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo de confirmación de contraseña con TextInputLayout -->
@@ -65,7 +75,9 @@
             android:id="@+id/textInputLayoutPassword2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp">
+            android:layout_marginBottom="50dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle">
             <EditText
                 android:id="@+id/passwordForm2"
                 android:layout_width="match_parent"
@@ -73,7 +85,7 @@
                 android:ems="10"
                 android:inputType="textPassword"
                 android:hint="@string/passwordForm2"
-                style="@style/RoundedBlueEditText"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
