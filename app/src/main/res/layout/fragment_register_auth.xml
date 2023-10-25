@@ -20,7 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register_step1"
-            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="34sp"
             />
@@ -35,21 +34,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-            <!-->
-                <EditText
-                    android:id="@+id/emailForm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textEmailAddress"
-                    android:hint="@string/emailForm" /> <!-->
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/emailForm"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:hint="@string/emailForm"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo de entrada de contraseña con TextInputLayout -->
