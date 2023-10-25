@@ -11,5 +11,11 @@
         <item name="android:background">@drawable/rounded_blue_edittext_background</item>
     </style>
 
+    <style name="cameraIconShape">
+        <item name="cornerFamily">rounded</item> <!-- Define la familia de esquinas como "rounded" -->
+        <item name="cornerSize">50%</item> <!-- Define el tamaño de las esquinas para hacerlo circular -->
+    </style>
+
+
 
 </resources>

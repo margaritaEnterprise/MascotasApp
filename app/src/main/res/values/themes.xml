@@ -3,6 +3,7 @@
     <style name="Base.Theme.MascotasApp" parent="Theme.MaterialComponents.Light">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/black</item>
     </style>
 
     <style name="Theme.MascotasApp" parent="Base.Theme.MascotasApp" />
