@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -54,26 +56,30 @@ public class MainActivity extends AppCompatActivity {
         signOutButton = findViewById(R.id.signOutButton);
 
         //navigation
-        if(savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.frame_layout, new HomeFragment())
-                    .commit();
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
-        }
-        /*
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setBackground(null);
 
         bottomNavigationView.setOnItemSelectedListener(item  -> {
-            MenuItem item1 = findViewById(R.id.nav_home);
-            final int it = item1.getItemId();
-            switch (item.getItemId()) {
-                case it:
-                    break;
+            //Toast.makeText(this, item.toString(), Toast.LENGTH_SHORT).show();
 
+            switch (item.getTitle().toString()) {
+                case "Search":
+                    Toast.makeText(this, "buscar", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Notify":
+                    Toast.makeText(this, "notificar", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Add":
+                    Toast.makeText(this, "agregar", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Setting":
+                    Toast.makeText(this, "configurar", Toast.LENGTH_SHORT).show();
+                    break;
+                case "Profile":
+                    Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
+                    break;
             }
-        });*/
+            return true;
+        });
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override

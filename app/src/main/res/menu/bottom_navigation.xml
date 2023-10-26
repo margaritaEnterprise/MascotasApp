@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="Home"
+        android:id="@+id/nav_notify"
+        android:icon="@drawable/ic_notify"
+        android:title="Notify"
         />
     <item
         android:id="@+id/nav_search"
@@ -16,21 +16,16 @@
     <item
         android:id="@+id/nav_add"
         android:icon="@drawable/ic_add"
-        android:title="Profile"
+        android:title="Add"
         />
-
-    <!--
-
     <item
         android:id="@+id/nav_settings"
-        android:icon="@mipmap/ic_settings"
-        android:title=""
+        android:icon="@drawable/ic_settings"
+        android:title="Setting"
         />
     <item
         android:id="@+id/nav_profile"
-        android:icon="@mipmap/ic_profile"
-        android:title=""
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
         />
-
-     -->
 </menu>
