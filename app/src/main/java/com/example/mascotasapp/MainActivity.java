@@ -8,14 +8,17 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mascotasapp.signup.SignUpActivity;
+import com.example.mascotasapp.signup.fragments.RegisterAuthFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     Button signOutButton;
     TextView emailText, idText, usernameText, birthDateText;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,28 @@ public class MainActivity extends AppCompatActivity {
         usernameText = findViewById(R.id.text_username);
         birthDateText = findViewById(R.id.text_birthdate);
         signOutButton = findViewById(R.id.signOutButton);
+
+        //navigation
+        if(savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.frame_layout, new HomeFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
+        /*
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setBackground(null);
+
+        bottomNavigationView.setOnItemSelectedListener(item  -> {
+            MenuItem item1 = findViewById(R.id.nav_home);
+            final int it = item1.getItemId();
+            switch (item.getItemId()) {
+                case it:
+                    break;
+
+            }
+        });*/
 
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
