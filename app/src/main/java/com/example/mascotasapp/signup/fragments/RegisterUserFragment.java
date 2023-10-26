@@ -1,39 +1,26 @@
 package com.example.mascotasapp.signup.fragments;
 
-import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.camera.core.processing.SurfaceProcessorNode;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import com.example.mascotasapp.MainActivity;
 import com.example.mascotasapp.R;
+import com.example.mascotasapp.utils.Calendar;
+import com.example.mascotasapp.utils.ImageHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,24 +36,19 @@ import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageActivity;
-import com.theartofdev.edmodo.cropper.CropImageView;
-
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
 public class RegisterUserFragment extends Fragment {
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
+
+    Calendar calendar;
+    ImageHandler imageHandler;
     ImageView userPhoto;
     ImageView addPhoto;
     boolean imageChange;
@@ -76,82 +58,42 @@ public class RegisterUserFragment extends Fragment {
     Button finishBtn;
     Uri imageUri;
 
+    FirebaseFirestore db;
+    FirebaseAuth mAuth;
+
     public RegisterUserFragment() { }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_register_user, container, false);
-        mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-
+        mAuth = FirebaseAuth.getInstance();
+        calendar = new Calendar(requireContext());
         userPhoto = view.findViewById(R.id.FragRegUserPhoto);
         addPhoto = view.findViewById(R.id.FragRegUserAddPhoto);
         username = view.findViewById(R.id.regNameInput);
         dateEdit = view.findViewById(R.id.regBirthdayInput);
         finishBtn = view.findViewById(R.id.regUserButton);
+        imageHandler = new ImageHandler(requireContext(),
+                    userPhoto,
+                    requestCameraPermissionLauncher,
+                    pickImageLauncher,
+                    captureImageLauncher,
+                    cropImageLauncher);
 
-        addPhoto.setOnClickListener(v -> showImageSourceDialog());
-        userPhoto.setOnClickListener(v -> showImageSourceDialog());
-        dateEdit.setOnClickListener(v -> getDate());
+        addPhoto.setOnClickListener(v -> imageHandler.showImageSourceDialog());
+        userPhoto.setOnClickListener(v -> imageHandler.showImageSourceDialog());
+        dateEdit.setOnClickListener(v -> calendar.getDate(dateEdit));
         dateEdit.setKeyListener(null);
-        finishBtn.setOnClickListener(v -> createUser(currentUser));
+        finishBtn.setOnClickListener(v -> createUser(mAuth.getCurrentUser()));
 
         return view;
-    }
-
-    private void getDate() {
-        cerrarTeclado(requireActivity());
-        // Obtiene el texto actual del EditText
-        String currentDate = dateEdit.getText().toString();
-
-        // Si el EditText está vacío, establece la fecha actual
-        if (currentDate.isEmpty()) {
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR);
-            int month = calendar.get(Calendar.MONTH);
-            int day = calendar.get(Calendar.DAY_OF_MONTH);
-            currentDate = day + "-" + (month + 1) + "-" + year;
-        }
-
-        // Divide la fecha actual en día, mes y año
-        String[] dateParts = currentDate.split("-");
-        int day = Integer.parseInt(dateParts[0]);
-        int month = Integer.parseInt(dateParts[1]) - 1; // Resta 1 al mes porque en Calendar, enero es 0
-        int year = Integer.parseInt(dateParts[2]);
-
-        // Crea un DatePickerDialog
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                requireContext(), // Contexto
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int selectedYear, int selectedMonth, int selectedDayOfMonth) {
-                        // Maneja la fecha seleccionada y la muestra en el EditText
-                        String selectedDate = selectedDayOfMonth + "-" + (selectedMonth + 1) + "-" + selectedYear;
-                        dateEdit.setText(selectedDate);
-                    }
-                },
-                year, month, day
-        );
-
-        // Muestra el diálogo
-        datePickerDialog.show();
-    }
-
-    public static void cerrarTeclado(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        View view = activity.getCurrentFocus();
-        if (view != null) {
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
     }
 
     private void goToMainActivity(){
         Intent intent = new Intent(requireActivity(), MainActivity.class);
         startActivity(intent);
     }
-
     private void createUser(FirebaseUser userAuth){
 
         if(!validate()){
@@ -273,62 +215,13 @@ public class RegisterUserFragment extends Fragment {
 
         return validUsername && validDate;
     }
-    private void showImageSourceDialog() {
-        final CharSequence[] options = {"Tomar Foto", "Elegir de la Galería", "Cancelar"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Selecciona una opción");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Tomar Foto")) {
-                    openCamera();
-                } else if (options[item].equals("Elegir de la Galería")) {
-                    openGallery();
-                } else if (options[item].equals("Cancelar")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();
-    }
-    private void openGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickImageLauncher.launch(galleryIntent);
-    }
-    private void openCamera() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            File photoFile;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
-                return;
-            }
-            imageUri = FileProvider.getUriForFile(requireContext(), "com.tu.paquete.fileprovider", photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-            captureImageLauncher.launch(takePictureIntent);
-        }
-    }
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
-        String imageFileName = "JPEG_" + timeStamp;
 
-        File storageDir = requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-        }
 
-        return  File.createTempFile(imageFileName, ".jpg", storageDir);
-    }
     private final ActivityResultLauncher<String> requestCameraPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    openCamera();
+                    imageHandler.openCamera();
                 } else {
                     Toast.makeText(requireContext(), "El permiso de la cámara es necesario para tomar fotos.", Toast.LENGTH_SHORT).show();
                 }
@@ -340,37 +233,26 @@ public class RegisterUserFragment extends Fragment {
                     if (data != null) {
                         Uri selectedImageUri = data.getData();
                         if (selectedImageUri != null) {
-                           startCropActivity(selectedImageUri);
+                            imageHandler.startCropActivity(selectedImageUri);
                         }
                     }
                 }
             });
     private final ActivityResultLauncher<Intent> captureImageLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && imageUri != null) {
-                    startCropActivity(imageUri);
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                        Uri captureImageUri = imageHandler.getImageUri();
+                        imageHandler.startCropActivity(captureImageUri);
+
                 }
             });
-
     private final ActivityResultLauncher<Intent> cropImageLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
                     Uri croppedImageUri = CropImage.getActivityResult(result.getData()).getUri();
                     userPhoto.setImageURI(croppedImageUri);
+                    imageUri = croppedImageUri;
                     imageChange = true;
                 }
             });
-
-    private void startCropActivity(Uri imageUri) {
-        cropImageLauncher.launch(
-                CropImage.activity(imageUri)
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setActivityTitle("Recortar")
-                        .setAspectRatio(1, 1)
-                        .setCropShape(CropImageView.CropShape.OVAL)
-                        .getIntent(requireContext())
-        );
-    }
-
-
 }
