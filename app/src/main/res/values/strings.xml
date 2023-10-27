@@ -24,4 +24,13 @@
     <string name="btnFinish">Finish</string>
 
 
+    <string-array name="categories">
+        <item>Adopción</item>
+        <item>Perdido</item>
+        <item>Encontrado</item>
+        <item>Parejas</item>
+    </string-array>
+
+
+
 </resources>
