@@ -7,72 +7,91 @@
     android:padding="20dp"
     android:textAlignment="inherit">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="383dp"
-        android:layout_height="264dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_photo_foreground"
-        app:layout_constraintBottom_toTopOf="@+id/btnCapture"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="true"
+        android:gravity="bottom|center_horizontal|top"
+        android:orientation="vertical"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/categorySpinner"
-        app:layout_constraintVertical_bias="0.447" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/btnCapture"
-        android:layout_width="170dp"
-        android:layout_height="47dp"
-        android:layout_marginEnd="8dp"
-        android:text="Tomar Foto"
-        app:layout_constraintBottom_toBottomOf="@+id/btnChooseImage"
-        app:layout_constraintEnd_toStartOf="@+id/btnChooseImage"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="@+id/btnChooseImage" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Categoria"
+            android:textSize="24sp" />
 
-    <Button
-        android:id="@+id/btnChooseImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar Imagen"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        tools:layout_editor_absoluteY="321dp" />
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/categories"
+            android:minHeight="48dp" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
 
-    <EditText
-        android:id="@+id/descriptionEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Descripción de la publicación"
-        app:layout_constraintBottom_toTopOf="@+id/submitButton"
-        app:layout_constraintTop_toBottomOf="@+id/btnCapture"
-        app:layout_constraintVertical_bias="0.212"
-        tools:layout_editor_absoluteX="15dp" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="235dp"
+            android:layout_height="243dp"
+            android:minWidth="250dp"
+            android:minHeight="250dp"
+            app:srcCompat="@drawable/ic_add_photo_foreground" />
 
-    <Spinner
-        android:id="@+id/categorySpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/categories"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="73dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
 
-    <Switch
-        android:id="@+id/locationSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Compartir ubicación"
-        app:layout_constraintBottom_toTopOf="@+id/submitButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionEditText" />
+            <Button
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tomar foto" />
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Publicar"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="626dp" />
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elegir una foto" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descripcion" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:text="Button" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
