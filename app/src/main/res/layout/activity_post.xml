@@ -21,18 +21,53 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Categoria"
             android:textSize="24sp" />
 
-        <Spinner
-            android:id="@+id/spinner"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cat_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/categories"
-            android:minHeight="48dp" />
+            android:clickable="false"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+             >
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cat_adoption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/adoption"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cat_lost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lost"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cat_found"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/found"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/cat_couple"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/couple"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.Chip.Choice"/>
+
+        </com.google.android.material.chip.ChipGroup>
 
         <Space
             android:layout_width="match_parent"
@@ -44,10 +79,10 @@
             android:layout_height="243dp"
             android:minWidth="250dp"
             android:minHeight="250dp"
-            app:srcCompat="@drawable/ic_add_photo_foreground" />
+            tools:src="@tools:sample/avatars"
+            android:src="@drawable/ic_add_photo_foreground" />
 
         <LinearLayout
-            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="73dp"
             android:gravity="center"
@@ -55,7 +90,7 @@
             tools:ignore="MissingConstraints">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/actPostBtnShot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tomar foto" />
@@ -65,7 +100,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/actPostBtnChoise"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Elegir una foto" />
@@ -75,12 +110,15 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            app:counterMaxLength="140">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/actPostTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descripcion" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
@@ -88,7 +126,7 @@
             android:layout_height="35dp" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/actPostBtnPost"
             android:layout_width="192dp"
             android:layout_height="wrap_content"
             android:text="Button" />

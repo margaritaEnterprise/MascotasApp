@@ -24,13 +24,17 @@
     <string name="btnFinish">Finish</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="adoption">Adoption</string>
+    <string name="couple">Couple</string>
+    <string name="found">Found</string>
+    <string name="lost">Lost</string>
 
 
     <string-array name="categories">
-        <item>Adopción</item>
-        <item>Perdido</item>
-        <item>Encontrado</item>
-        <item>Parejas</item>
+        <item name="cat_adoption">Adopción</item>
+        <item name="cat_lost">Perdido</item>
+        <item name="cat_found">Encontrado</item>
+        <item name="cat_couple">Parejas</item>
     </string-array>
 
 
