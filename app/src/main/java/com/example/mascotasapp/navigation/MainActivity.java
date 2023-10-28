@@ -1,4 +1,4 @@
-package com.example.mascotasapp;
+package com.example.mascotasapp.navigation;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +14,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mascotasapp.fragment.NotifyFragment;
-import com.example.mascotasapp.fragment.ProfileFragment;
-import com.example.mascotasapp.fragment.SearchFragment;
-import com.example.mascotasapp.fragment.SettingFragment;
+import com.example.mascotasapp.LoginActivity;
+import com.example.mascotasapp.PostActivity;
+import com.example.mascotasapp.R;
+import com.example.mascotasapp.navigation.fragments.NotifyFragment;
+import com.example.mascotasapp.navigation.fragments.ProfileFragment;
+import com.example.mascotasapp.navigation.fragments.SearchFragment;
+import com.example.mascotasapp.navigation.fragments.SettingFragment;
 import com.example.mascotasapp.signup.SignUpActivity;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

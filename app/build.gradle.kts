@@ -65,6 +65,8 @@ dependencies {
     implementation("com.theartofdev.edmodo:android-image-cropper:2.8.0")
     implementation("com.squareup.picasso:picasso:2.5.2")
 
+    //Settings
+    implementation("com.android.support:preference-v7:28.0.0")
 
 
 }
