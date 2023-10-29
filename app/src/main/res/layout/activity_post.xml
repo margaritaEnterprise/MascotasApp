@@ -76,7 +76,7 @@
             android:layout_height="20dp" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/actPostPhoto"
             android:layout_width="235dp"
             android:layout_height="243dp"
             android:minWidth="250dp"
@@ -92,20 +92,10 @@
             tools:ignore="MissingConstraints">
 
             <Button
-                android:id="@+id/actPostBtnShot"
-                android:layout_width="wrap_content"
+                android:id="@+id/actPostBtnPhoto"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tomar foto" />
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/actPostBtnChoise"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Elegir una foto" />
+                android:text="Subir una foto" />
 
         </LinearLayout>
 
@@ -133,15 +123,17 @@
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:endIconMode="custom"
+            android:id="@+id/actPostInputLocation"
             app:endIconDrawable="@drawable/ic_location">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/actPostLocation"
+                android:id="@+id/actPostEditLocation"
                 android:layout_width="match_parent"
-                android:layout_height="59dp"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="false"
                 android:hint="Ubicacion"
-                android:maxHeight="30dp" />
-
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
