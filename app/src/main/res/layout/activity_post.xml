@@ -26,8 +26,9 @@
             android:text="Categoria"
             android:textSize="24sp" />
 
+        <!-- Chip android:tag a la db -->
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/cat_all"
+            android:id="@+id/actPostChipCat_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -43,7 +44,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/adoption" />
+                android:text="@string/adoption"
+                android:tag="adoption"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cat_lost"
@@ -51,7 +53,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/lost" />
+                android:text="@string/lost"
+                android:tag="lost"/>
+
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cat_found"
@@ -59,7 +63,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/found" />
+                android:text="@string/found"
+                android:tag="found"/>
+
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/cat_couple"
@@ -67,7 +73,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/couple" />
+                android:text="@string/couple"
+                android:tag="couple"/>
+
 
         </com.google.android.material.chip.ChipGroup>
 
