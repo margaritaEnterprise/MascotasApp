@@ -132,8 +132,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="Ubicacion"
-                />
+                android:hint="Ubicacion" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Space
