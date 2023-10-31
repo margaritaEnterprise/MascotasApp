@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -37,8 +38,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    Button signOutButton;
-    TextView emailText, idText, usernameText, birthDateText;
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
 
@@ -50,16 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-/*
-        emailText = findViewById(R.id.text_email);
-        idText = findViewById(R.id.text_id);
-        usernameText = findViewById(R.id.text_username);
-        birthDateText = findViewById(R.id.text_birthdate);
-        signOutButton = findViewById(R.id.signOutButton);
-*/
+
         //navigation
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         frameLayout = findViewById(R.id.frame_layout);
+
         replaceFragment(new SearchFragment());
 
         bottomNavigationView.setOnItemSelectedListener(item  -> {
@@ -89,21 +83,14 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-/*
-        signOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });*/
     }
+
     private  void replaceFragment(Fragment fragment) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_layout, fragment)
                     .commit();
     }
-
     @Override
     protected void onStart() {
         super.onStart();

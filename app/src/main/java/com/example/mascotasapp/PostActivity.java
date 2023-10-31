@@ -3,12 +3,18 @@ package com.example.mascotasapp;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +25,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.mascotasapp.navigation.MainActivity;
 import com.example.mascotasapp.utils.ImageHandler;
@@ -50,19 +57,28 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PostActivity extends AppCompatActivity {
+    //Firebase
     FirebaseFirestore db;
     FirebaseAuth mAuth;
-    ChipGroup categories;
-    ImageHandler imageHandler; //
-    TextInputLayout textInputLayout;
+    //Location
+    private LocationManager locationManager = null;
+    private MyLocationListener locationListener = null;
+    private Boolean flagGPS = false;
+    GeoPoint geoPoint;// = new GeoPoint(-34.77564,-58.26793); //UNAJ
     TextInputEditText locationEditText;
-    GeoPoint geoPoint = new GeoPoint(-34.77564,-58.26793); //UNAJ
+
+    //Photo
+    ImageHandler imageHandler;
+    boolean imageChange;
     String uriPhoto;
-    TextInputEditText descriptionEditText;
     ImageView postPhoto;
     Button btnPhoto;
+
+    ChipGroup categories;
+    TextInputEditText descriptionEditText;
+
     Button savePost;
-    boolean imageChange;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,27 +87,30 @@ public class PostActivity extends AppCompatActivity {
         //Firestore
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
-        //post
-        postPhoto = findViewById(R.id.actPostPhoto);
-        btnPhoto = findViewById(R.id.actPostBtnPhoto);
-        savePost = findViewById(R.id.actPostBtnPost);
-        textInputLayout = findViewById(R.id.actPostInputLocation);
+        //Location
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationEditText = findViewById(R.id.actPostEditLocation);
-        descriptionEditText = findViewById(R.id.actPostTextDescription);
-        categories = findViewById(R.id.actPostChipCat_all);
-        imageHandler = new ImageHandler(PostActivity.this, postPhoto ,requestCameraPermissionLauncher, pickImageLauncher, captureImageLauncher, cropImageLauncher);
-
         locationEditText.setKeyListener(null);
         locationEditText.setOnClickListener(v -> showLocationSourceDialog());
 
+        //Photo
+        btnPhoto = findViewById(R.id.actPostBtnPhoto);
         btnPhoto.setOnClickListener(v -> imageHandler.showImageSourceDialog());
+        postPhoto = findViewById(R.id.actPostPhoto);
+        imageHandler = new ImageHandler(PostActivity.this, postPhoto ,requestCameraPermissionLauncher, pickImageLauncher, captureImageLauncher, cropImageLauncher);
+
+        descriptionEditText = findViewById(R.id.actPostTextDescription);
+        categories = findViewById(R.id.actPostChipCat_all);
+
+        //SavePost
+        savePost = findViewById(R.id.actPostBtnPost);
         savePost.setOnClickListener(v -> createPost(mAuth.getCurrentUser()));
     }
     private void createPost(FirebaseUser userAuth){
-/*        if(!validate()){
-            Toast.makeText(requireActivity(), R.string.create_fail, Toast.LENGTH_SHORT).show();
+        if(!validatePost()){
+            Toast.makeText(PostActivity.this, "", Toast.LENGTH_SHORT).show();
             return;
-        }*/
+        }
         try {
             postPhoto.setDrawingCacheEnabled(true);
             postPhoto.buildDrawingCache();
@@ -103,6 +122,9 @@ public class PostActivity extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(PostActivity.this, "Exception e!!!", Toast.LENGTH_SHORT).show();
         }
+    }
+    private boolean validatePost() {
+        return true;
     }
     private void uploadImageToFirebaseStorage(FirebaseUser userAuth, Bitmap bitmap)  {
         if(!imageChange){
@@ -158,6 +180,7 @@ public class PostActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(PostActivity.this, "Save Post :)", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PostActivity.this, MainActivity.class);
+                    
                     startActivity(intent);
                 })
                 .addOnFailureListener(e -> {
@@ -210,24 +233,54 @@ public class PostActivity extends AppCompatActivity {
         final CharSequence[] options = {"Elegir una ubicacion", "Elegir la ubicacion actual", "Cancelar"};
         AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
         builder.setTitle("Selecciona una opción");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals("Elegir una ubicacion")) {
+                Toast.makeText(PostActivity.this, "Elegir una ubicacion", Toast.LENGTH_SHORT).show();
+            } else if (options[item].equals("Elegir la ubicacion actual")) {
 
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Elegir una ubicacion")) {
-                    Toast.makeText(PostActivity.this, "Elegir una ubicacion", Toast.LENGTH_SHORT).show();
-                } else if (options[item].equals("Elegir la ubicacion actual")) {
+                Toast.makeText(PostActivity.this, "Elegir la ubicacion actual", Toast.LENGTH_SHORT).show();
+
+                flagGPS = displayGpsStatus();
+                if (flagGPS) {
+                    // Instancio el listener
+                    locationListener = new MyLocationListener();
+                    if (ActivityCompat.checkSelfPermission(PostActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(PostActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(PostActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+                        return;
+                    }
+                    locationManager.requestLocationUpdates(
+                            LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
                     locationEditText.setText("Mi ubicacion");
-                    Toast.makeText(PostActivity.this, "Elegir la ubicacion actual", Toast.LENGTH_SHORT).show();
-                } else if (options[item].equals("Cancelar")) {
-                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getBaseContext(), "El GPS se encuentra deshabilitado", Toast.LENGTH_SHORT).show();
                 }
+            } else if (options[item].equals("Cancelar")) {
+                dialog.dismiss();
             }
         });
         builder.show();
     }
-
-
-
+    //Obtener coordenadas
+    private Boolean displayGpsStatus() {
+        if (locationManager != null) {
+            boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            return gpsStatus;
+        } else {
+            return false;
+        }
+    }
+    public class MyLocationListener implements LocationListener {
+        private double longitude, latitude;
+        @Override
+        public void onLocationChanged(Location loc) {
+            this.longitude = loc.getLongitude();
+            this.latitude = loc.getLatitude();
+            geoPoint = new GeoPoint(this.latitude,this.longitude);
+        }
+        @Override
+        public void onProviderDisabled(@NonNull String provider) {}
+        @Override
+        public void onProviderEnabled(@NonNull String provider) {}
+    }
 
 }
