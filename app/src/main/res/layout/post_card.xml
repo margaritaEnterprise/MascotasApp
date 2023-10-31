@@ -72,13 +72,14 @@ app:cardUseCompatPadding="true">
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_add_photo_foreground"
-            tools:src="@tools:sample/avatars"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/baseline_photo_camera_24"
+            tools:src="@tools:sample/avatars">
 
         </ImageView>
     </androidx.constraintlayout.widget.ConstraintLayout>

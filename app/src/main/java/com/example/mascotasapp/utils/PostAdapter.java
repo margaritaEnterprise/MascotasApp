@@ -1,5 +1,6 @@
 package com.example.mascotasapp.utils;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,18 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.ActionBarPolicy;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mascotasapp.R;
 import com.google.android.material.chip.Chip;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Map;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private List<Map<String, Object>> listMap;
-    public PostAdapter(List<Map<String, Object>> listMap) {
+    private Context context;
+    public PostAdapter(List<Map<String, Object>> listMap, Context context) {
         this.listMap = listMap;
+        this.context = context;
     }
     @NonNull
     @Override
@@ -34,8 +39,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.userName.setText((CharSequence) map.get("userName"));
         holder.userId.setText((CharSequence) map.get("userId"));
         holder.category.setText((CharSequence)map.get("category"));
-        Uri photoUri = Uri.parse((String) map.get("photoUrl"));
-        holder.cardPhoto.setImageURI(photoUri);
+        Uri photoUrl = Uri.parse((String) map.get("photoUrl"));
+        Picasso.with(context)
+                .load(photoUrl)
+                .resize(250, 250)
+                .into(holder.cardPhoto);
     }
 
     @Override
