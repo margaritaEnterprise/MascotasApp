@@ -124,7 +124,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void finishGet(){
-        PostAdapter postAdapter = new PostAdapter(mapList);
+        PostAdapter postAdapter = new PostAdapter(mapList, requireContext());
         recyclerView.setAdapter(postAdapter);
     }
 }
