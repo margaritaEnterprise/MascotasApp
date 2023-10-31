@@ -148,7 +148,7 @@ public class PostActivity extends AppCompatActivity {
         Map<String,Object> map = new HashMap<>();
         map.put("category", selectedChip.getTag().toString());
         map.put("photoUrl", uriPhoto);
-        map.put("description", descriptionEditText);
+        map.put("description", descriptionEditText.getText().toString());
         map.put("location", geoPoint);
         map.put("state", true);
         map.put("date", new Timestamp(new Date()));
@@ -157,12 +157,12 @@ public class PostActivity extends AppCompatActivity {
                 .add(map)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(PostActivity.this, "Save Post :)", Toast.LENGTH_SHORT).show();
-                    //Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                    //startActivity(intent);
+                    Intent intent = new Intent(PostActivity.this, MainActivity.class);
+                    startActivity(intent);
                 })
-                .addOnFailureListener(e ->
-                        Toast.makeText(PostActivity.this, "El Post ha fallado :/", Toast.LENGTH_SHORT).show()
-                );
+                .addOnFailureListener(e -> {
+                    Toast.makeText(PostActivity.this, "Save Post :/", Toast.LENGTH_SHORT).show();
+                });
     }
 
     //Permisos
