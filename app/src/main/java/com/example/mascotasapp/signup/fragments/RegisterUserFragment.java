@@ -168,6 +168,7 @@ public class RegisterUserFragment extends Fragment {
                                 String uid = userAuth.getUid();
                                 DocumentReference userDocRef = db.collection("users").document(uid);
                                 Map<String, Object> userData = new HashMap<>();
+                                userData.put("id", uid);
                                 userData.put("username", newUsername);
                                 userData.put("birthdate", new Timestamp(date));
                                 userData.put("photoUrl", imageUrl);

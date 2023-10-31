@@ -1,5 +1,6 @@
 package com.example.mascotasapp.utils;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Map<String, Object> map = listMap.get(position);
         holder.userName.setText((CharSequence) map.get("userName"));
+        holder.userId.setText((CharSequence) map.get("userId"));
+        holder.category.setText((CharSequence)map.get("category"));
+        Uri photoUri = Uri.parse((String) map.get("photoUrl"));
+        holder.cardPhoto.setImageURI(photoUri);
     }
 
     @Override
