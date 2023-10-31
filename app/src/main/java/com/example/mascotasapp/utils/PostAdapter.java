@@ -36,9 +36,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Map<String, Object> map = listMap.get(position);
-        holder.userName.setText((CharSequence) map.get("userName"));
-        holder.userId.setText((CharSequence) map.get("userId"));
+        holder.userName.setText((CharSequence) map.get("username"));
+        //holder.userId.setText((CharSequence) map.get("userId"));
         holder.category.setText((CharSequence)map.get("category"));
+
+        Uri userPhotoUrl = Uri.parse((String) map.get("userPhotoUrl"));
+        Picasso.with(context)
+                .load(userPhotoUrl)
+                .resize(30, 30)
+                .into(holder.userPhoto);
+
         Uri photoUrl = Uri.parse((String) map.get("photoUrl"));
         Picasso.with(context)
                 .load(photoUrl)

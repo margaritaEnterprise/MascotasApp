@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -38,7 +39,6 @@ public class SearchFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     List<Map<String, Object>> mapList;
-    List<Map<String, Object>> userList;
     public SearchFragment() {
         /*
         Map<String,Object> map = new HashMap<>();
@@ -95,7 +95,8 @@ public class SearchFragment extends Fragment {
                         items.add(item);
                     }
                     mapList = items;
-                    finishGet();
+                    List<String> idsList = new ArrayList<>(userIds);
+                    searchUsers(idsList);
                 })
                 .addOnFailureListener(e ->{
                     Toast.makeText(requireContext(), "xd", Toast.LENGTH_SHORT).show();
@@ -109,13 +110,23 @@ public class SearchFragment extends Fragment {
                 .orderBy("id", Query.Direction.ASCENDING)
                 .get().
                 addOnSuccessListener(queryDocumentSnapshots -> {
+                    List<Map<String, Object>> users = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         Map<String, Object> user = new HashMap<>();
                         user.put("photoUrl",document.getString("photoUrl"));
                         user.put("id",document.getString("id"));
                         user.put("username",document.getString("username"));
-                        userList.add(user);
+                        users.add(user);
                     }
+                    for (Map<String, Object> map : mapList) {
+                        for (Map<String, Object> user : users){
+                            if(map.get("userId").equals(user.get("id"))){
+                                map.put("userPhotoUrl", user.get("photoUrl"));
+                                map.put("username",user.get("username"));
+                            }
+                        }
+                    }
+                    finishGet();
                 })
                 .addOnFailureListener(e -> {
                     // Maneja errores aquí, si es necesario.
