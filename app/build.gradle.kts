@@ -50,21 +50,19 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     // TODO: Add the dependencies for Firebase products you want to use
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
     implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
-    // Declare the dependency for the Cloud Firestore library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-firestore")
 
+    //Photo
     implementation("com.theartofdev.edmodo:android-image-cropper:2.8.0")
     implementation("com.squareup.picasso:picasso:2.5.2")
 
-
-
+    //Settings
+    implementation("androidx.preference:preference:1.1.1")
+    //Location
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 }

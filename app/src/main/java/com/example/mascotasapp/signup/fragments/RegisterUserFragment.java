@@ -17,7 +17,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import com.example.mascotasapp.MainActivity;
+import com.example.mascotasapp.navigation.MainActivity;
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.utils.Calendar;
 import com.example.mascotasapp.utils.ImageHandler;

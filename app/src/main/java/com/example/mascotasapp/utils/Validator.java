@@ -31,6 +31,4 @@ public class Validator {
         errorMsg = R.string.error_password;
         return false;
     }
-
-
 }
