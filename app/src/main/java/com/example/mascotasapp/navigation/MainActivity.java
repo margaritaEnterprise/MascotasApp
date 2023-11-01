@@ -23,6 +23,7 @@ import com.example.mascotasapp.navigation.fragments.ProfileFragment;
 import com.example.mascotasapp.navigation.fragments.SearchFragment;
 import com.example.mascotasapp.navigation.fragments.SettingFragment;
 import com.example.mascotasapp.signup.SignUpActivity;
+import com.example.mascotasapp.utils.PostAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,7 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     BottomNavigationView bottomNavigationView;
@@ -110,16 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDataUI(Map<String, Object> data, FirebaseUser user){
-        /*
-        emailText.setText(user.getEmail());
-        idText.setText(user.getUid());
-        usernameText.setText((String)data.get("username"));
-        Timestamp timestamp = (Timestamp) data.get("birthdate");
-        Date birthdate = timestamp.toDate();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String birthdateString = sdf.format(birthdate);
-        birthDateText.setText(birthdateString);
-    */}
+    }
     public static void setAppLanguage(Context context, String languageCode) {
         Locale locale = new Locale(languageCode);
         Locale.setDefault(locale);
@@ -166,4 +158,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void postClick(Map<String, Object> item) {
+        replaceFragment(new PostFragment(item));
+    }
 }

@@ -7,12 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.view.ActionBarPolicy;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mascotasapp.R;
+import com.example.mascotasapp.signup.fragments.RegisterAuthFragment;
 import com.google.android.material.chip.Chip;
 import com.squareup.picasso.Picasso;
 
@@ -22,9 +24,16 @@ import java.util.Map;
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
     private List<Map<String, Object>> listMap;
     private Context context;
+
+    public interface PostClickListener{
+        void postClick(Map<String, Object> item);
+    }
+    PostClickListener postClickListener;
+
     public PostAdapter(List<Map<String, Object>> listMap, Context context) {
         this.listMap = listMap;
         this.context = context;
+        this.postClickListener = (PostClickListener) context;
     }
     @NonNull
     @Override
@@ -36,6 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Map<String, Object> map = listMap.get(position);
+        holder.id = (String) map.get("id");
         holder.userName.setText((CharSequence) map.get("username"));
         //holder.userId.setText((CharSequence) map.get("userId"));
         holder.category.setText((CharSequence)map.get("category"));
@@ -51,6 +61,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 .load(photoUrl)
                 .resize(250, 250)
                 .into(holder.cardPhoto);
+
+        holder.cardPhoto.setOnClickListener(v -> postClickListener.postClick(map));
     }
 
     @Override
@@ -63,7 +75,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         Chip userName;
         Chip category;
         ImageView cardPhoto;
-
+        String id;
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             userPhoto = itemView.findViewById(R.id.post_cardPhotoUser);
@@ -71,6 +83,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             userName = itemView.findViewById(R.id.post_cardUsername);
             category = itemView.findViewById(R.id.post_cardTag);
             cardPhoto = itemView.findViewById(R.id.post_cardPhoto);
+
         }
     }
 }
