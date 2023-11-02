@@ -160,6 +160,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
     @Override
     public void postClick(Map<String, Object> item) {
-        replaceFragment(new PostFragment(item));
+        replaceFragment(new PostFragment(item, this, this));
     }
 }
