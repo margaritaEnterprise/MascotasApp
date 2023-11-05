@@ -22,6 +22,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.chip.Chip;
+import com.google.firebase.firestore.GeoPoint;
 import com.squareup.picasso.Picasso;
 import java.util.Map;
 
@@ -68,8 +69,10 @@ public class PostFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.getUiSettings().setZoomControlsEnabled(true);
-        map.addMarker(new MarkerOptions().position(new LatLng(43.1, -87.9)));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(43.1, -87.9), 10));
+        GeoPoint geo = (GeoPoint) this.post.get("location");
+        LatLng latLng = new LatLng(geo.getLatitude(), geo.getLongitude());
+        map.addMarker(new MarkerOptions().position(latLng));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 20));
     }
 
     public void setData(){
