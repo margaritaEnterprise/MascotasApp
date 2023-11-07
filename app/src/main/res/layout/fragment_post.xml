@@ -1,80 +1,112 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"> <!--IMPORTANT otherwise backgrnd img. will not fill the whole screen -->
-
-    <ImageView
-        android:id="@+id/FragPostImagePost"
-        android:layout_width="match_parent"
-        android:layout_height="269dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="start|center_vertical"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/FragPostImageUser"
-            android:layout_width="66dp"
-            android:layout_height="58dp"
-            tools:src="@tools:sample/avatars" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:elevation="4dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/FragPostImagePost">
 
-        <Space
-            android:layout_width="30dp"
-            android:layout_height="wrap_content" />
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="24dp">
 
+                <ImageView
+                    android:id="@+id/FragPostImageUser"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/img_avatar_layer_f"
+                    tools:src="@drawable/img_avatar_layer_f" />
+            </androidx.cardview.widget.CardView>
+
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/FragPostUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="username"
+                android:textSize="20dp"
+                android:textAlignment="center"/>
+
+            <Space
+                android:layout_width="30dp"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/FragPostChipCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15dp"
+                android:backgroundTint="@color/fui_bgTwitter"
+                android:text="category"
+                android:textAlignment="center"/>
+
+        </LinearLayout>
         <TextView
-            android:id="@+id/FragPostUsername"
-            android:layout_width="151dp"
-            android:layout_height="36dp"
-            android:text="TextView"
-            android:textSize="25dp" />
-
-        <Space
-            android:layout_width="30dp"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/FragPostChipCategory"
+            android:id="@+id/FragPostTextDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp" />
+            android:textSize="18sp"
+            android:text="Descripcion"/>
+        <ImageView
+            android:id="@+id/FragPostImagePost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            app:srcCompat="@drawable/baseline_photo_camera_24"
+            tools:src="@drawable/baseline_photo_camera_24" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/fragPostRecyclerViewComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintTop_toBottomOf="@+id/FragPostImagePost"/>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            app:layout_constraintTop_toBottomOf="@+id/fragPostRecyclerViewComments"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_margin="5dp">
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/FragPostMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@android:color/darker_gray"
+                map:cameraZoom="10"
+                map:uiRotateGestures="true"
+                map:uiZoomControls="true"
+                />
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/FragPostMap"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="364dp"
-        android:layout_height="368dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/FragPostImagePost"
-        map:cameraZoom="10"
-        map:uiRotateGestures="true"
-        map:uiZoomControls="true"
-        tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/FragPostTextDesc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="25dp"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/FragPostMap"
-        app:layout_constraintTop_toBottomOf="@+id/FragPostImagePost"
-        tools:layout_editor_absoluteX="34dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
