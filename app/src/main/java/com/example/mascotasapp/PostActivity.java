@@ -24,6 +24,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -79,7 +80,7 @@ public class PostActivity extends AppCompatActivity {
 
     Button savePost;
 
-    @SuppressLint("MissingInflatedId")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -230,14 +231,35 @@ public class PostActivity extends AppCompatActivity {
                 }
             });
 
+    private final ActivityResultLauncher<Intent> mapActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK) {
+                    Intent data = result.getData();
+                    if (data != null) {
+                        String selectedLocation = data.getStringExtra("selectedLocationName");
+                        Double selectedLocationLat = data.getDoubleExtra("selectedLocationLat", 0);
+                        Double selectedLocationLong = data.getDoubleExtra("selectedLocationLong", 0);
+                        geoPoint = new GeoPoint(selectedLocationLat, selectedLocationLong);
+                        locationEditText.setText(selectedLocation);
+                    }
+                }
+            }
+    );
+
+
+
     public void showLocationSourceDialog() {
         final CharSequence[] options = {"Elegir una ubicacion", "Elegir la ubicacion actual", "Cancelar"};
         AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
         builder.setTitle("Selecciona una opción");
         builder.setItems(options, (dialog, item) -> {
             if (options[item].equals("Elegir una ubicacion")) {
-                Toast.makeText(PostActivity.this, "Elegir una ubicacion", Toast.LENGTH_SHORT).show();
-            } else if (options[item].equals("Elegir la ubicacion actual")) {
+                Toast.makeText(PostActivity.this, "Elegir una ubicación", Toast.LENGTH_SHORT).show();
+                Intent mapIntent = new Intent(PostActivity.this, MapActivity.class);
+                mapActivityLauncher.launch(mapIntent);
+            }
+            else if (options[item].equals("Elegir la ubicacion actual")) {
 
                 Toast.makeText(PostActivity.this, "Elegir la ubicacion actual", Toast.LENGTH_SHORT).show();
 
@@ -255,7 +277,8 @@ public class PostActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(getBaseContext(), "El GPS se encuentra deshabilitado", Toast.LENGTH_SHORT).show();
                 }
-            } else if (options[item].equals("Cancelar")) {
+            }
+            else if (options[item].equals("Cancelar")) {
                 dialog.dismiss();
             }
         });
