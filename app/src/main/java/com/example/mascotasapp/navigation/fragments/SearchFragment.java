@@ -10,16 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.utils.PostAdapter;
+import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -39,18 +44,12 @@ public class SearchFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     List<Map<String, Object>> mapList;
+    SearchView search;
+    ChipGroup categories;
+    SeekBar range;
+    Switch state;
+    GeoPoint geo;
     public SearchFragment() {
-        /*
-        Map<String,Object> map = new HashMap<>();
-        map.put("category", selectedChip.getTag().toString());
-        map.put("photoUrl", uriPhoto);
-        map.put("description", descriptionEditText.getText().toString());
-        map.put("location", geoPoint);
-        map.put("state", true);
-        map.put("date", new Timestamp(new Date()));
-        map.put("userId", mAuth.getCurrentUser().getUid());
-        db.collection("posts")
-        */
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,27 +75,31 @@ public class SearchFragment extends Fragment {
         String userId = mAuth.getCurrentUser().getUid();
         Set<String> userIds = new HashSet<>();
         collections.whereNotEqualTo("userId", userId)
-                .orderBy("userId", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Map<String, Object>> items = new ArrayList<>();
                     for(QueryDocumentSnapshot document : queryDocumentSnapshots){
                         Map<String, Object> item = new HashMap<>();
-                        item.put("id", document.getId());
-                        item.put("category", document.get("category"));
-                        item.put("photoUrl", document.get("photoUrl"));
-                        item.put("description", document.get("description"));
-                        item.put("location", document.get("location"));
-                        item.put("state", document.get("state"));
-                        item.put("date", document.get("date"));
-                        item.put("userId", document.get("userId"));
+                        if ((boolean)document.get("state")) {
+                            item.put("id", document.getId());
+                            item.put("category", document.get("category"));
+                            item.put("photoUrl", document.get("photoUrl"));
+                            item.put("description", document.get("description"));
+                            item.put("location", document.get("location"));
+                            item.put("state", document.get("state"));
+                            item.put("date", document.get("date"));
+                            item.put("userId", document.get("userId"));
+                            userIds.add((String) document.get("userId"));
+                            items.add(item);
+                        }
 
-                        userIds.add((String) document.get("userId"));
-                        items.add(item);
                     }
                     mapList = items;
-                    List<String> idsList = new ArrayList<>(userIds);
-                    searchUsers(idsList);
+                    if(!items.isEmpty()){
+                        List<String> idsList = new ArrayList<>(userIds);
+                        searchUsers(idsList);
+                    }
+
                 })
                 .addOnFailureListener(e ->{
                     Toast.makeText(requireContext(), "xd", Toast.LENGTH_SHORT).show();
