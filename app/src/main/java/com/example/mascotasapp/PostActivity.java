@@ -97,6 +97,7 @@ public class PostActivity extends AppCompatActivity {
         btnPhoto = findViewById(R.id.actPostBtnPhoto);
         btnPhoto.setOnClickListener(v -> imageHandler.showImageSourceDialog());
         postPhoto = findViewById(R.id.actPostPhoto);
+        postPhoto.setOnClickListener(v -> imageHandler.showImageSourceDialog());
         imageHandler = new ImageHandler(PostActivity.this, postPhoto ,requestCameraPermissionLauncher, pickImageLauncher, captureImageLauncher, cropImageLauncher);
 
         descriptionEditText = findViewById(R.id.actPostTextDescription);
