@@ -58,7 +58,7 @@ dependencies {
     // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.firebaseui:firebase-ui-auth:7.2.0")
-    implementation("com.google.firebase:firebase-firestore")
+    implementation("com.google.firebase:firebase-firestore:22.0.2")
 
     //Photo
     implementation("com.theartofdev.edmodo:android-image-cropper:2.8.0")
