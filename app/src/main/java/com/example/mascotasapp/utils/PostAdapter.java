@@ -72,14 +72,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView userPhoto;
         Chip userId;
-        Chip userName;
+        TextView userName;
         Chip category;
         ImageView cardPhoto;
         String id;
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
             userPhoto = itemView.findViewById(R.id.post_cardPhotoUser);
-            userId = itemView.findViewById(R.id.post_cardUserId);
+            //userId = itemView.findViewById(R.id.post_cardUserId);
             userName = itemView.findViewById(R.id.post_cardUsername);
             category = itemView.findViewById(R.id.post_cardTag);
             cardPhoto = itemView.findViewById(R.id.post_cardPhoto);
