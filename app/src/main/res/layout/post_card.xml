@@ -57,10 +57,11 @@
                 android:id="@+id/post_cardTag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="15dp"
                 android:backgroundTint="@color/fui_bgTwitter"
                 android:text="category"
-                android:textAlignment="center"/>
+                android:textAlignment="center"
+                android:textSize="15dp"
+                tools:ignore="TextSizeCheck" />
 
         </LinearLayout>
 

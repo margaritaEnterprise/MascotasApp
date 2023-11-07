@@ -23,6 +23,7 @@ import com.example.mascotasapp.navigation.fragments.ProfileFragment;
 import com.example.mascotasapp.navigation.fragments.SearchFragment;
 import com.example.mascotasapp.navigation.fragments.SettingFragment;
 import com.example.mascotasapp.signup.SignUpActivity;
+import com.example.mascotasapp.utils.MyPostAdapter;
 import com.example.mascotasapp.utils.PostAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,9 +37,9 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener {
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db; //viewDetailMyPost
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
 
@@ -161,5 +162,12 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     @Override
     public void postClick(Map<String, Object> item) {
         replaceFragment(new PostFragment(item, this, this));
+    }
+
+    //Metodo del my post adapter: open photo
+    @Override
+    public void viewDetailMyPost(Map<String, Object> item) {
+
+        Toast.makeText(MainActivity.this, item.get("id").toString(),Toast.LENGTH_SHORT).show();
     }
 }
