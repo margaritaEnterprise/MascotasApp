@@ -13,7 +13,6 @@
         android:gravity="center"
         tools:context=".navigation.fragments.SettingFragment">
 
-
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,8 +23,8 @@
                 android:id="@+id/frag_setting_signOut"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@mipmap/ic_logout"
-                tools:src="@mipmap/ic_logout" />
+                android:src="@drawable/ico_logout"
+                tools:src="@drawable/ico_logout" />
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
