@@ -53,18 +53,18 @@ public class SettingFragment extends Fragment {
         editor =  sharedPreferences.edit();
 
         // Asocio las variables con la UI
-        image = view.findViewById(R.id.frag_setting_image);
-        image.bringToFront();
-        language = view.findViewById(R.id.frag_setting_language);
+        //image = view.findViewById(R.id.frag_setting_image);
+        //image.bringToFront();
+        //language = view.findViewById(R.id.frag_setting_language);
 
         saveButton = view.findViewById(R.id.frag_setting_save);
 
-        signOutButton = view.findViewById(R.id.frag_setting_signOut);
+        /*signOutButton = view.findViewById(R.id.frag_setting_signOut);
         signOutButton.setOnClickListener(v -> {
             mAuth.signOut();
             Intent intent = new Intent(requireContext(), LoginActivity.class);
             startActivity(intent);
-        });
+        });*/
 
         return view;
     }
