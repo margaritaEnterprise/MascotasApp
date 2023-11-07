@@ -59,8 +59,10 @@ public class SearchFragment extends Fragment {
     Switch state;
     Button btnSearch;
     GeoPoint geo;
+    Context context;
 
-    public SearchFragment() {
+    public SearchFragment(Context context) {
+        this.context = context;
     }
 
     public SearchFragment(GeoPoint geo) {
@@ -81,10 +83,10 @@ public class SearchFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         recyclerView = view.findViewById(R.id.FragSearchRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         noResults = view.findViewById(R.id.FragSearchNoResults);
 
-        locationManager = (LocationManager) requireContext().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
             @Override
@@ -175,7 +177,7 @@ public class SearchFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e ->{
-                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -211,7 +213,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void finishGet(){
-        PostAdapter postAdapter = new PostAdapter(mapList, requireContext());
+        PostAdapter postAdapter = new PostAdapter(mapList, context);
         recyclerView.setAdapter(postAdapter);
     }
 
@@ -290,12 +292,12 @@ public class SearchFragment extends Fragment {
                     }
                 })
                 .addOnFailureListener(e ->{
-                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
     public void checkPermissionGeo(){
-        if (ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(requireContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
         locationManager.requestLocationUpdates(

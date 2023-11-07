@@ -55,14 +55,14 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         frameLayout = findViewById(R.id.frame_layout);
 
-        replaceFragment(new SearchFragment());
+        replaceFragment(new SearchFragment(this));
 
         bottomNavigationView.setOnItemSelectedListener(item  -> {
 
             switch (item.getTitle().toString()) {
                 case "Search":
                     Toast.makeText(this, "buscar", Toast.LENGTH_SHORT).show();
-                    replaceFragment(new SearchFragment());
+                    replaceFragment(new SearchFragment(this));
                     break;
                 case "Notify":
                     Toast.makeText(this, "notificar", Toast.LENGTH_SHORT).show();
