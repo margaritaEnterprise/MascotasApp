@@ -9,10 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mascotasapp.LoginActivity;
@@ -37,7 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
     BottomNavigationView bottomNavigationView;
@@ -161,13 +158,17 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
     @Override
     public void postClick(Map<String, Object> item) {
-        replaceFragment(new PostFragment(item, this, this));
+        replaceFragment(new DetailFragment(item, this, this));
     }
 
     //Metodo del my post adapter: open photo
     @Override
     public void viewDetailMyPost(Map<String, Object> item) {
-
-        Toast.makeText(MainActivity.this, item.get("id").toString(),Toast.LENGTH_SHORT).show();
+        replaceFragment(new DetailFragment(item, this, this));
+    }
+    //abrir
+    @Override
+    public void btnClickEdit(Map<String, Object> item) {
+        Toast.makeText(this, "Editar "+item.get("id"), Toast.LENGTH_SHORT).show();
     }
 }

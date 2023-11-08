@@ -1,14 +1,18 @@
 package com.example.mascotasapp.navigation.fragments;
 
+import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +20,11 @@ import com.example.mascotasapp.R;
 import com.example.mascotasapp.utils.MyPostAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,12 +37,17 @@ public class ProfileFragment extends Fragment {
     RecyclerView recyclerView;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
+    TextView username;
+    ImageView photoUser;
+    Uri photoUserUri;
+
     public ProfileFragment() { }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,20 +55,46 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        recyclerView = view.findViewById(R.id.frag_profile_recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        username = view.findViewById(R.id.frag_profile_username);
+        photoUser = view.findViewById(R.id.frag_profile_image);
 
-        getMyPosts();
+        recyclerView = view.findViewById(R.id.frag_profile_recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
+
+        getUser();
 
         return view;
     }
+public void getUser(){
+    CollectionReference collections = db.collection("users");
+    String userId = mAuth.getCurrentUser().getUid();
+    Query query = collections.whereEqualTo("id", userId);
+    query
+            .get()
+            .addOnSuccessListener(queryDocumentSnapshots -> {
+                DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
+                username.setText(doc.get("username").toString());
+                photoUserUri = Uri.parse(doc.get("photoUrl").toString());
+                Picasso.with(requireContext())
+                        .load(photoUserUri)
+                        .resize(50, 50)
+                        .into(photoUser);
+
+                getMyPosts();
+            })
+                .addOnFailureListener(e ->{
+                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+}
 
     public void getMyPosts(){
+        String name = username.getText().toString();
+        String uri = photoUserUri.toString();
+
         CollectionReference collections = db.collection("posts");
 
         String userId = mAuth.getCurrentUser().getUid();
         Query query = collections.whereEqualTo("userId", userId);
-        query.orderBy("date", Query.Direction.DESCENDING);
 
         query
                 .get()
@@ -74,11 +111,14 @@ public class ProfileFragment extends Fragment {
                             item.put("state", document.get("state"));
                             item.put("date", document.get("date"));
                             item.put("userId", document.get("userId"));
+                            item.put("userPhotoUrl", uri);
+                            item.put("username", name);
 
                             items.add(item);
                     }
 
                     if(!items.isEmpty()){
+                        //
                         MyPostAdapter adapter = new MyPostAdapter(items, requireContext());
                         recyclerView.setAdapter(adapter);
                     } else {
