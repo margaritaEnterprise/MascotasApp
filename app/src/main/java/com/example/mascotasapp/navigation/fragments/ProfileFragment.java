@@ -65,27 +65,28 @@ public class ProfileFragment extends Fragment {
 
         return view;
     }
-public void getUser(){
-    CollectionReference collections = db.collection("users");
-    String userId = mAuth.getCurrentUser().getUid();
-    Query query = collections.whereEqualTo("id", userId);
-    query
-            .get()
-            .addOnSuccessListener(queryDocumentSnapshots -> {
-                DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
-                username.setText(doc.get("username").toString());
-                photoUserUri = Uri.parse(doc.get("photoUrl").toString());
-                Picasso.with(requireContext())
-                        .load(photoUserUri)
-                        .resize(50, 50)
-                        .into(photoUser);
 
-                getMyPosts();
-            })
-                .addOnFailureListener(e ->{
-                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                });
-}
+    public void getUser(){
+        CollectionReference collections = db.collection("users");
+        String userId = mAuth.getCurrentUser().getUid();
+        Query query = collections.whereEqualTo("id", userId);
+        query
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
+                    username.setText(doc.get("username").toString());
+                    photoUserUri = Uri.parse(doc.get("photoUrl").toString());
+                    Picasso.with(requireContext())
+                            .load(photoUserUri)
+                            .resize(50, 50)
+                            .into(photoUser);
+
+                    getMyPosts();
+                })
+                    .addOnFailureListener(e ->{
+                        Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+    }
 
     public void getMyPosts(){
         String name = username.getText().toString();
@@ -129,7 +130,6 @@ public void getUser(){
                     Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
 
 }
 

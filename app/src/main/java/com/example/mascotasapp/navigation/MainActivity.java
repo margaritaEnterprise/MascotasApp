@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     private FirebaseFirestore db; //viewDetailMyPost
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
+    Map<String, Object> dataUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     break;
                 case "Setting":
                     Toast.makeText(this, "configurar", Toast.LENGTH_SHORT).show();
-                    replaceFragment(new SettingFragment());
+                    replaceFragment(new SettingFragment(dataUser, this));
                     break;
                 case "Profile":
                     Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
@@ -98,10 +99,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
-    private void signOut() {
-        mAuth.signOut();
-        goToLoginActivity();
-    }
+
     private void updateUI(FirebaseUser user) {
         if (user == null) {
            goToLoginActivity();
@@ -131,8 +129,8 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            Map<String, Object> data = documentSnapshot.getData();
-                            loadDataUI(data, user);
+                            dataUser = documentSnapshot.getData();
+                            loadDataUI(dataUser, user);
                         } else {
                             goToSignUpActivity();
                         }
