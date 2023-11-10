@@ -1,4 +1,4 @@
-package com.example.mascotasapp.navigation;
+package com.example.mascotasapp.navigation.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

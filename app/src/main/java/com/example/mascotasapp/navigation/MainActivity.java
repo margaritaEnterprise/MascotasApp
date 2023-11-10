@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.mascotasapp.LoginActivity;
 import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
+import com.example.mascotasapp.navigation.fragments.DetailFragment;
+import com.example.mascotasapp.navigation.fragments.EditFragment;
 import com.example.mascotasapp.navigation.fragments.NotifyFragment;
 import com.example.mascotasapp.navigation.fragments.ProfileFragment;
 import com.example.mascotasapp.navigation.fragments.SearchFragment;
@@ -169,6 +171,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     //abrir
     @Override
     public void btnClickEdit(Map<String, Object> item) {
-        Toast.makeText(this, "Editar "+item.get("id"), Toast.LENGTH_SHORT).show();
+        replaceFragment(new EditFragment(item, this, this));
     }
 }
