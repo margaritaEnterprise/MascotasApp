@@ -36,7 +36,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
     BottomNavigationView bottomNavigationView;
@@ -171,6 +171,11 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     //abrir
     @Override
     public void btnClickEdit(Map<String, Object> item) {
-        replaceFragment(new EditFragment(item));
+        replaceFragment(new EditFragment(item, this));
+    }
+
+    @Override
+    public void editSuccess() {
+        replaceFragment(new ProfileFragment());//get
     }
 }

@@ -105,8 +105,8 @@ public class ImageHandler {
                         .getIntent(context)
         );
     }
-
     public Uri getImageUri() {
         return this.imageUri;
     }
+
 }

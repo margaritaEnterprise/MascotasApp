@@ -7,7 +7,6 @@
     android:padding="20dp"
     android:textAlignment="inherit">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,11 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Categoria"
-            android:textSize="24sp" />
+
 
         <!-- Chip android:tag a la db -->
         <com.google.android.material.chip.ChipGroup

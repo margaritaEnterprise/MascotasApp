@@ -2,6 +2,7 @@ package com.example.mascotasapp.navigation.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mascotasapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -60,10 +62,16 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
     MapView mapView;
     GoogleMap map;
     FirebaseFirestore db;
-
     Map<String, Object> post;
-    public EditFragment(Map<String, Object> post) {
+    Context context;
+    public interface BackToProfile{
+        void editSuccess();
+    }
+    BackToProfile backToProfile;
+    public EditFragment(Map<String, Object> post, Context context) {
         this.post = post;
+        this.context = context;
+        this.backToProfile = (BackToProfile) context;
     }
 
     @SuppressLint({"MissingInflatedId", "MissingPermission"})
@@ -79,7 +87,7 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
         btnDelete = view.findViewById(R.id.FragEditBtnDelete);
 
         btnSaveChanges.setOnClickListener(v -> editData());
-        btnDelete.setOnClickListener(v -> deletePost());
+        btnDelete.setOnClickListener(v -> showDialog());
 
         mapView = view.findViewById(R.id.FragEditMap);
         mapView.onCreate(savedInstanceState);
@@ -163,6 +171,7 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
                 .update(postChanges)
                 .addOnSuccessListener(v -> {
                     Toast.makeText(requireContext(), "Se edito", Toast.LENGTH_SHORT).show();
+                    backToProfile.editSuccess();
                 })
                 .addOnFailureListener(v -> {
                     Toast.makeText(requireContext(), "No se edito", Toast.LENGTH_SHORT).show();
@@ -176,9 +185,23 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
                 .delete()
                 .addOnSuccessListener(unused -> {
                     Toast.makeText(requireContext(), "Se elimino", Toast.LENGTH_SHORT).show();
+                    backToProfile.editSuccess();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(requireContext(), "No se elimino", Toast.LENGTH_SHORT).show();
                 });
+    }
+    public void showDialog() {
+        final CharSequence[] options = {"Eliminar", "Cancelar"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle("Esta seguro?");
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals("Eliminar")) {
+                deletePost();
+            } else if (options[item].equals("Cancelar")) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }
