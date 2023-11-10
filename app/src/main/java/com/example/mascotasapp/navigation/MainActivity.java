@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     break;
                 case "Profile":
                     Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
-                    replaceFragment(new ProfileFragment());
+                    replaceFragment(new ProfileFragment());//get
                     break;
             }
             return true;
@@ -171,6 +171,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     //abrir
     @Override
     public void btnClickEdit(Map<String, Object> item) {
-        replaceFragment(new EditFragment(item, this, this));
+        replaceFragment(new EditFragment(item));
     }
 }

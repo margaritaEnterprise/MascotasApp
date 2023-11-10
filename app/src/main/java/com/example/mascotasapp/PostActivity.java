@@ -176,6 +176,8 @@ public class PostActivity extends AppCompatActivity {
         map.put("location", geoPoint);
         map.put("state", true);
         map.put("date", new Timestamp(new Date()));
+        map.put("modified", new Timestamp(new Date()));
+
         map.put("userId", mAuth.getCurrentUser().getUid());
         db.collection("posts")
                 .add(map)

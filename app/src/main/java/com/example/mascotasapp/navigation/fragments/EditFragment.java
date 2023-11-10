@@ -3,6 +3,7 @@ package com.example.mascotasapp.navigation.fragments;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,8 +18,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.mascotasapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,46 +30,47 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 public class EditFragment extends Fragment implements OnMapReadyCallback {
 
     ChipGroup categories; //FragEditChipCat_all
+    Chip selectedChip;
     ImageView editPhoto; //FragEditPhoto
     SwitchMaterial switchState;//FragEditSwitch
     TextInputEditText description; //FragEditDescription
-    TextInputEditText locationEditText; //FragEditEditLocation
     Button btnSaveChanges, btnDelete; //FragEditBtnSave, FragEditBtnDelete
     MapView mapView;
-
     GoogleMap map;
+    FirebaseFirestore db;
 
-    FirebaseAuth mAuth;
-    ImageView userPhoto;
-    TextView username;//, description;
-    Chip category;
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     Map<String, Object> post;
-    Context context;
-    Activity activity;
-    public EditFragment(Map<String, Object> post, Context context, Activity activity) {
+    public EditFragment(Map<String, Object> post) {
         this.post = post;
-        this.context = context;
-        this.activity = activity;
     }
 
     @SuppressLint({"MissingInflatedId", "MissingPermission"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit, container, false);
+        db = FirebaseFirestore.getInstance();
         categories = view.findViewById(R.id.FragEditChipCat_all);
         editPhoto = view.findViewById(R.id.FragEditPhoto);
         description = view.findViewById(R.id.FragEditDescription);
@@ -74,7 +78,8 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
         btnSaveChanges = view.findViewById(R.id.FragEditBtnSave);
         btnDelete = view.findViewById(R.id.FragEditBtnDelete);
 
-        mAuth = FirebaseAuth.getInstance();
+        btnSaveChanges.setOnClickListener(v -> editData());
+        btnDelete.setOnClickListener(v -> deletePost());
 
         mapView = view.findViewById(R.id.FragEditMap);
         mapView.onCreate(savedInstanceState);
@@ -84,7 +89,6 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
 
         return view;
     }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -109,20 +113,6 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnMyLocationClickListener(v -> Toast.makeText(requireContext(), "RR", Toast.LENGTH_SHORT).show());
     }
 
-    public void setData(){
-        String cat = post.get("category").toString();
-        Chip sel = categories.findViewWithTag(cat);
-        sel.setChecked(true);
-
-        Uri photoUrl = Uri.parse((String) post.get("photoUrl"));
-        Picasso.with(requireContext())
-                .load(photoUrl)
-                .resize(450, 450)
-                .into(editPhoto);
-        description.setText(post.get("description").toString());
-        switchState.setChecked((Boolean) post.get("state"));
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -145,5 +135,50 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+    public void setData(){
+        String cat = post.get("category").toString();
+        selectedChip = categories.findViewWithTag(cat);
+        selectedChip.setChecked(true);
+
+        Uri photoUrl = Uri.parse((String) post.get("photoUrl"));
+        Picasso.with(requireContext())
+                .load(photoUrl)
+                .resize(450, 450)
+                .into(editPhoto);
+        description.setText(post.get("description").toString());
+        switchState.setChecked((Boolean) post.get("state"));
+    }
+    public void editData() {
+        String postId = post.get("id").toString();
+        DocumentReference currentDocument = db.collection("posts").document(postId);
+        Map<String, Object> postChanges = new HashMap<>();
+        int chipId = categories.getCheckedChipId();
+        postChanges.put("category", categories.findViewById(chipId).getTag().toString());
+        postChanges.put("description", description.getText().toString());
+        postChanges.put("state", switchState.isChecked());
+        postChanges.put("modified", new Timestamp(new Date()));
+
+        currentDocument
+                .update(postChanges)
+                .addOnSuccessListener(v -> {
+                    Toast.makeText(requireContext(), "Se edito", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(v -> {
+                    Toast.makeText(requireContext(), "No se edito", Toast.LENGTH_SHORT).show();
+                });
+    }
+    public void deletePost() {
+        Toast.makeText(requireContext(), "Delete", Toast.LENGTH_SHORT).show();
+        String postId = post.get("id").toString();
+        DocumentReference currentDocument = db.collection("posts").document(postId);
+        currentDocument
+                .delete()
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(requireContext(), "Se elimino", Toast.LENGTH_SHORT).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(requireContext(), "No se elimino", Toast.LENGTH_SHORT).show();
+                });
     }
 }

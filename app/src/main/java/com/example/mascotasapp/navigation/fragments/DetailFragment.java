@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     FirebaseAuth mAuth;
-    ImageView userPhoto, postPhoto;
+        ImageView userPhoto, postPhoto;
     TextView username, description;
     Chip category;
     MapView mMapView;
