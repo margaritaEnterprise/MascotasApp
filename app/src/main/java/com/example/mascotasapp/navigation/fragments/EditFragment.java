@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,6 +145,7 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
     public void setData(){
         String cat = post.get("category").toString();
         selectedChip = categories.findViewWithTag(cat);
@@ -157,25 +159,32 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
         description.setText(post.get("description").toString());
         switchState.setChecked((Boolean) post.get("state"));
     }
-    public void editData() {
-        String postId = post.get("id").toString();
-        DocumentReference currentDocument = db.collection("posts").document(postId);
-        Map<String, Object> postChanges = new HashMap<>();
-        int chipId = categories.getCheckedChipId();
-        postChanges.put("category", categories.findViewById(chipId).getTag().toString());
-        postChanges.put("description", description.getText().toString());
-        postChanges.put("state", switchState.isChecked());
-        postChanges.put("modified", new Timestamp(new Date()));
 
-        currentDocument
-                .update(postChanges)
-                .addOnSuccessListener(v -> {
-                    Toast.makeText(requireContext(), "Se edito", Toast.LENGTH_SHORT).show();
-                    backToProfile.editSuccess();
-                })
-                .addOnFailureListener(v -> {
-                    Toast.makeText(requireContext(), "No se edito", Toast.LENGTH_SHORT).show();
-                });
+    public void editData() {
+        String desc = description.getText().toString().trim();
+
+        if (desc.isEmpty()){
+            Toast.makeText(context, "Ingrese una descripcion.", Toast.LENGTH_SHORT).show();
+        } else {
+            String postId = post.get("id").toString();
+            DocumentReference currentDocument = db.collection("posts").document(postId);
+            Map<String, Object> postChanges = new HashMap<>();
+            int chipId = categories.getCheckedChipId();
+            postChanges.put("category", categories.findViewById(chipId).getTag().toString());
+            postChanges.put("description", desc);
+            postChanges.put("state", switchState.isChecked());
+            postChanges.put("modified", new Timestamp(new Date()));
+
+            currentDocument
+                    .update(postChanges)
+                    .addOnSuccessListener(v -> {
+                        Toast.makeText(requireContext(), "Se edito", Toast.LENGTH_SHORT).show();
+                        backToProfile.editSuccess();
+                    })
+                    .addOnFailureListener(v -> {
+                        Toast.makeText(requireContext(), "No se edito", Toast.LENGTH_SHORT).show();
+                    });
+        }
     }
     public void deletePost() {
         Toast.makeText(requireContext(), "Delete", Toast.LENGTH_SHORT).show();
