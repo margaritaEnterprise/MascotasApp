@@ -37,7 +37,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile, SettingFragment.BackToSetting {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
     SharedPreferences sharedPreference;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     break;
                 case "Setting":
                     Toast.makeText(this, "configurar", Toast.LENGTH_SHORT).show();
-                    replaceFragment(new SettingFragment(dataUser, sharedPreference, userPrefMap, this));
+                    replaceFragment(new SettingFragment(dataUser, sharedPreference, userPrefMap, MainActivity.this));
                     break;
                 case "Profile":
                     Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
@@ -135,9 +135,10 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         sharedPreference = getApplicationContext().getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         if (sharedPreference.contains("language") & sharedPreference.contains("theme")) {
             userPrefMap = (Map<String, Object>) sharedPreference.getAll();
-            setAppLanguage(this, userPrefMap.get("language").toString());
-            setAppTheme(userPrefMap.get("theme").toString());
-            Toast.makeText(this, "Recupero preferencias", Toast.LENGTH_SHORT).show();
+            String lang =userPrefMap.get("language").toString();
+            String theme =userPrefMap.get("theme").toString();
+            setAppLanguage(this, lang);
+            setAppTheme(theme);
         } else {
             // preferencias por defecto
             Toast.makeText(this, "Creo preferencias", Toast.LENGTH_SHORT).show();
@@ -195,5 +196,9 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     @Override
     public void editSuccess() {
         replaceFragment(new ProfileFragment());//get
+    }
+    @Override
+    public void savePreferenceSuccess() {
+        replaceFragment(new SearchFragment(this));
     }
 }

@@ -78,7 +78,7 @@
                     android:layout_gravity="center"
                     android:text="Chino"
                     android:tag="ch"
-                    android:checkable="false"/>
+                    android:checkable="true"/>
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
 
@@ -131,40 +131,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="Contraseña"
-            android:layout_gravity="start"
-            />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle">
-            <EditText
-                android:id="@+id/frag_setting_pass1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:hint="@string/passwordForm"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle">
-            <EditText
-                android:id="@+id/frag_setting_pass2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:hint="@string/passwordForm2"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_gravity="start" />
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="MyEditTextStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-
-        <!-- Otros atributos de estilo -->
-    </style>
 
     <style name="RoundedBlueEditText">
         <item name="android:background">@drawable/rounded_blue_edittext_background</item>
-    </style>
-
-    <style name="cameraIconShape">
-        <item name="cornerFamily">rounded</item> <!-- Define la familia de esquinas como "rounded" -->
-        <item name="cornerSize">50%</item> <!-- Define el tamaño de las esquinas para hacerlo circular -->
     </style>
 
     <style name="AppTheme.Light" parent="Theme.MaterialComponents">

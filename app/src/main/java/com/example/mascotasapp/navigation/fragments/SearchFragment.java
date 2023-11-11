@@ -60,6 +60,7 @@ public class SearchFragment extends Fragment {
     Button btnSearch;
     GeoPoint geo;
     Context context;
+    Boolean first;
 
     public SearchFragment(Context context) {
         this.context = context;
@@ -78,7 +79,7 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
+        first = true;
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -91,8 +92,11 @@ public class SearchFragment extends Fragment {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                geo = new GeoPoint(location.getLatitude(), location.getLongitude());
-                firebaseGetPublis();
+                if (first) {
+                    geo = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    firebaseGetPublis();
+                    first = false;
+                }
             }
         };
         checkPermissionGeo();
