@@ -125,18 +125,20 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         context.getResources().updateConfiguration(config, resources.getDisplayMetrics());
     }
     public void setAppTheme(String themeCode) {
-        if (themeCode.equals("light")) {
+        Boolean esLight = themeCode.equals("light");
+        Boolean esDark = themeCode.equals("dark");
+        if (esLight) {
             this.setTheme(R.style.AppTheme_Light);
-        } else if (themeCode.equals("dark")) {
+        } else if (esDark) {
             this.setTheme(R.style.AppTheme_Dark);
         }
     }
     public void defaultPreferences(){
         sharedPreference = getApplicationContext().getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
-        if (sharedPreference.contains("language") & sharedPreference.contains("theme")) {
+        if (sharedPreference.contains("language") && sharedPreference.contains("theme")) {
             userPrefMap = (Map<String, Object>) sharedPreference.getAll();
-            String lang =userPrefMap.get("language").toString();
-            String theme =userPrefMap.get("theme").toString();
+            String lang = userPrefMap.get("language").toString();
+            String theme = userPrefMap.get("theme").toString();
             setAppLanguage(this, lang);
             setAppTheme(theme);
         } else {
@@ -199,6 +201,9 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     }
     @Override
     public void savePreferenceSuccess() {
+        userPrefMap = (Map<String, Object>) sharedPreference.getAll();
+        setAppTheme((String) userPrefMap.get("theme"));
+        setAppLanguage((Context) this, (String) userPrefMap.get("language"));
         replaceFragment(new SearchFragment(this));
     }
 }

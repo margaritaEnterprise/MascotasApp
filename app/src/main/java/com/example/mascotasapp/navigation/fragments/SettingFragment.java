@@ -84,6 +84,7 @@ public class SettingFragment extends Fragment {
             editPref.putString("language", setLang); //en, es, ch
             editPref.commit();
         }
+        userPrefMap = (Map<String, Object>)sharedPreferences.getAll();
         backToSetting.savePreferenceSuccess();
     }
 
