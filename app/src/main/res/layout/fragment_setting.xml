@@ -40,7 +40,6 @@
             android:orientation="horizontal"
             >
             <TextView
-                android:id="@+id/frag_setting_lan_title"
                 android:textSize="18sp"
                 android:text="Language"
                 android:layout_width="0dp"
@@ -61,19 +60,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Ingles" />
+                    android:text="Ingles"
+                    android:tag="en"
+                    android:checkable="true"/>
                 <com.google.android.material.chip.Chip
                     android:id="@+id/frag_setting_language_esp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Español" />
+                    android:text="Español"
+                    android:tag="es"
+                    android:checkable="true"/>
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/frag_setting_language_deu"
+                    android:id="@+id/frag_setting_language_chi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Aleman" />
+                    android:text="Chino"
+                    android:tag="ch"
+                    android:checkable="false"/>
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
 
@@ -104,13 +109,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Claro" />
+                    android:text="Claro"
+                    android:tag="light"
+                    android:checkable="true"/>
                 <com.google.android.material.chip.Chip
                     android:id="@+id/frag_setting_theme_dark"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Oscuro" />
+                    android:text="Oscuro"
+                    android:tag="dark"
+                    android:checkable="true"/>
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
         <Space

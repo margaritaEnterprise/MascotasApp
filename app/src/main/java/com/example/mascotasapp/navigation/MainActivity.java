@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -39,13 +40,16 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
+    SharedPreferences sharedPreference;
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
     Map<String, Object> dataUser;
+    Map<String, Object> userPrefMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setAppLanguage(this, "en");
+        defaultPreferences();
+        //setAppLanguage(this, "en");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -76,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     break;
                 case "Setting":
                     Toast.makeText(this, "configurar", Toast.LENGTH_SHORT).show();
-                    replaceFragment(new SettingFragment(dataUser, this));
+                    replaceFragment(new SettingFragment(dataUser, sharedPreference, userPrefMap, this));
                     break;
                 case "Profile":
                     Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
@@ -120,29 +124,45 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
         context.getResources().updateConfiguration(config, resources.getDisplayMetrics());
     }
+    public void setAppTheme(String themeCode) {
+        if (themeCode.equals("light")) {
+            this.setTheme(R.style.AppTheme_Light);
+        } else if (themeCode.equals("dark")) {
+            this.setTheme(R.style.AppTheme_Dark);
+        }
+    }
+    public void defaultPreferences(){
+        sharedPreference = getApplicationContext().getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
+        if (sharedPreference.contains("language") & sharedPreference.contains("theme")) {
+            userPrefMap = (Map<String, Object>) sharedPreference.getAll();
+            setAppLanguage(this, userPrefMap.get("language").toString());
+            setAppTheme(userPrefMap.get("theme").toString());
+            Toast.makeText(this, "Recupero preferencias", Toast.LENGTH_SHORT).show();
+        } else {
+            // preferencias por defecto
+            Toast.makeText(this, "Creo preferencias", Toast.LENGTH_SHORT).show();
+            SharedPreferences.Editor editPref = sharedPreference.edit();
+            editPref.putString("language", "en"); //en, es, ch
+            editPref.putString("theme", "dark"); //light, dark
+            editPref.apply();
+            userPrefMap = (Map<String, Object>) sharedPreference.getAll();
+        }
+    }
 
     private void getUserData(FirebaseUser user){
         DocumentReference docRef = db.collection("users").document(user.getUid());
 
         docRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            dataUser = documentSnapshot.getData();
-                            loadDataUI(dataUser, user);
-                        } else {
-                            goToSignUpActivity();
-                        }
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        dataUser = documentSnapshot.getData();
+                        loadDataUI(dataUser, user);
+                    } else {
+                        goToSignUpActivity();
                     }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MainActivity.this, R.string.create_fail,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
+                .addOnFailureListener(e -> Toast.makeText(MainActivity.this, R.string.create_fail,
+                        Toast.LENGTH_SHORT).show());
     }
 
     private void goToSignUpActivity(){

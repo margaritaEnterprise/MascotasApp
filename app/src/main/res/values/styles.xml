@@ -16,4 +16,13 @@
         <item name="cornerSize">50%</item> <!-- Define el tamaño de las esquinas para hacerlo circular -->
     </style>
 
+    <style name="AppTheme.Light" parent="Theme.MaterialComponents">
+        <!-- Ajustes del tema claro -->
+    </style>
+
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight">
+        <!-- Ajustes del tema oscuro -->
+    </style>
+
+
 </resources>
