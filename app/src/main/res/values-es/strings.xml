@@ -13,6 +13,8 @@
     <string name="create_fail">Error al crear la cuenta.</string>
     <string name="auth_fail">Error en la autenticación.</string>
     <string name="username_already_exists">El nombre de usuario ya está en uso!!!</string>
+    <string name="calendar">Ingrese</string>
+    <string name="btnFinish">Finalizar</string>
 
     <!-- REGISTRO -->
     <string name="btnContinue">Continuar</string>
@@ -27,5 +29,11 @@
         <item>Encontrado</item>
         <item>Parejas</item>
     </string-array>
-
+    <!-- SETTINGS -->
+    <string name="adoption">Adopcion</string>
+    <string name="couple">Pareja</string>
+    <string name="found">Encontrado</string>
+    <string name="lost">Perdido</string>
+    <!-- SETTINGS -->
+    <string name="language">Idioma</string>
 </resources>

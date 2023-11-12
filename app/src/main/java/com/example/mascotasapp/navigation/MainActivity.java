@@ -51,7 +51,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile, SettingFragment.BackToSetting {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
     SharedPreferences sharedPreference;
@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         frameLayout = findViewById(R.id.frame_layout);
 
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+
         replaceFragment(new SearchFragment(this));
 
         bottomNavigationView.setOnItemSelectedListener(item  -> {
@@ -95,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     break;
                 case "Setting":
                     Toast.makeText(this, "configurar", Toast.LENGTH_SHORT).show();
-                    replaceFragment(new SettingFragment(dataUser, sharedPreference, userPrefMap, MainActivity.this));
+                    replaceFragment(new SettingFragment(dataUser, sharedPreference, MainActivity.this));
                     break;
                 case "Profile":
                     Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
@@ -116,12 +119,15 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
+        defaultPreferences();
         updateUI(currentUser);
     }
 
+
+
     private void updateUI(FirebaseUser user) {
         if (user == null) {
-           goToLoginActivity();
+            goToLoginActivity();
         }else{
             getUserData(user);
         }
@@ -212,10 +218,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     public void editSuccess() {
         replaceFragment(new ProfileFragment());//get
     }
-    @Override
-    public void savePreferenceSuccess() {
-        replaceFragment(new SearchFragment(this));
-    }
 
     public void registrarDispositivo(){
         FirebaseMessaging.getInstance().getToken()
@@ -256,6 +258,5 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     Toast.makeText(this, "No se guardo deviceId", Toast.LENGTH_SHORT).show();
                 });
     }
-
 
 }

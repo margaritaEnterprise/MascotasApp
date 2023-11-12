@@ -17,17 +17,17 @@
     <string name="btnContinue">Continue</string>
     <string name="register_step1">Step 1</string>
     <string name="register_step2">Step 2</string>
-    <string name="passwordForm2">Reingrese password</string>
+    <string name="passwordForm2">Password</string>
     <string name="regBirthdayForm">Birthdate</string>
     <string name="regnameForm">Username</string>
     <string name="calendar">Picker</string>
     <string name="btnFinish">Finish</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="adoption">Adoption</string>
     <string name="couple">Couple</string>
     <string name="found">Found</string>
     <string name="lost">Lost</string>
+    <string name="language">Language</string>
 
 
     <string-array name="categories">

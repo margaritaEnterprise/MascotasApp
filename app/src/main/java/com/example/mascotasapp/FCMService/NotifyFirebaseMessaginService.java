@@ -37,7 +37,7 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
         // Crear un Intent para la actividad principal de la aplicación
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
 
         // Construir la notificación
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "channel_id")
@@ -50,8 +50,16 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
         // Obtener el servicio de notificación
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // Comprobar si la versión de Android es mayor o igual a Oreo
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Crear un canal de notificación para versiones de Android 8.0 y superiores
+            NotificationChannel channel = new NotificationChannel("channel_id", "Nombre del canal", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         // Mostrar la notificación
         notificationManager.notify(0, notificationBuilder.build());
     }
+
 
 }

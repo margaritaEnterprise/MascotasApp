@@ -14,12 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mascotasapp.LoginActivity;
+import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
+import com.example.mascotasapp.navigation.MainActivity;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,21 +37,16 @@ public class SettingFragment extends Fragment {
     Chip selectedLanguage, selectedTheme;
 
     FirebaseAuth mAuth;
-    SharedPreferences sharedPreferences;
+    SharedPreferences sharedPreference;
     SharedPreferences.Editor editPref;
-    Activity activity;
+    Context activity;
     Map<String, Object> dataUser; //foto name
     Map<String, Object> userPrefMap; //las seteadas
-    public interface BackToSetting{
-        void savePreferenceSuccess();
-    }
-    SettingFragment.BackToSetting backToSetting;
-    public SettingFragment(Map<String, Object> dataUser, SharedPreferences sharedPreferences, Map<String, Object> userPrefMap, Activity activity) {
+
+    public SettingFragment(Map<String, Object> dataUser, SharedPreferences sharedPreference, Context activity) {
         this.dataUser = dataUser;
-        this.activity = activity;
-        this.sharedPreferences = sharedPreferences;
-        this.userPrefMap = userPrefMap;
-        this.backToSetting = (BackToSetting) activity;
+        this.activity = (Context) activity;
+        this.sharedPreference = sharedPreference;
     }
 
     @SuppressLint("MissingInflatedId")
@@ -59,7 +55,8 @@ public class SettingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         mAuth = FirebaseAuth.getInstance();
-        editPref =  sharedPreferences.edit();
+        editPref =  sharedPreference.edit();
+        userPrefMap = (Map<String, Object>) sharedPreference.getAll();
 
         userPhoto = view.findViewById(R.id.frag_setting_user_image);
         username = view.findViewById(R.id.frag_setting_username);
@@ -84,7 +81,8 @@ public class SettingFragment extends Fragment {
             editPref.putString("language", setLang); //en, es, ch
             editPref.commit();
         }
-        backToSetting.savePreferenceSuccess();
+        Intent intent = new Intent(requireContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     public void setData(){
