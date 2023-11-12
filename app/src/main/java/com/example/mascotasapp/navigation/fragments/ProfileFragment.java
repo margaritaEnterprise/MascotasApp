@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     TextView username;
+    TextView noResults;
     ImageView photoUser;
     Uri photoUserUri;
 
@@ -57,6 +58,7 @@ public class ProfileFragment extends Fragment {
 
         username = view.findViewById(R.id.frag_profile_username);
         photoUser = view.findViewById(R.id.frag_profile_image);
+        noResults = view.findViewById(R.id.FragProfileText);
 
         recyclerView = view.findViewById(R.id.frag_profile_recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
@@ -80,7 +82,6 @@ public class ProfileFragment extends Fragment {
                             .load(photoUserUri)
                             .resize(50, 50)
                             .into(photoUser);
-
                     getMyPosts();
                 })
                     .addOnFailureListener(e ->{
@@ -119,10 +120,11 @@ public class ProfileFragment extends Fragment {
                     }
 
                     if(!items.isEmpty()){
-                        //
                         MyPostAdapter adapter = new MyPostAdapter(items, requireContext());
                         recyclerView.setAdapter(adapter);
                     } else {
+                        noResults.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
                         Toast.makeText(requireContext(), "No hay", Toast.LENGTH_SHORT).show();
                     }
                 })

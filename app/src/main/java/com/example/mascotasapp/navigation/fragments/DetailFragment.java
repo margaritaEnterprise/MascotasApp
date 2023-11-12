@@ -7,9 +7,11 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mascotasapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,23 +31,36 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     FirebaseAuth mAuth;
-        ImageView userPhoto, postPhoto;
+    ImageView userPhoto, postPhoto;
     TextView username, description;
     Chip category;
     MapView mMapView;
     Context context;
     Activity activity;
     GoogleMap map;
-    ImageButton edit;
+    ImageButton edit, notify;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     Map<String, Object> post;
     public interface ButtonEdit{
@@ -69,13 +88,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         description = view.findViewById(R.id.FragPostTextDesc);
         category = view.findViewById(R.id.FragPostChipCategory);
         edit = view.findViewById(R.id.FragDetailBtnEdit);
-
+        notify = view.findViewById(R.id.FragDetailBtnNotify);
 
 
         String postUserId = post.get("userId").toString();
         if(mAuth.getCurrentUser().getUid().equals(postUserId)) {
             edit.setVisibility(View.VISIBLE);
             edit.setOnClickListener(v -> buttonEditOnClic.btnClickEdit(this.post));
+        }else {
+            notify.setVisibility(View.VISIBLE);
+            notify.setOnClickListener(v ->sendNotification() );
         }
 
         mMapView = view.findViewById(R.id.FragPostMap);
@@ -130,6 +152,37 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .resize(450, 450)
                 .into(postPhoto);
     }
+
+
+    public void sendNotification() {
+        try {
+            String token = post.get("deviceId").toString();
+            String message = "oaasdasdasdl";
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "key=AAAA05seiD0:APA91bH38cHnWgsv8dFJmNm5dizN8ey9_4BoaNWUehehdf-A2WRAF9hVtkxF6ojs6DdwO7gj27xAzW3nJH1G-2sdxCmDyZtmSf39EptgL64Fa6PKDBkzVsS76OPTrCS0svZxdjI9W2hS");
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // Construir el cuerpo del mensaje
+            String body = "{\"to\":\"" + token + "\",\"data\":{\"message\":\"" + message + "\"}}";
+
+            // Enviar el mensaje
+            OutputStream os = conn.getOutputStream();
+            os.write(body.getBytes());
+            os.flush();
+            os.close();
+
+            // Obtener la respuesta
+            int responseCode = conn.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onResume() {
