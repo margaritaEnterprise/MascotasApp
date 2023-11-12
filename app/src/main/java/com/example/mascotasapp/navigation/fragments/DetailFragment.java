@@ -161,7 +161,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "key=AIzaSyBtivtKXpmWjFCDALZ50tYI7l_QnaCX3lE");
+            conn.setRequestProperty("Authorization", "key=AAAA05seiD0:APA91bH38cHnWgsv8dFJmNm5dizN8ey9_4BoaNWUehehdf-A2WRAF9hVtkxF6ojs6DdwO7gj27xAzW3nJH1G-2sdxCmDyZtmSf39EptgL64Fa6PKDBkzVsS76OPTrCS0svZxdjI9W2hS");
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);
 
