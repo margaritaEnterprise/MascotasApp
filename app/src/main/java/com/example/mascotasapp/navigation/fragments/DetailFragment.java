@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.mascotasapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,18 +35,22 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.Map;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     FirebaseAuth mAuth;
-        ImageView userPhoto, postPhoto;
+    ImageView userPhoto, postPhoto;
     TextView username, description;
     Chip category;
     MapView mMapView;
     Context context;
     Activity activity;
     GoogleMap map;
-    ImageButton edit;
+    ImageButton edit, notify;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     Map<String, Object> post;
     public interface ButtonEdit{
@@ -69,13 +78,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         description = view.findViewById(R.id.FragPostTextDesc);
         category = view.findViewById(R.id.FragPostChipCategory);
         edit = view.findViewById(R.id.FragDetailBtnEdit);
-
+        notify = view.findViewById(R.id.FragDetailBtnNotify);
 
 
         String postUserId = post.get("userId").toString();
         if(mAuth.getCurrentUser().getUid().equals(postUserId)) {
             edit.setVisibility(View.VISIBLE);
             edit.setOnClickListener(v -> buttonEditOnClic.btnClickEdit(this.post));
+        }else {
+            notify.setVisibility(View.VISIBLE);
+            notify.setOnClickListener(v ->sendNotify() );
         }
 
         mMapView = view.findViewById(R.id.FragPostMap);
@@ -129,6 +141,44 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .load(photoUrl)
                 .resize(450, 450)
                 .into(postPhoto);
+    }
+
+
+    public  void sendNotify(){
+        Toast.makeText(context, post.get("deviceId").toString(), Toast.LENGTH_SHORT).show();
+        JSONObject notificationData = new JSONObject();
+        try {
+            notificationData.put("title", "Título de la notificación");
+            notificationData.put("body", "Cuerpo de la notificación");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Crea el objeto de datos para el envío
+        JSONObject messageData = new JSONObject();
+        try {
+            messageData.put("to", post.get("deviceId").toString() );
+            messageData.put("data", notificationData);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Envía la notificación mediante un RequestQueue (Volley, por ejemplo)
+        String FCM_API = "https://fcm.googleapis.com/fcm/send";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, FCM_API, messageData,
+                response -> Log.d("Notification", "Notificación enviada correctamente"),
+                error -> Log.e("Notification", "Error al enviar la notificación: " + error.getMessage())) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+
+        // Agrega la solicitud a la cola de solicitudes (Puedes usar Volley o alguna otra librería)
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(request);
     }
 
     @Override

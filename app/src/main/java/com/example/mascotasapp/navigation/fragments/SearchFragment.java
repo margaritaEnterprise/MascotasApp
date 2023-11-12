@@ -198,6 +198,7 @@ public class SearchFragment extends Fragment {
                         user.put("photoUrl",document.getString("photoUrl"));
                         user.put("id",document.getString("id"));
                         user.put("username",document.getString("username"));
+                        user.put("deviceId", document.getString("deviceId"));
                         users.add(user);
                     }
                     for (Map<String, Object> map : mapList) {
@@ -205,6 +206,7 @@ public class SearchFragment extends Fragment {
                             if(map.get("userId").equals(user.get("id"))){
                                 map.put("userPhotoUrl", user.get("photoUrl"));
                                 map.put("username",user.get("username"));
+                                map.put("deviceId", user.get("deviceId"));
                             }
                         }
                     }
