@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -30,15 +31,24 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.RemoteMessage;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
@@ -87,7 +97,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             edit.setOnClickListener(v -> buttonEditOnClic.btnClickEdit(this.post));
         }else {
             notify.setVisibility(View.VISIBLE);
-            notify.setOnClickListener(v ->sendNotify() );
+            notify.setOnClickListener(v ->sendNotification() );
         }
 
         mMapView = view.findViewById(R.id.FragPostMap);
@@ -144,42 +154,35 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public  void sendNotify(){
-        Toast.makeText(context, post.get("deviceId").toString(), Toast.LENGTH_SHORT).show();
-        JSONObject notificationData = new JSONObject();
+    public void sendNotification() {
         try {
-            notificationData.put("title", "Título de la notificación");
-            notificationData.put("body", "Cuerpo de la notificación");
-        } catch (JSONException e) {
+            String token = post.get("deviceId").toString();
+            String message = "oaasdasdasdl";
+            URL url = new URL("https://fcm.googleapis.com/fcm/send");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "key=AIzaSyBtivtKXpmWjFCDALZ50tYI7l_QnaCX3lE");
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            // Construir el cuerpo del mensaje
+            String body = "{\"to\":\"" + token + "\",\"data\":{\"message\":\"" + message + "\"}}";
+
+            // Enviar el mensaje
+            OutputStream os = conn.getOutputStream();
+            os.write(body.getBytes());
+            os.flush();
+            os.close();
+
+            // Obtener la respuesta
+            int responseCode = conn.getResponseCode();
+            System.out.println("Response Code: " + responseCode);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // Crea el objeto de datos para el envío
-        JSONObject messageData = new JSONObject();
-        try {
-            messageData.put("to", post.get("deviceId").toString() );
-            messageData.put("data", notificationData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        // Envía la notificación mediante un RequestQueue (Volley, por ejemplo)
-        String FCM_API = "https://fcm.googleapis.com/fcm/send";
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, FCM_API, messageData,
-                response -> Log.d("Notification", "Notificación enviada correctamente"),
-                error -> Log.e("Notification", "Error al enviar la notificación: " + error.getMessage())) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-        };
-
-        // Agrega la solicitud a la cola de solicitudes (Puedes usar Volley o alguna otra librería)
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(request);
     }
+
 
     @Override
     public void onResume() {

@@ -138,7 +138,9 @@ public class SearchFragment extends Fragment {
         Set<String> userIds = new HashSet<>();
 
         double latitude = geo.getLatitude() ;
+        latitude =  -34.77590260925053;
         double longitude = geo.getLongitude();
+        longitude =  -58.26947642872307;
         double radiusInKilometers = 10;  // Radio de 10 km por defecto
         double latitudeMin = latitude - (180.0 * radiusInKilometers) / (40075.0);
         double latitudeMax = latitude + (180.0 * radiusInKilometers) / (40075.0);
