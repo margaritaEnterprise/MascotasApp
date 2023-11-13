@@ -89,6 +89,7 @@
     <string name="search">Search</string>
     <string name="filter">Filter</string>
     <string name="input_email">Input email</string>
+    <string name="input_a_valid_description">Input a valid description.</string>
 
 
 </resources>

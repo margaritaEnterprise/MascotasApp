@@ -81,6 +81,7 @@ public class PostActivity extends AppCompatActivity {
 
     Button savePost;
     Map<String, Object> userPrefMap;
+    String errorMessagge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userPrefMap = ManagerTheme.getUserPreference(this);
@@ -113,8 +114,7 @@ public class PostActivity extends AppCompatActivity {
     }
     private void createPost(FirebaseUser userAuth){
         if(!validatePost()){
-            //TODO: validar el post
-            Toast.makeText(PostActivity.this, "Validar el post", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, errorMessagge, Toast.LENGTH_SHORT).show();
             return;
         }
         try {
@@ -130,6 +130,11 @@ public class PostActivity extends AppCompatActivity {
         }
     }
     private boolean validatePost() {
+        String desc = descriptionEditText.getText().toString().trim();
+        if (desc.isEmpty()){
+            errorMessagge = getString(R.string.input_a_valid_description);
+            return false;
+        }
         return true;
     }
     private void uploadImageToFirebaseStorage(FirebaseUser userAuth, Bitmap bitmap)  {

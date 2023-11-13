@@ -22,7 +22,7 @@ public class ManagerTheme {
             editPref.putString("theme", "dark"); //light, dark
             editPref.apply();
         }
-        return (Map<String, Object>) sharedPreference.getAll();
+        return (Map<String,Object>) sharedPreference.getAll();
     }
     public static void setUserPreference(Activity activity, Map<String,Object> map){
         String lang = Objects.requireNonNull(map.get("language")).toString();
