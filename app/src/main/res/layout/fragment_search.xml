@@ -135,11 +135,11 @@
         android:id="@+id/FragSearchNoResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:gravity="center_horizontal"
         android:text="@string/no_results"
         android:textSize="30dp"
-        android:gravity="center_horizontal"
-        android:layout_margin="50dp"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/FragSearchProgressBar"
