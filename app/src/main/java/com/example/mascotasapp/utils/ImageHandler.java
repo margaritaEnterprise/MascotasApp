@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
+import com.example.mascotasapp.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import java.io.File;
@@ -44,19 +46,16 @@ public class ImageHandler {
     }
 
     public void showImageSourceDialog() {
-        final CharSequence[] options = {"Tomar Foto", "Elegir de la Galería", "Cancelar"};
+        final CharSequence[] options = {context.getString(R.string.take_photo), context.getString(R.string.choose_photo), context.getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Selecciona una opción");
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Tomar Foto")) {
-                    openCamera();
-                } else if (options[item].equals("Elegir de la Galería")) {
-                    openGallery();
-                } else if (options[item].equals("Cancelar")) {
-                    dialog.dismiss();
-                }
+        builder.setTitle(context.getString(R.string.select_an_option));
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals(context.getString(R.string.take_photo))) {
+                openCamera();
+            } else if (options[item].equals(context.getString(R.string.choose_photo))) {
+                openGallery();
+            } else if (options[item].equals(context.getString(R.string.cancel))) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -99,7 +98,7 @@ public class ImageHandler {
         cropImageLauncher.launch(
                 CropImage.activity(imageUri)
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setActivityTitle("Recortar")
+                        .setActivityTitle(context.getText(R.string.crop))
                         .setAspectRatio(1, 1)
                         .setCropShape(CropImageView.CropShape.OVAL)
                         .getIntent(context)
@@ -108,5 +107,4 @@ public class ImageHandler {
     public Uri getImageUri() {
         return this.imageUri;
     }
-
 }

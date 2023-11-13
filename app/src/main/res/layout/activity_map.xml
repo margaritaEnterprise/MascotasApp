@@ -21,7 +21,7 @@
             android:id="@+id/ActMapButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Aceptar" />
+            android:text="@string/accept" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

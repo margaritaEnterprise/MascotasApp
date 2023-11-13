@@ -110,16 +110,16 @@ public class NotifyActivity extends AppCompatActivity {
             json.put("to",deviceId);
             JSONObject notificacion = new JSONObject();
             notificacion.put("type", "2");
-            notificacion.put("title", "Nueva notificación");
+            notificacion.put("title", R.string.notify_title);
             notificacion.put("photo",photoUrl);
             notificacion.put("username", myUsername);
             if(isAccept){
                 notificacion.put("state" , "true");
-                notificacion.put("message", "acepto la comunicacion");
+                notificacion.put("message", R.string.accept_notification_type2);
                 notificacion.put("phone", phone.getText());
             }else {
                 notificacion.put("state" , "false");
-                notificacion.put("message",  "rechazo la comunicacion");
+                notificacion.put("message",  R.string.decline_notification_type2);
             }
             notificacion.put("deviceId", myToken);
 

@@ -6,7 +6,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".signup.fragments.RegisterAuthFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/loginForm"
         android:layout_width="match_parent"
@@ -19,7 +18,7 @@
             android:id="@+id/registerTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register_step1"
+            android:text="MascotasApp"
             android:textAlignment="center"
             android:textSize="34sp"
             />
@@ -40,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/emailForm"
                 android:inputType="textEmailAddress"
-                android:hint="@string/emailForm"/>
+                android:hint="@string/input_mail"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Campo de entrada de contraseña con TextInputLayout -->
@@ -57,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="@string/passwordForm"
+                android:hint="@string/input_password"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="@string/passwordForm2"
+                android:hint="@string/input_same_password"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,10 +82,8 @@
             android:id="@+id/signUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btnContinue"
+            android:text="@string/next"
             android:textAlignment="gravity" />
-
-
 
     </LinearLayout>
 

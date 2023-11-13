@@ -48,7 +48,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.id = (String) map.get("id");
         holder.userName.setText((CharSequence) map.get("username"));
         //holder.userId.setText((CharSequence) map.get("userId"));
-        holder.category.setText((CharSequence)map.get("category"));
+        String value = (String) map.get("category");
+        String text = "";
+        switch (value){
+            case "adoption":
+                text = context.getString(R.string.adoption);
+                break;
+            case "lost":
+                text = context.getString(R.string.lost);
+                break;
+            case "found":
+                text = context.getString(R.string.found);
+                break;
+            case "couple":
+                text = context.getString(R.string.couple);
+                break;
+        }
+        holder.category.setText(text);
 
         Uri userPhotoUrl = Uri.parse((String) map.get("userPhotoUrl"));
         Picasso.with(context)

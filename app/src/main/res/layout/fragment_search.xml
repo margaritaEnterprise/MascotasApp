@@ -158,10 +158,9 @@
             android:id="@+id/FragSearchNoResults"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No hay resultados...."
+            android:text="@string/no_results"
             android:textSize="30dp"
             android:visibility="gone" />
     </LinearLayout>
-
 
 </FrameLayout>

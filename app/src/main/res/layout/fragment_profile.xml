@@ -36,20 +36,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="start">
+                android:gravity="start"
+                android:paddingBottom="20dp">
                 <TextView
                     android:id="@+id/frag_profile_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="username"
+                    android:text="@string/username"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="3dp"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="15sp"
-                    android:text="descripcion del usuario"
+                    android:text="email"
                     android:layout_marginBottom="15dp"/>
             </LinearLayout>
         </LinearLayout>
@@ -65,7 +66,7 @@
             android:id="@+id/FragProfileText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="No tienes publicaciones"
+            android:text="@string/ready_to_upload"
             android:textAlignment="center"
             android:textSize="30dp"
             android:visibility="gone" />

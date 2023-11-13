@@ -76,7 +76,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     Activity activity;
     GoogleMap map;
     ImageButton edit, notify;
-    private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     Map<String, Object> post;
     public interface ButtonEdit{
         void btnClickEdit(Map<String, Object> item);
@@ -157,7 +156,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         googleMap.setOnMyLocationClickListener(v -> Toast.makeText(requireContext(), "RR", Toast.LENGTH_SHORT).show());
     }
 
-
     public void setData(){
 
         username.setText((CharSequence) post.get("username"));
@@ -177,7 +175,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .into(postPhoto);
     }
 
-
     private void sendNotification(String username,String myToken){
         RequestQueue myrequest= Volley.newRequestQueue(context);
         JSONObject json = new JSONObject();
@@ -186,10 +183,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             json.put("to",post.get("deviceId"));
             JSONObject notificacion=new JSONObject();
             notificacion.put("type", "1");
-            notificacion.put("title", "Nueva notificación");
+            notificacion.put("title", R.string.notify_title);
             notificacion.put("photo",post.get("photoUrl"));
             notificacion.put("username", username);
-            notificacion.put("message", "se quiere comunicar con vos!!!");
+            notificacion.put("message", R.string.notify_message_type1);
             notificacion.put("deviceId", myToken);
 
             json.put("data",notificacion);

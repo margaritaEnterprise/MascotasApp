@@ -27,8 +27,7 @@
             <TextView
                 android:id="@+id/ActNotifyMessage"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </LinearLayout>
@@ -48,7 +47,7 @@
             android:id="@+id/ActNotifyRadioBtnAccept"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Accept" />
+            android:text="@string/accept" />
 
         <Space
             android:layout_width="20dp"
@@ -58,7 +57,7 @@
             android:id="@+id/ActNotifyRadioBtnDecline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rechazar" />
+            android:text="@string/decline" />
     </RadioGroup>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,7 +89,7 @@
             android:id="@+id/ActNotifyRadioBtnSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enviar"
+            android:text="@string/send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"

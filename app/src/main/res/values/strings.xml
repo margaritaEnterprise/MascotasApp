@@ -1,41 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MascotasApp</string>
-    <!-- SEARCH -->
-    <string name="emailForm">Email</string>
-    <string name="passwordForm">Password</string>
-    <string name="btnLogin">Sign In</string>
-    <string name="btnLogup">Sign Up</string>
-    <string name="btnLogout">Sign Out</string>
-    <string name="txt_title">Welcome</string>
-    <string name="error_mail">Enter a valid email.</string>
-    <string name="error_password">Enter a valid password.</string>
-    <string name="create_fail">Create user failed.</string>
-    <string name="auth_fail">Authentication failed.</string>
-    <string name="username_already_exists">Username already exists!!!</string>
+    <string name="app_name">Mascotas App</string>
 
-    <!-- REGISTRO -->
-    <string name="btnContinue">Continue</string>
-    <string name="register_step1">Step 1</string>
-    <string name="register_step2">Step 2</string>
-    <string name="passwordForm2">Password</string>
-    <string name="regBirthdayForm">Birthdate</string>
-    <string name="regnameForm">Username</string>
-    <string name="calendar">Picker</string>
-    <string name="btnFinish">Finish</string>
-
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="send">Send</string>
     <string name="adoption">Adoption</string>
     <string name="couple">Couple</string>
     <string name="found">Found</string>
     <string name="lost">Lost</string>
+    <string name="upload_photo">Upload Photo</string>
+    <string name="description">Description</string>
+    <string name="ubication">Location</string>
+    <string name="upload_post">Upload Post</string>
+    <string name="category">Category</string>
+    <string name="state">State</string>
+    <string name="click_para_editar">Click for edit</string>
+    <string name="reaction">Reaction</string>
+    <string name="input_username">Input username</string>
+    <string name="input_password">Input password</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="welcome">Welcome</string>
+    <string name="input_same_password">Input same password</string>
+    <string name="pick_birthday">Pick birthday</string>
+    <string name="finish">Finish</string>
+    <string name="input_mail">Input mail</string>
+    <string name="location">Location</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="username">username</string>
+    <string name="ready_to_upload">Ready to upload</string>
+    <string name="message">Message</string>
+    <string name="title">Title</string>
+    <string name="next">Next</string>
     <string name="language">Language</string>
+    <string name="no_results">No results</string>
+    <string name="english">English</string>
+    <string name="spanish">Spanish</string>
+    <string name="chinese">Chinese</string>
+    <string name="theme">Theme</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="logout">LogOut</string>
+
+    <!-- msg toast -->
+    <string name="auth_fail">Authentication failed</string>
+    <string name="error_mail">Invalid Email</string>
+    <string name="error_password">Invalid Password</string>
+    <string name="create_fail">Create user fail</string>
+    <string name="username_already_exists">Username already exists</string>
+
+    <!-- notify -->
+    <string name="notify_title">New notification</string>
+    <string name="notify_message_type1">wants to communicate with you</string>
+    <string name="accept_notification_type2">accept the communication</string>
+    <string name="decline_notification_type2">decline the communication</string>
 
 
-    <string-array name="categories">
-        <item name="cat_adoption">Adopción</item>
-        <item name="cat_lost">Perdido</item>
-        <item name="cat_found">Encontrado</item>
-        <item name="cat_couple">Parejas</item>
-    </string-array>
+    <!-- edit -->
+    <string name="input_description">Input description</string>
+    <string name="cancel">Cancel</string>
+    <string name="are_you_sure">Are you sure?</string>
+    <string name="delete_fail">Delete fail</string>
+    <string name="delete_success">Delete success</string>
+    <string name="edit_fail">Edit fail</string>
+    <string name="edit_success">Edit success</string>
+
+    <!-- edit -->
+    <string name="range">Range</string>
+    <string name="pass_dont_match">Password don\'t match</string>
+    <string name="create_user">Create user</string>
+    <string name="an_error_photo">An error ocurred while uploading the photo</string>
+    <string name="an_error_photoUrl">An error ocurred while uploading the URL photo</string>
+    <string name="permission_photo">Camera permission is required to take a photo</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="choose_photo">Choose from the gallery</string>
+    <string name="select_an_option">Select an option</string>
+    <string name="crop">Crop</string>
+    <string name="select_location">Select location</string>
+    <string name="unknown_location">Unknown location</string>
+    <string name="save_post_success">Saved publication</string>
+    <string name="save_post_fail">Publication could not be saved</string>
+    <string name="choose_ubication">Choose a location</string>
+    <string name="choose_actual_ubication">Choose current location</string>
+    <string name="gps_disable">GPS is disabled</string>
+    <string name="my_location">My Location</string>
 
 
 </resources>

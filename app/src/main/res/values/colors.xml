@@ -5,8 +5,11 @@
     <!-- Color de fondo principal -->
     <color name="colorPrimary">#6200EE</color>
 
+    <!-- Color de fondo principal -->
+    <color name="colorLightBackWhite">#EEEEEE</color>
+    <color name="colorBlack">#111111</color>
     <!-- Color de fondo de la barra de aplicaciones (action bar/toolbar) -->
-    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorViolet">#3700B3</color>
 
     <!-- Color de acento utilizado para elementos interactivos, como botones -->
     <color name="colorAccent">#03DAC5</color>

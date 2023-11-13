@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:visibility="visible"
     tools:context=".signup.fragments.RegisterUserFragment">
-    <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:id="@+id/loginForm"
@@ -23,7 +22,7 @@
             android:id="@+id/registerTitle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/register_step2"
+            android:text="@string/welcome"
             android:textAlignment="center"
             android:textSize="34sp" />
 
@@ -63,8 +62,6 @@
 
         </LinearLayout>
 
-        <!-- ImageView para la imagen circular -->
-
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -76,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="35dp"
-                android:hint="@string/regnameForm"
+                android:hint="@string/input_username"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,14 +90,14 @@
                 android:layout_marginBottom="35dp"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="@string/regBirthdayForm" />
+                android:hint="@string/pick_birthday" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/regUserButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btnFinish"
+            android:text="@string/finish"
             android:textAlignment="gravity" />
 
     </LinearLayout>

@@ -45,33 +45,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapView.getMapAsync(this);
 
         btnAccept = findViewById(R.id.ActMapButton);
-        btnAccept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (selectedMarker != null) {
-                    LatLng selectedLatLng = selectedMarker.getPosition();
-                    String locationName = getLocationName(selectedLatLng.latitude, selectedLatLng.longitude);
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("selectedLocationName", locationName);
-                    resultIntent.putExtra("selectedLocationLat", selectedLatLng.latitude);
-                    resultIntent.putExtra("selectedLocationLong", selectedLatLng.longitude);
-                    setResult(RESULT_OK, resultIntent);
-                    finish();
-                }else {
-                    Toast.makeText(MapActivity.this, "Selecciona un lugar", Toast.LENGTH_SHORT).show();
-                }
+        btnAccept.setOnClickListener(view -> {
+            if (selectedMarker != null) {
+                LatLng selectedLatLng = selectedMarker.getPosition();
+                String locationName = getLocationName(selectedLatLng.latitude, selectedLatLng.longitude);
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("selectedLocationName", locationName);
+                resultIntent.putExtra("selectedLocationLat", selectedLatLng.latitude);
+                resultIntent.putExtra("selectedLocationLong", selectedLatLng.longitude);
+                setResult(RESULT_OK, resultIntent);
+                finish();
+            } else {
+                Toast.makeText(MapActivity.this, R.string.select_location, Toast.LENGTH_SHORT).show();
             }
         });
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                double latitude = location.getLatitude();
-                double longitude = location.getLongitude();
-                LatLng myLocation = new LatLng(latitude, longitude);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15.0f));
-            }
+        locationListener = location -> {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+            LatLng myLocation = new LatLng(latitude, longitude);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15.0f));
         };
     }
 
@@ -87,7 +81,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "Ubicación Desconocida";
+        return getString(R.string.unknown_location);
     }
 
 
@@ -102,15 +96,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                if (selectedMarker != null) {
-                    selectedMarker.remove();
-                }
-
-                selectedMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        mMap.setOnMapClickListener(latLng -> {
+            if (selectedMarker != null) {
+                selectedMarker.remove();
             }
+            selectedMarker = mMap.addMarker(new MarkerOptions().position(latLng));
         });
     }
 

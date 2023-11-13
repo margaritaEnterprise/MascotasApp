@@ -36,13 +36,15 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
         String message = remoteMessage.getData().get("message");
         String deviceId = remoteMessage.getData().get("deviceId");
         String username = remoteMessage.getData().get("username");
-
+        boolean state = false;
+        if (type.equals("2")) {
+            state = Boolean.parseBoolean(remoteMessage.getData().get("state"));
+        }
         // Muestra la notificación o realiza otras acciones según tus necesidades
-        showNotification(type, title, photo, message, deviceId, username);
-
+        showNotification(type, title, photo, message, deviceId, username, state);
     }
 
-    private void showNotification(String type, String title, String photo, String message, String deviceId, String username) {
+    private void showNotification(String type, String title, String photo, String message, String deviceId, String username, boolean state) {
         // Crear un Intent para la actividad principal de la aplicación
         Intent intent = new Intent(this, NotifyActivity.class);
         intent.putExtra("type", type);
@@ -51,14 +53,21 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
         intent.putExtra("message", message);
         intent.putExtra("deviceId", deviceId);
         intent.putExtra("username", username);
-
-// Asegúrate de que la bandera PendingIntent.FLAG_UPDATE_CURRENT se establezca para actualizar los extras si la notificación se ha creado previamente
+        intent.putExtra("state", state);
+        // Asegúrate de que la bandera PendingIntent.FLAG_UPDATE_CURRENT se establezca para actualizar los extras si la notificación se ha creado previamente
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
 
 
         // Crear un RemoteViews para la vista compacta
         @SuppressLint("RemoteViewLayout") RemoteViews notificationLayoutCompact = new RemoteViews(getPackageName(), R.layout.notification_layout_compact);
         notificationLayoutCompact.setTextViewText(R.id.notification_title, title);
+        if (type.equals("1")) {
+            message = getString(R.string.notify_message_type1);
+        } else if (type.equals("2") && state) {
+            message = getString(R.string.accept_notification_type2);
+        } else {
+            message = getString(R.string.decline_notification_type2);
+        }
         notificationLayoutCompact.setTextViewText(R.id.notification_message, username + " " + message);
 
         // Crear un RemoteViews para la vista expandida
