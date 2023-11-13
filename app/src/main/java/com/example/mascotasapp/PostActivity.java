@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.mascotasapp.navigation.MainActivity;
 import com.example.mascotasapp.utils.ImageHandler;
+import com.example.mascotasapp.utils.ManagerTheme;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,9 +80,13 @@ public class PostActivity extends AppCompatActivity {
     TextInputEditText descriptionEditText;
 
     Button savePost;
-
+    Map<String, Object> userPrefMap;
+    String errorMessagge;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        userPrefMap = ManagerTheme.getUserPreference(this);
+        ManagerTheme.setUserPreference(this, userPrefMap);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         //Firestore
@@ -109,8 +114,7 @@ public class PostActivity extends AppCompatActivity {
     }
     private void createPost(FirebaseUser userAuth){
         if(!validatePost()){
-            //TODO: validar el post
-            Toast.makeText(PostActivity.this, "Validar el post", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, errorMessagge, Toast.LENGTH_SHORT).show();
             return;
         }
         try {
@@ -126,6 +130,11 @@ public class PostActivity extends AppCompatActivity {
         }
     }
     private boolean validatePost() {
+        String desc = descriptionEditText.getText().toString().trim();
+        if (desc.isEmpty()){
+            errorMessagge = getString(R.string.input_a_valid_description);
+            return false;
+        }
         return true;
     }
     private void uploadImageToFirebaseStorage(FirebaseUser userAuth, Bitmap bitmap)  {

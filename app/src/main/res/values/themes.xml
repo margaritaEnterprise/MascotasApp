@@ -1,9 +1,3 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.MascotasApp" parent="Theme.MaterialComponents.Light">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-    </style>
-
-    <style name="Theme.MascotasApp" parent="Base.Theme.MascotasApp" />
+<resources>
+    <style name="Theme.MascotasApp" parent="Theme.MaterialComponents.Light.NoActionBar"/>
 </resources>

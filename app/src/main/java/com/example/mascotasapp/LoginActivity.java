@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        linearLayout = findViewById(R.id.loginForm);
+        //linearLayout = findViewById(R.id.loginForm);
         signInButton = findViewById(R.id.signInButton);
 
         signUpButton = findViewById(R.id.signUpButton);

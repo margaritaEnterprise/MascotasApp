@@ -43,10 +43,9 @@ public class SettingFragment extends Fragment {
     Map<String, Object> dataUser; //foto name
     Map<String, Object> userPrefMap; //las seteadas
 
-    public SettingFragment(Map<String, Object> dataUser, SharedPreferences sharedPreference, Context activity) {
+    public SettingFragment(Map<String, Object> dataUser, Context activity) {
         this.dataUser = dataUser;
         this.activity = (Context) activity;
-        this.sharedPreference = sharedPreference;
     }
 
     @SuppressLint("MissingInflatedId")
@@ -54,6 +53,8 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
+        sharedPreference = activity.getApplicationContext()
+                .getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
         editPref =  sharedPreference.edit();
         userPrefMap = (Map<String, Object>) sharedPreference.getAll();

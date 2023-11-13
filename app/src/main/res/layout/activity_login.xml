@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:hintEnabled="true"
-            android:hint="@string/input_username"
+            android:hint="@string/input_email"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
