@@ -164,7 +164,7 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
         String desc = description.getText().toString().trim();
 
         if (desc.isEmpty()){
-            Toast.makeText(context, "Ingrese una descripcion.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.input_description, Toast.LENGTH_SHORT).show();
         } else {
             String postId = post.get("id").toString();
             DocumentReference currentDocument = db.collection("posts").document(postId);
@@ -178,36 +178,35 @@ public class EditFragment extends Fragment implements OnMapReadyCallback {
             currentDocument
                     .update(postChanges)
                     .addOnSuccessListener(v -> {
-                        Toast.makeText(requireContext(), "Se edito", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.edit_success, Toast.LENGTH_SHORT).show();
                         backToProfile.editSuccess();
                     })
                     .addOnFailureListener(v -> {
-                        Toast.makeText(requireContext(), "No se edito", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.edit_fail, Toast.LENGTH_SHORT).show();
                     });
         }
     }
     public void deletePost() {
-        Toast.makeText(requireContext(), "Delete", Toast.LENGTH_SHORT).show();
         String postId = post.get("id").toString();
         DocumentReference currentDocument = db.collection("posts").document(postId);
         currentDocument
                 .delete()
                 .addOnSuccessListener(unused -> {
-                    Toast.makeText(requireContext(), "Se elimino", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.delete_success, Toast.LENGTH_SHORT).show();
                     backToProfile.editSuccess();
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(requireContext(), "No se elimino", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.delete_fail, Toast.LENGTH_SHORT).show();
                 });
     }
     public void showDialog() {
-        final CharSequence[] options = {"Eliminar", "Cancelar"};
+        final CharSequence[] options = {context.getString(R.string.delete), context.getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Esta seguro?");
+        builder.setTitle(context.getString(R.string.are_you_sure));
         builder.setItems(options, (dialog, item) -> {
-            if (options[item].equals("Eliminar")) {
+            if (options[item].equals(context.getString(R.string.delete))) {
                 deletePost();
-            } else if (options[item].equals("Cancelar")) {
+            } else if (options[item].equals(context.getString(R.string.cancel))) {
                 dialog.dismiss();
             }
         });

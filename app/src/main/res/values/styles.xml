@@ -5,12 +5,16 @@
         <item name="android:background">@drawable/rounded_blue_edittext_background</item>
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.MaterialComponents">
+    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
         <item name="colorPrimary">@color/fui_bgTwitter</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+        <item name="android:background">@color/colorLightBackWhite</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight">
-        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimary">@color/colorViolet</item>
+        <item name="android:textColor">@color/colorLightBackWhite</item>
+        <item name="android:background">@color/textPrimaryColor</item>
     </style>
 
 

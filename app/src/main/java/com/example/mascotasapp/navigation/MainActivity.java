@@ -84,24 +84,19 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
             switch (item.getTitle().toString()) {
                 case "Search":
-                    Toast.makeText(this, "buscar", Toast.LENGTH_SHORT).show();
                     replaceFragment(new SearchFragment(this));
                     break;
                 case "Notify":
-                    Toast.makeText(this, "notificar", Toast.LENGTH_SHORT).show();
                     replaceFragment(new NotifyFragment());
                     break;
                 case "Add":
-                    Toast.makeText(this, "agregar", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
                     startActivity(intent);
                     break;
                 case "Setting":
-                    Toast.makeText(this, "configurar", Toast.LENGTH_SHORT).show();
                     replaceFragment(new SettingFragment(dataUser, sharedPreference, MainActivity.this));
                     break;
                 case "Profile":
-                    Toast.makeText(this, "perfilar", Toast.LENGTH_SHORT).show();
                     replaceFragment(new ProfileFragment());//get
                     break;
             }
@@ -122,8 +117,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         defaultPreferences();
         updateUI(currentUser);
     }
-
-
 
     private void updateUI(FirebaseUser user) {
         if (user == null) {
@@ -162,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             setAppTheme(theme);
         } else {
             // preferencias por defecto
-            Toast.makeText(this, "Creo preferencias", Toast.LENGTH_SHORT).show();
             SharedPreferences.Editor editPref = sharedPreference.edit();
             editPref.putString("language", "en"); //en, es, ch
             editPref.putString("theme", "dark"); //light, dark
@@ -249,13 +241,12 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         currentDocument
                 .update(userChanges)
                 .addOnSuccessListener(v -> {
-                    Toast.makeText(this, "Se guardo deviceId", Toast.LENGTH_SHORT).show();
                     SharedPreferences.Editor editPref = sharedPreference.edit();
                     editPref.putString("DEVICEID",token);
                     editPref.apply();
                 })
                 .addOnFailureListener(v -> {
-                    Toast.makeText(this, "No se guardo deviceId", Toast.LENGTH_SHORT).show();
+                    Log.w("Messaging", "No se guardo deviceId");
                 });
     }
 

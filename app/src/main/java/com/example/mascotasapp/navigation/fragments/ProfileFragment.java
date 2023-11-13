@@ -125,7 +125,6 @@ public class ProfileFragment extends Fragment {
                     } else {
                         noResults.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
-                        Toast.makeText(requireContext(), "No hay", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(e ->{

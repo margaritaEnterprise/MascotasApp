@@ -80,7 +80,6 @@ public class PostActivity extends AppCompatActivity {
 
     Button savePost;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,7 +109,8 @@ public class PostActivity extends AppCompatActivity {
     }
     private void createPost(FirebaseUser userAuth){
         if(!validatePost()){
-            Toast.makeText(PostActivity.this, "", Toast.LENGTH_SHORT).show();
+            //TODO: validar el post
+            Toast.makeText(PostActivity.this, "Validar el post", Toast.LENGTH_SHORT).show();
             return;
         }
         try {
@@ -120,9 +120,9 @@ public class PostActivity extends AppCompatActivity {
             uploadImageToFirebaseStorage(userAuth, bitmap);
 
         } catch (ClassCastException e) {
-            Toast.makeText(PostActivity.this, "ClassCastEx!!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, R.string.upload_photo, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(PostActivity.this, "Exception e!!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(PostActivity.this, R.string.upload_photo, Toast.LENGTH_SHORT).show();
         }
     }
     private boolean validatePost() {
@@ -146,26 +146,16 @@ public class PostActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 int errorCode = ((StorageException) exception).getErrorCode();
                 String errorMessage = exception.getMessage();
-                Toast.makeText(PostActivity.this, "Ocurrió un error al subir la foto.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PostActivity.this, R.string.an_error_photo, Toast.LENGTH_SHORT).show();
             }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }).addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        uriPhoto = uri.toString();
-                        imageChange = false;
-                        savePost(uriPhoto);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(PostActivity.this, "Ocurrió un error al obtener la URL de descarga.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+            public void onSuccess(Uri uri) {
+                uriPhoto = uri.toString();
+                imageChange = false;
+                savePost(uriPhoto);
             }
-        });
+        }).addOnFailureListener(exception -> Toast.makeText(PostActivity.this, R.string.an_error_photoUrl, Toast.LENGTH_SHORT).show()));
     }
     public void savePost(String uriPhoto) {
         Chip selectedChip = findViewById(categories.getCheckedChipId());
@@ -182,13 +172,13 @@ public class PostActivity extends AppCompatActivity {
         db.collection("posts")
                 .add(map)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(PostActivity.this, "Save Post :)", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, R.string.save_post_success, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PostActivity.this, MainActivity.class);
                     
                     startActivity(intent);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(PostActivity.this, "Save Post :/", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, R.string.save_post_fail, Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -198,7 +188,7 @@ public class PostActivity extends AppCompatActivity {
                 if (isGranted) {
                     imageHandler.openCamera();
                 } else {
-                    Toast.makeText(PostActivity.this, "El permiso de la cámara es necesario para tomar fotos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostActivity.this, R.string.permission_photo, Toast.LENGTH_SHORT).show();
                 }
             });
     //Galeria
@@ -249,22 +239,16 @@ public class PostActivity extends AppCompatActivity {
             }
     );
 
-
-
     public void showLocationSourceDialog() {
-        final CharSequence[] options = {"Elegir una ubicacion", "Elegir la ubicacion actual", "Cancelar"};
+        final CharSequence[] options = {getString(R.string.choose_ubication), getString(R.string.choose_actual_ubication), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(PostActivity.this);
-        builder.setTitle("Selecciona una opción");
+        builder.setTitle(getString(R.string.select_an_option));
         builder.setItems(options, (dialog, item) -> {
-            if (options[item].equals("Elegir una ubicacion")) {
-                Toast.makeText(PostActivity.this, "Elegir una ubicación", Toast.LENGTH_SHORT).show();
+            if (options[item].equals(getString(R.string.choose_ubication))) {
                 Intent mapIntent = new Intent(PostActivity.this, MapActivity.class);
                 mapActivityLauncher.launch(mapIntent);
             }
-            else if (options[item].equals("Elegir la ubicacion actual")) {
-
-                Toast.makeText(PostActivity.this, "Elegir la ubicacion actual", Toast.LENGTH_SHORT).show();
-
+            else if (options[item].equals(getString(R.string.choose_actual_ubication))) {
                 flagGPS = displayGpsStatus();
                 if (flagGPS) {
                     // Instancio el listener
@@ -275,12 +259,12 @@ public class PostActivity extends AppCompatActivity {
                     }
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER, 5000, 10, locationListener);
-                    locationEditText.setText("Mi ubicacion");
+                    locationEditText.setText(getString(R.string.my_location));
                 } else {
-                    Toast.makeText(getBaseContext(), "El GPS se encuentra deshabilitado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getString(R.string.gps_disable), Toast.LENGTH_SHORT).show();
                 }
             }
-            else if (options[item].equals("Cancelar")) {
+            else if (options[item].equals(getString(R.string.cancel))) {
                 dialog.dismiss();
             }
         });
@@ -308,5 +292,4 @@ public class PostActivity extends AppCompatActivity {
         @Override
         public void onProviderEnabled(@NonNull String provider) {}
     }
-
 }

@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -64,7 +65,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Ingles"
+                    android:text="@string/english"
                     android:tag="en"
                     android:checkable="true"/>
                 <com.google.android.material.chip.Chip
@@ -72,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Español"
+                    android:text="@string/spanish"
                     android:tag="es"
                     android:checkable="true"/>
                 <com.google.android.material.chip.Chip
@@ -80,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Chino"
+                    android:text="@string/chinese"
                     android:tag="ch"
                     android:checkable="true"/>
             </com.google.android.material.chip.ChipGroup>
@@ -93,7 +94,7 @@
             >
             <TextView
                 android:textSize="18sp"
-                android:text="Tema"
+                android:text="@string/theme"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -112,7 +113,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Claro"
+                    android:text="@string/light"
                     android:tag="light"
                     android:checkable="true"/>
                 <com.google.android.material.chip.Chip
@@ -120,7 +121,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Oscuro"
+                    android:text="@string/dark"
                     android:tag="dark"
                     android:checkable="true"/>
             </com.google.android.material.chip.ChipGroup>
@@ -137,7 +138,7 @@
                 android:id="@+id/frag_setting_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save"/>
+                android:text="@string/save"/>
             <Space
                 android:layout_width="20dp"
                 android:layout_height="match_parent"/>
@@ -145,7 +146,7 @@
                 android:id="@+id/frag_setting_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="LogOut"/>
+                android:text="@string/logout"/>
 
         </LinearLayout>
 

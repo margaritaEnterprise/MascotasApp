@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +115,7 @@ public class SearchFragment extends Fragment {
         range.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                rangeText.setText("Range: " + progress + " km");
+                rangeText.setText(R.string.range + progress + " km");
             }
 
             @Override
@@ -215,7 +216,7 @@ public class SearchFragment extends Fragment {
                     finishGet();
                 })
                 .addOnFailureListener(e -> {
-                    // Maneja errores aquí, si es necesario.
+                    Log.w("Messaging", "No se encontro el usuario");
                 });
 
     }

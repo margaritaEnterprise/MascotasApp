@@ -107,13 +107,12 @@ public class RegisterUserFragment extends Fragment {
             Bitmap bitmap = ((BitmapDrawable) userPhoto.getDrawable()).getBitmap();
             uploadImageToFirebaseStorage(userAuth, bitmap);
         } catch (ClassCastException e) {
-            Toast.makeText(requireContext(), "Sube una foto!!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.upload_photo, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(requireContext(), "Sube una foto!!!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.upload_photo+"!", Toast.LENGTH_SHORT).show();
         }
-
-
     }
+
     private void uploadImageToFirebaseStorage(FirebaseUser userAuth,Bitmap bitmap)  {
 
         if(!imageChange){
@@ -134,7 +133,7 @@ public class RegisterUserFragment extends Fragment {
             public void onFailure(@NonNull Exception exception) {
                 int errorCode = ((StorageException) exception).getErrorCode();
                 String errorMessage = exception.getMessage();
-                Toast.makeText(requireContext(), "Ocurrió un error al subir la foto.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), R.string.an_error_photo, Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -149,7 +148,7 @@ public class RegisterUserFragment extends Fragment {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(requireContext(), "Ocurrió un error al obtener la URL de descarga.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(requireContext(), R.string.an_error_photoUrl, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -224,7 +223,7 @@ public class RegisterUserFragment extends Fragment {
                 if (isGranted) {
                     imageHandler.openCamera();
                 } else {
-                    Toast.makeText(requireContext(), "El permiso de la cámara es necesario para tomar fotos.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext(), R.string.permission_photo, Toast.LENGTH_SHORT).show();
                 }
             });
     private final ActivityResultLauncher<Intent> pickImageLauncher =

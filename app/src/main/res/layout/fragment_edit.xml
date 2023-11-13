@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -31,49 +30,48 @@
                 app:singleSelection="true"
                 >
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/FragEditCat_adoption"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/adoption"
-                        android:tag="adoption"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/FragEditCat_adoption"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/adoption"
+                    android:tag="adoption"/>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/FragEditCat_lost"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/lost"
-                        android:tag="lost"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/FragEditCat_lost"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/lost"
+                    android:tag="lost"/>
 
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/FragEditCat_found"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/found"
+                    android:tag="found"/>
 
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/FragEditCat_found"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/found"
-                        android:tag="found"/>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/FragEditCat_couple"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/couple"
+                    android:tag="couple"/>
+            </com.google.android.material.chip.ChipGroup>
 
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/FragEditCat_couple"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/couple"
-                        android:tag="couple"/>
-                </com.google.android.material.chip.ChipGroup>
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/FragEditSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="State"
+                android:text="@string/state"
                 android:backgroundTint="@color/fui_bgTwitter"
                 android:layout_marginLeft="7dp"
                 android:clickable="true"
@@ -108,13 +106,13 @@
                 android:id="@+id/FragEditDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripcion" />
+                android:hint="@string/description" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ubicacion"/>
+            android:text="@string/location"/>
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -141,13 +139,13 @@
                 android:id="@+id/FragEditBtnSave"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Save"
+                android:text="@string/save"
                 android:layout_marginRight="3dp"/>
             <Button
                 android:id="@+id/FragEditBtnDelete"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:text="Delete"
+                android:text="@string/delete"
                 android:layout_marginLeft="3dp"/>
         </LinearLayout>
     </LinearLayout>

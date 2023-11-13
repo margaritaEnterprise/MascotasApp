@@ -54,7 +54,7 @@ public class RegisterAuthFragment extends Fragment {
         String password2 = passwordForm2.getText().toString();
         //validate
         if(!password.equals(password2)){
-            Toast.makeText(requireContext(), "Las contraseñas no coinciden",
+            Toast.makeText(requireContext(), R.string.pass_dont_match,
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -72,7 +72,7 @@ public class RegisterAuthFragment extends Fragment {
                             //
                             authCreateListener.authCreate();
 
-                            Toast.makeText(requireActivity(), "create user",
+                            Toast.makeText(requireActivity(), R.string.create_user,
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Toast.makeText(requireContext(), R.string.create_fail,

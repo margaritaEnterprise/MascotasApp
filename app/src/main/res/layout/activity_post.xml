@@ -1,4 +1,5 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -18,16 +19,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-
-        <!-- Chip android:tag a la db -->
-        <com.google.android.material.chip.ChipGroup
+            <com.google.android.material.chip.ChipGroup
             android:id="@+id/actPostChipCat_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:clickable="false"
-            app:chipSpacingHorizontal="5dp"
+            app:chipSpacingHorizontal="15dp"
             app:selectionRequired="true"
             app:singleSelection="true">
 
@@ -49,7 +52,6 @@
                 android:text="@string/lost"
                 android:tag="lost"/>
 
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/cat_found"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -59,7 +61,6 @@
                 android:text="@string/found"
                 android:tag="found"/>
 
-
             <com.google.android.material.chip.Chip
                 android:id="@+id/cat_couple"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
@@ -68,9 +69,8 @@
                 android:layout_weight="1"
                 android:text="@string/couple"
                 android:tag="couple"/>
-
-
         </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
 
         <Space
             android:layout_width="match_parent"
@@ -78,16 +78,15 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="125dp">
-
-        <ImageView
-            android:id="@+id/actPostPhoto"
-            android:layout_width="235dp"
-            android:layout_height="243dp"
-            android:minWidth="250dp"
-            android:minHeight="250dp"
-            tools:src="@tools:sample/avatars"
-            android:src="@drawable/ic_add_photo_foreground" />
+            app:cardCornerRadius="15dp">
+            <ImageView
+                android:id="@+id/actPostPhoto"
+                android:layout_width="235dp"
+                android:layout_height="243dp"
+                android:minWidth="250dp"
+                android:minHeight="250dp"
+                tools:src="@tools:sample/avatars"
+                android:src="@drawable/ic_add_photo_foreground" />
         </androidx.cardview.widget.CardView>
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +99,7 @@
                 android:id="@+id/actPostBtnPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Subir una foto" />
+                android:text="@string/upload_photo" />
 
         </LinearLayout>
 
@@ -115,7 +114,7 @@
                 android:id="@+id/actPostTextDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descripcion" />
+                android:hint="@string/description" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -137,7 +136,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:focusable="false"
-                android:hint="Ubicacion"
+                android:hint="@string/ubication"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,7 +148,7 @@
             android:id="@+id/actPostBtnPost"
             android:layout_width="192dp"
             android:layout_height="wrap_content"
-            android:text="Post" />
+            android:text="@string/upload_post" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

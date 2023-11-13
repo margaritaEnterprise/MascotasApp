@@ -10,13 +10,6 @@
     android:visibility="visible"
     tools:context=".LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/loginForm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="visible">
-
         <!-- Campo de entrada de correo electrónico con TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayoutEmail"
@@ -24,15 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:hintEnabled="true"
-            android:hint="@string/emailForm"
+            android:hint="@string/input_username"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-           <!--> <EditText
-                android:id="@+id/emailForm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textEmailAddress"
-                style="@style/RoundedBlueEditText"/> <!-->
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -40,7 +26,6 @@
                 android:id="@+id/emailForm"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <!-- Campo de entrada de contraseña con TextInputLayout -->
         <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPassword"
-                android:hint="@string/passwordForm"
+                android:hint="@string/input_password"
 
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -75,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:text="@string/btnLogin"
+            android:text="@string/log_in"
             android:textAlignment="gravity"
             android:visibility="visible" />
 
@@ -83,12 +68,10 @@
             android:id="@+id/signUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/btnLogup"
+            android:text="@string/sign_up"
             android:textAlignment="gravity"
             android:visibility="visible" />
 
-
     </LinearLayout>
 
-</LinearLayout>
 </LinearLayout>
