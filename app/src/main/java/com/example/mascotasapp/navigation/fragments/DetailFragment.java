@@ -35,9 +35,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.chip.Chip;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.logging.type.HttpRequest;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -90,14 +95,13 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         edit = view.findViewById(R.id.FragDetailBtnEdit);
         notify = view.findViewById(R.id.FragDetailBtnNotify);
 
-
         String postUserId = post.get("userId").toString();
         if(mAuth.getCurrentUser().getUid().equals(postUserId)) {
             edit.setVisibility(View.VISIBLE);
             edit.setOnClickListener(v -> buttonEditOnClic.btnClickEdit(this.post));
         }else {
             notify.setVisibility(View.VISIBLE);
-            notify.setOnClickListener(v ->sendNotification() );
+            notify.setOnClickListener(v -> getUser());
         }
 
         mMapView = view.findViewById(R.id.FragPostMap);
@@ -154,33 +158,52 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-    public void sendNotification() {
+    private void sendNotification(String username,String myToken){
+        RequestQueue myrequest= Volley.newRequestQueue(context);
+        JSONObject json = new JSONObject();
+
         try {
-            String token = post.get("deviceId").toString();
-            String message = "oaasdasdasdl";
-            URL url = new URL("https://fcm.googleapis.com/fcm/send");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "key=AAAA05seiD0:APA91bH38cHnWgsv8dFJmNm5dizN8ey9_4BoaNWUehehdf-A2WRAF9hVtkxF6ojs6DdwO7gj27xAzW3nJH1G-2sdxCmDyZtmSf39EptgL64Fa6PKDBkzVsS76OPTrCS0svZxdjI9W2hS");
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
+            json.put("to",post.get("deviceId"));
+            JSONObject notificacion=new JSONObject();
+            notificacion.put("type", "1");
+            notificacion.put("title", "Nueva notificación");
+            notificacion.put("photo",post.get("photoUrl"));
+            notificacion.put("username", username);
+            notificacion.put("message", "se quiere comunicar con vos!!!");
+            notificacion.put("deviceId", myToken);
 
-            // Construir el cuerpo del mensaje
-            String body = "{\"to\":\"" + token + "\",\"data\":{\"message\":\"" + message + "\"}}";
+            json.put("data",notificacion);
+            String URL="https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request=new JsonObjectRequest(Request.Method.POST,URL,json,null,null){
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String,String>header=new HashMap<>();
+                    header.put("Content-Type","application/json");
+                     header.put("Authorization","key=AAAA05seiD0:APA91bH38cHnWgsv8dFJmNm5dizN8ey9_4BoaNWUehehdf-A2WRAF9hVtkxF6ojs6DdwO7gj27xAzW3nJH1G-2sdxCmDyZtmSf39EptgL64Fa6PKDBkzVsS76OPTrCS0svZxdjI9W2hS");
+                    return header;
+                }
+            };
+            myrequest.add(request);
 
-            // Enviar el mensaje
-            OutputStream os = conn.getOutputStream();
-            os.write(body.getBytes());
-            os.flush();
-            os.close();
 
-            // Obtener la respuesta
-            int responseCode = conn.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
-        } catch (Exception e) {
+        }catch (JSONException e){
             e.printStackTrace();
         }
+    }
+
+    public void getUser(){
+        CollectionReference collections = FirebaseFirestore.getInstance().collection("users");
+        String userId = mAuth.getCurrentUser().getUid();
+        Query query = collections.whereEqualTo("id", userId);
+        query
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
+                    sendNotification( doc.get("username").toString(), doc.get("deviceId").toString() );
+                })
+                .addOnFailureListener(e ->{
+                    Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
     }
 
 
