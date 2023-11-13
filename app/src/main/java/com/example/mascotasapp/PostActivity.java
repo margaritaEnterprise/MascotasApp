@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -68,7 +69,7 @@ public class PostActivity extends AppCompatActivity {
     private Boolean flagGPS = false;
     GeoPoint geoPoint;// = new GeoPoint(-34.77564,-58.26793); //UNAJ
     TextInputEditText locationEditText;
-
+    TextInputLayout inputLocation;
     //Photo
     ImageHandler imageHandler;
     boolean imageChange;
@@ -93,6 +94,7 @@ public class PostActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         //Location
+        inputLocation = findViewById(R.id.actPostInputLocation);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationEditText = findViewById(R.id.actPostEditLocation);
         locationEditText.setKeyListener(null);
@@ -133,6 +135,15 @@ public class PostActivity extends AppCompatActivity {
         String desc = descriptionEditText.getText().toString().trim();
         if (desc.isEmpty()){
             errorMessagge = getString(R.string.input_a_valid_description);
+            return false;
+        }
+        if (locationEditText.getText().toString().isEmpty() || geoPoint == null){
+            errorMessagge = getString(R.string.input_a_valid_location);
+            return false;
+        }
+        Chip selectedChip = findViewById(categories.getCheckedChipId());
+        if(selectedChip == null){
+            errorMessagge = getString(R.string.input_a_valid_category);
             return false;
         }
         return true;
@@ -243,6 +254,7 @@ public class PostActivity extends AppCompatActivity {
                         Double selectedLocationLong = data.getDoubleExtra("selectedLocationLong", 0);
                         geoPoint = new GeoPoint(selectedLocationLat, selectedLocationLong);
                         locationEditText.setText(selectedLocation);
+                        inputLocation.setEndIconDrawable(R.drawable.ic_location);
                     }
                 }
             }
@@ -254,6 +266,7 @@ public class PostActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.select_an_option));
         builder.setItems(options, (dialog, item) -> {
             if (options[item].equals(getString(R.string.choose_ubication))) {
+                geoPoint = null;
                 Intent mapIntent = new Intent(PostActivity.this, MapActivity.class);
                 mapActivityLauncher.launch(mapIntent);
             }
@@ -295,6 +308,7 @@ public class PostActivity extends AppCompatActivity {
             this.longitude = loc.getLongitude();
             this.latitude = loc.getLatitude();
             geoPoint = new GeoPoint(this.latitude,this.longitude);
+            inputLocation.setEndIconDrawable(R.drawable.ic_my_location);
         }
         @Override
         public void onProviderDisabled(@NonNull String provider) {}
