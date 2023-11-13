@@ -1,20 +1,36 @@
 package com.example.mascotasapp.navigation.fragments;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.camera.core.processing.SurfaceProcessorNode;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +44,8 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
-import com.example.mascotasapp.utils.MyTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -55,6 +71,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -65,6 +82,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     FirebaseAuth mAuth;
@@ -77,6 +95,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     GoogleMap map;
     ImageButton edit, notify;
     Map<String, Object> post;
+    String photoUrl;
     public interface ButtonEdit{
         void btnClickEdit(Map<String, Object> item);
     }
@@ -123,7 +142,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         postPhoto.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                downloadAndSaveImage(context, url, "post_photo.jpg");
+                downloadAndSaveImage();
                 return true;
             }
         });
@@ -168,6 +187,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .resize(30, 30)
                 .into(userPhoto);
 
+        photoUrl = post.get("photoUrl").toString();
         Uri photoUrl = Uri.parse((String) post.get("photoUrl"));
         Picasso.with(requireContext())
                 .load(photoUrl)
@@ -223,17 +243,58 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
+    private void downloadAndSaveImage() {
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) postPhoto.getDrawable();
+        Bitmap bitmap = bitmapDrawable.getBitmap();
 
-    // Método para descargar y guardar la imagen en la memoria externa
-    private void downloadAndSaveImage(Context context, String imageUrl, String fileName) {
-        try {
-            Picasso.with(context)
-                    .load(imageUrl)
-                    .into((Target) new MyTarget(context, fileName));
-        }catch (Exception e){
-            Log.d("sada", e.getMessage());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // En Android 10 y superiores, utiliza el Scoped Storage
+            ContentResolver resolver = context.getContentResolver();
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, String.format("%d.jpg", System.currentTimeMillis()));
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+            Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+
+            if (imageUri != null) {
+                try (OutputStream outputStream = resolver.openOutputStream(imageUri)) {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    showDownloadNotification(getString(R.string.image_downloaded), getString(R.string.image_succes_downloaded));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
+
+    private void showDownloadNotification(String title, String message) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Comprobación de la versión de Android para la creación de canales
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("download_channel", "Download Channel", NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        // Crear un Intent para abrir la galería
+        Intent galleryIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("content://media/internal/images/media"));
+        PendingIntent pendingGalleryIntent = PendingIntent.getActivity(context, 0, galleryIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "download_channel")
+                .setSmallIcon(R.drawable.baseline_file_download_24)
+                .setContentTitle(title)
+                .setContentText(message)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingGalleryIntent)  // Asignar el PendingIntent al hacer clic en la notificación
+                .setAutoCancel(true);  // Cerrar la notificación al hacer clic
+
+        // Lanzar la notificación
+        notificationManager.notify(1, builder.build());
+    }
+
+
+
 
     @Override
     public void onResume() {

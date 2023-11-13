@@ -87,5 +87,11 @@
     <string name="gps_disable">GPS is disabled</string>
     <string name="my_location">My Location</string>
 
-
+    <string name="emailForm">Correo electrónico</string>
+    <string name="passwordForm">Contraseña</string>
+    <string name="btnLogin">Iniciar sesión</string>
+    <string name="btnLogup">Registrarse</string>
+    <string name="permission_storage">Permission denied</string>
+    <string name="image_downloaded">Image downloaded</string>
+    <string name="image_succes_downloaded">Image has been downloaded successfully</string>
 </resources>
