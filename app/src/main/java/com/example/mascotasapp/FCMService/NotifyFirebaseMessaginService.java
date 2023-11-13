@@ -79,7 +79,7 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
 
         // Construir la notificación con las vistas compacta y expandida
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "channel_id")
-                .setSmallIcon(R.drawable.ic_notify)
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setCustomContentView(notificationLayoutCompact)
                 .setCustomBigContentView(notificationLayoutExpanded)
                 .setAutoCancel(true)
