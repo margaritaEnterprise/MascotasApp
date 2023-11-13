@@ -6,11 +6,11 @@
     </style>
 
     <style name="AppTheme.Light" parent="Theme.MaterialComponents">
-        <!-- Ajustes del tema claro -->
+        <item name="colorPrimary">@color/fui_bgTwitter</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight">
-        <!-- Ajustes del tema oscuro -->
+        <item name="colorPrimary">@color/black</item>
     </style>
 
 

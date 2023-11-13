@@ -151,13 +151,13 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         } else if (themeCode.equals("dark")) {
             this.setTheme(R.style.AppTheme_Dark);
         }
-    }
+   }
     public void defaultPreferences(){
         sharedPreference = getApplicationContext().getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         if (sharedPreference.contains("language") && sharedPreference.contains("theme")) {
             userPrefMap = (Map<String, Object>) sharedPreference.getAll();
-            String lang =userPrefMap.get("language").toString();
-            String theme =userPrefMap.get("theme").toString();
+            String lang = userPrefMap.get("language").toString();
+            String theme = userPrefMap.get("theme").toString();
             setAppLanguage(this, lang);
             setAppTheme(theme);
         } else {
