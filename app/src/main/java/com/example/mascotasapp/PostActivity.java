@@ -30,6 +30,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.example.mascotasapp.navigation.MainActivity;
 import com.example.mascotasapp.utils.ImageHandler;
+import com.example.mascotasapp.utils.ManagerTheme;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -79,9 +80,12 @@ public class PostActivity extends AppCompatActivity {
     TextInputEditText descriptionEditText;
 
     Button savePost;
-
+    Map<String, Object> userPrefMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        userPrefMap = ManagerTheme.getUserPreference(this);
+        ManagerTheme.setUserPreference(this, userPrefMap);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
         //Firestore

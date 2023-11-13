@@ -1,27 +1,16 @@
 package com.example.mascotasapp.navigation;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.content.res.Configuration;
-import android.content.res.Resources;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.mascotasapp.LoginActivity;
-
 import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.navigation.fragments.DetailFragment;
@@ -30,62 +19,45 @@ import com.example.mascotasapp.navigation.fragments.NotifyFragment;
 import com.example.mascotasapp.navigation.fragments.ProfileFragment;
 import com.example.mascotasapp.navigation.fragments.SearchFragment;
 import com.example.mascotasapp.navigation.fragments.SettingFragment;
-import com.example.mascotasapp.navigation.fragments.ToolbarFragment;
 import com.example.mascotasapp.signup.SignUpActivity;
+import com.example.mascotasapp.utils.ManagerTheme;
 import com.example.mascotasapp.utils.MyPostAdapter;
 import com.example.mascotasapp.utils.PostAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
-    SharedPreferences sharedPreference;
     BottomNavigationView bottomNavigationView;
-    FrameLayout frameLayout, toolbarLayout;
     Map<String, Object> dataUser;
     Map<String, Object> userPrefMap;
-    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        defaultPreferences();
-        //setAppLanguage(this, "en");
+        userPrefMap = ManagerTheme.getUserPreference(this);
+        ManagerTheme.setUserPreference(this, userPrefMap);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        registrarDispositivo();
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
-
-        registrarDispositivo();
-
-        //navigation
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
-        //toolbar = findViewById(R.id.ActMainToolbar);
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
 
         replaceFragment(new SearchFragment(this));
-
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item  -> {
-
-            switch (item.getTitle().toString()) {
+            switch (Objects.requireNonNull(item.getTitle()).toString()) {
                 case "Search":
                     replaceFragment(new SearchFragment(this));
                     break;
@@ -97,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     startActivity(intent);
                     break;
                 case "Setting":
-                    replaceFragment(new SettingFragment(dataUser, sharedPreference, MainActivity.this));
+                    replaceFragment(new SettingFragment(dataUser, MainActivity.this));
                     break;
                 case "Profile":
                     replaceFragment(new ProfileFragment());//get
@@ -106,12 +78,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             return true;
         });
     }
-    private  void insertToolbar() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.ActMainToolbar, new ToolbarFragment(dataUser))
-                .commit();
-    }
+
     private  void replaceFragment(Fragment fragment) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -122,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     protected void onStart() {
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        defaultPreferences();
         updateUI(currentUser);
     }
 
@@ -134,44 +100,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         }
     }
 
-    private void loadDataUI(Map<String, Object> data, FirebaseUser user){
-    }
-    public static void setAppLanguage(Context context, String languageCode) {
-        Locale locale = new Locale(languageCode);
-        Locale.setDefault(locale);
-
-        Resources resources = context.getResources();
-        Configuration config = new Configuration(resources.getConfiguration());
-        config.setLocale(locale);
-
-        context.getResources().updateConfiguration(config, resources.getDisplayMetrics());
-    }
-    public void setAppTheme(String themeCode) {
-        if (themeCode.equals("light")) {
-            this.setTheme(R.style.AppTheme_Light);
-        } else if (themeCode.equals("dark")) {
-            this.setTheme(R.style.AppTheme_Dark);
-        }
-   }
-
-    public void defaultPreferences(){
-        sharedPreference = getApplicationContext().getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
-        if (sharedPreference.contains("language") && sharedPreference.contains("theme")) {
-            userPrefMap = (Map<String,Object>) sharedPreference.getAll();
-            String lang = userPrefMap.get("language").toString();
-            String theme = userPrefMap.get("theme").toString();
-            setAppLanguage(this, lang);
-            setAppTheme(theme);
-        } else {
-            // preferencias por defecto
-            SharedPreferences.Editor editPref = sharedPreference.edit();
-            editPref.putString("language", "en"); //en, es, ch
-            editPref.putString("theme", "dark"); //light, dark
-            editPref.apply();
-            userPrefMap = (Map<String,Object>) sharedPreference.getAll();
-        }
-    }
-
     private void getUserData(FirebaseUser user){
         DocumentReference docRef = db.collection("users").document(user.getUid());
 
@@ -179,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         dataUser = documentSnapshot.getData();
-                        loadDataUI(dataUser, user);
+                        //loadDataUI(dataUser, user);
                     } else {
                         goToSignUpActivity();
                     }
@@ -222,27 +150,26 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
     public void registrarDispositivo(){
         FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if(!task.isSuccessful()){
-                            Log.w("Messaging", "Error al obtener el token");
-                            return;
-                        }
-                        String token = task.getResult();
-                        String tokenGuardado = getSharedPreferences( "SP_FILE", 0)
-                                .getString("DEVICEID", null);
-                        if(token != null){
-                            if(tokenGuardado == null || !token.equals(tokenGuardado)){
-                                guardarDeviceId(token);
-                            }
+                .addOnCompleteListener(task -> {
+                    if(!task.isSuccessful()){
+                        Log.w("Messaging", "Error al obtener el token");
+                        return;
+                    }
+                    String token = task.getResult();
+                    String tokenGuardado = getSharedPreferences( "SP_FILE", 0)
+                            .getString("DEVICEID", null);
+                    if(token != null){
+                        if(!token.equals(tokenGuardado)){
+                            guardarDeviceId(token);
                         }
                     }
                 });
     }
 
     public void guardarDeviceId(String token){
-        String userId = mAuth.getCurrentUser().getUid();
+        SharedPreferences sharedPreference = getApplicationContext()
+                .getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
+        String userId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
         DocumentReference currentDocument = db.collection("users").document(userId);
         Map<String, Object> userChanges = new HashMap<>();
         userChanges.put("deviceId", token);
@@ -254,9 +181,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     editPref.putString("DEVICEID",token);
                     editPref.apply();
                 })
-                .addOnFailureListener(v -> {
-                    Log.w("Messaging", "No se guardo deviceId");
-                });
+                .addOnFailureListener(v -> Log.w("Messaging", "No se guardo deviceId"));
     }
 
 }
