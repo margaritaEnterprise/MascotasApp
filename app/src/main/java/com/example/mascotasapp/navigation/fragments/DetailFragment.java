@@ -203,7 +203,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             json.put("to",post.get("deviceId"));
             JSONObject notificacion=new JSONObject();
             notificacion.put("type", "1");
-            notificacion.put("title", R.string.notify_title);
+            notificacion.put("title", getString(R.string.notify_title));
             notificacion.put("photo",post.get("photoUrl"));
             notificacion.put("username", username);
             notificacion.put("message", R.string.notify_message_type1);
