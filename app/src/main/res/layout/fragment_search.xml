@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="#202020"
         android:orientation="vertical">
 
         <LinearLayout
@@ -33,8 +34,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Search"
-                    android:background="@color/colorPrimary"/>
+                    android:background="@color/colorPrimary"
+                    android:text="Search" />
             </LinearLayout>
 
             <LinearLayout
@@ -70,35 +71,35 @@
                     app:singleSelection="false">
 
                     <com.google.android.material.chip.Chip
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/couple"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:tag="couple"/>
+                        android:tag="couple"
+                        android:text="@string/couple" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip5"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/lost"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:tag="lost"/>
+                        android:tag="lost"
+                        android:text="@string/lost" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip6"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/adoption"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:tag="adoption"/>
+                        android:tag="adoption"
+                        android:text="@string/adoption" />
 
                     <com.google.android.material.chip.Chip
                         android:id="@+id/chip7"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/found"
-                        style="@style/Widget.MaterialComponents.Chip.Choice"
-                        android:tag="found"/>
+                        android:tag="found"
+                        android:text="@string/found" />
 
                 </com.google.android.material.chip.ChipGroup>
 
@@ -132,8 +133,7 @@
                     android:layout_height="27dp"
                     android:max="120"
                     android:min="1"
-                    android:progress="10"
-                />
+                    android:progress="10" />
 
             </LinearLayout>
 
@@ -161,6 +161,14 @@
             android:text="@string/no_results"
             android:textSize="30dp"
             android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/FragSearchProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressTint="@android:color/black" />
+
     </LinearLayout>
 
 </FrameLayout>
