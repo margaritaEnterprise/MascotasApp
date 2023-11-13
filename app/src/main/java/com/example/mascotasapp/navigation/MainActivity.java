@@ -19,6 +19,7 @@ import com.example.mascotasapp.navigation.fragments.NotifyFragment;
 import com.example.mascotasapp.navigation.fragments.ProfileFragment;
 import com.example.mascotasapp.navigation.fragments.SearchFragment;
 import com.example.mascotasapp.navigation.fragments.SettingFragment;
+import com.example.mascotasapp.navigation.fragments.ToolbarFragment;
 import com.example.mascotasapp.signup.SignUpActivity;
 import com.example.mascotasapp.utils.ManagerTheme;
 import com.example.mascotasapp.utils.MyPostAdapter;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         updateUI(currentUser);
 
         replaceFragment(new SearchFragment(this));
+        ponerToolbar();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item  -> {
             switch (Objects.requireNonNull(item.getTitle()).toString()) {
@@ -78,7 +80,12 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             return true;
         });
     }
-
+    private  void ponerToolbar() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_toolbar, new ToolbarFragment(dataUser))
+                .commit();
+    }
     private  void replaceFragment(Fragment fragment) {
             getSupportFragmentManager()
                     .beginTransaction()
