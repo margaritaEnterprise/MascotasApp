@@ -132,7 +132,7 @@
                     android:max="120"
                     android:min="1"
                     android:progress="10"
-                />
+                    />
                 <Button
                     android:id="@+id/FragSearchButtonSearch"
                     android:layout_width="wrap_content"
@@ -167,4 +167,10 @@
         android:textSize="30dp"
         android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/FragSearchProgressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:progressTint="@android:color/black" />
 </LinearLayout>

@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.Switch;
@@ -67,6 +68,8 @@ public class SearchFragment extends Fragment {
     Context context;
     Boolean first;
 
+    ProgressBar loader;
+
     public SearchFragment(Context context) {
         this.context = context;
     }
@@ -88,6 +91,9 @@ public class SearchFragment extends Fragment {
         first = true;
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+
+
+
 
         recyclerView = view.findViewById(R.id.FragSearchRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -116,6 +122,8 @@ public class SearchFragment extends Fragment {
         visibleFilter = false;
         TextView rangeText = view.findViewById(R.id.FragSearchEditTextRange);
 
+        loader = view.findViewById(R.id.FragSearchProgressBar);
+        loader.setVisibility(View.VISIBLE);
         btnSearch.setOnClickListener(v -> firebaseSearchPublisFilters(view));
 
         filters = view.findViewById(R.id.frag_search_card_filter);
@@ -197,8 +205,10 @@ public class SearchFragment extends Fragment {
                         List<String> idsList = new ArrayList<>(userIds);
                         searchUsers(idsList);
                     }else {
+                        loader.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         noResults.setVisibility(View.VISIBLE);
+
                     }
                 })
                 .addOnFailureListener(e ->{
@@ -240,11 +250,15 @@ public class SearchFragment extends Fragment {
     }
 
     public void finishGet(){
+        recyclerView.setVisibility(View.VISIBLE);
+        loader.setVisibility(View.GONE);
         PostAdapter postAdapter = new PostAdapter(mapList, context);
         recyclerView.setAdapter(postAdapter);
     }
 
     public void firebaseSearchPublisFilters(View view){
+        recyclerView.setVisibility(View.GONE);
+        loader.setVisibility(View.VISIBLE);
         CharSequence text = search.getQuery();
         ArrayList<String> filterCategories = categories.getCheckedChipIds()
                 .stream()
@@ -314,6 +328,7 @@ public class SearchFragment extends Fragment {
                         List<String> idsList = new ArrayList<>(userIds);
                         searchUsers(idsList);
                     }else {
+                        loader.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         noResults.setVisibility(View.VISIBLE);
                     }
