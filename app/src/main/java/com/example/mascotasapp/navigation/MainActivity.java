@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.mascotasapp.LoginActivity;
 
@@ -29,6 +30,7 @@ import com.example.mascotasapp.navigation.fragments.NotifyFragment;
 import com.example.mascotasapp.navigation.fragments.ProfileFragment;
 import com.example.mascotasapp.navigation.fragments.SearchFragment;
 import com.example.mascotasapp.navigation.fragments.SettingFragment;
+import com.example.mascotasapp.navigation.fragments.ToolbarFragment;
 import com.example.mascotasapp.signup.SignUpActivity;
 import com.example.mascotasapp.utils.MyPostAdapter;
 import com.example.mascotasapp.utils.PostAdapter;
@@ -56,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     private FirebaseFirestore db; //viewDetailMyPost
     SharedPreferences sharedPreference;
     BottomNavigationView bottomNavigationView;
-    FrameLayout frameLayout;
+    FrameLayout frameLayout, toolbarLayout;
     Map<String, Object> dataUser;
     Map<String, Object> userPrefMap;
-
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         defaultPreferences();
@@ -71,9 +73,10 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         db = FirebaseFirestore.getInstance();
 
         registrarDispositivo();
+
         //navigation
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-        frameLayout = findViewById(R.id.frame_layout);
+        //toolbar = findViewById(R.id.ActMainToolbar);
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
@@ -103,7 +106,12 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             return true;
         });
     }
-
+    private  void insertToolbar() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.ActMainToolbar, new ToolbarFragment(dataUser))
+                .commit();
+    }
     private  void replaceFragment(Fragment fragment) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -145,10 +153,11 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             this.setTheme(R.style.AppTheme_Dark);
         }
    }
+
     public void defaultPreferences(){
         sharedPreference = getApplicationContext().getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         if (sharedPreference.contains("language") && sharedPreference.contains("theme")) {
-            userPrefMap = (Map<String, Object>) sharedPreference.getAll();
+            userPrefMap = (Map<String,Object>) sharedPreference.getAll();
             String lang = userPrefMap.get("language").toString();
             String theme = userPrefMap.get("theme").toString();
             setAppLanguage(this, lang);
@@ -159,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             editPref.putString("language", "en"); //en, es, ch
             editPref.putString("theme", "dark"); //light, dark
             editPref.apply();
-            userPrefMap = (Map<String, Object>) sharedPreference.getAll();
+            userPrefMap = (Map<String,Object>) sharedPreference.getAll();
         }
     }
 

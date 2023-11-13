@@ -2,6 +2,7 @@ package com.example.mascotasapp.navigation.fragments;
 
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -9,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,11 +56,13 @@ public class SearchFragment extends Fragment {
     FirebaseFirestore db;
     List<Map<String, Object>> mapList;
     SearchView search;
+    CardView filters;
     ChipGroup categories;
     SeekBar range;
     boolean seekBarChange = false;
     Switch state;
-    Button btnSearch;
+    Button btnSearch, btnFilter;
+    boolean visibleFilter;
     GeoPoint geo;
     Context context;
     Boolean first;
@@ -76,6 +80,7 @@ public class SearchFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,7 +92,6 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.FragSearchRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         noResults = view.findViewById(R.id.FragSearchNoResults);
-
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         locationListener = new LocationListener() {
@@ -108,9 +112,23 @@ public class SearchFragment extends Fragment {
         state = view.findViewById(R.id.FragSearchSwitchState);
         state.setChecked(true);
         btnSearch = view.findViewById(R.id.FragSearchButtonSearch);
+        btnFilter = view.findViewById(R.id.FragSearchButtonFilter);
+        visibleFilter = false;
         TextView rangeText = view.findViewById(R.id.FragSearchEditTextRange);
 
         btnSearch.setOnClickListener(v -> firebaseSearchPublisFilters(view));
+
+        filters = view.findViewById(R.id.frag_search_card_filter);
+
+        btnFilter.setOnClickListener (v -> {
+            if (!visibleFilter) {
+                filters.setVisibility(View.VISIBLE);
+                visibleFilter = true;
+            } else {
+                filters.setVisibility(View.GONE);
+                visibleFilter = false;
+            }
+        });
 
         range.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

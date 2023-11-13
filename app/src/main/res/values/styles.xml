@@ -5,17 +5,21 @@
         <item name="android:background">@drawable/rounded_blue_edittext_background</item>
     </style>
 
-    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light">
+    <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/fui_bgTwitter</item>
         <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="android:background">@color/colorLightBackWhite</item>
     </style>
 
-    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight">
+    <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorViolet</item>
         <item name="android:textColor">@color/colorLightBackWhite</item>
         <item name="android:background">@color/textPrimaryColor</item>
+        <item name="colorPrimaryVariant">@color/fui_bgAnonymous</item>
     </style>
 
-
+    <style name="logoFont">
+        <item name="android:fontFamily"></item>
+        <!-- Otros atributos de estilo que desees aplicar -->
+    </style>
 </resources>

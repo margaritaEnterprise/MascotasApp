@@ -1,68 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp"
     tools:context=".navigation.fragments.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <LinearLayout
+        <SearchView
+            android:id="@+id/FragSearchSearchView"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </SearchView>
+
+        <Button
+            android:id="@+id/FragSearchButtonFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/filter"
+            android:layout_marginLeft="5dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Filtros"
+            android:textSize="20dp" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="?android:attr/listChoiceIndicatorMultiple" />
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/frag_search_card_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <SearchView
-                    android:id="@+id/FragSearchSearchView"
-                    android:layout_width="305dp"
-                    android:layout_height="match_parent">
-
-                </SearchView>
-
-                <Button
-                    android:id="@+id/FragSearchButtonSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Search"
-                    android:background="@color/colorPrimary"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Filtros"
-                    android:textSize="20dp" />
-
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="?android:attr/listChoiceIndicatorMultiple" />
-            </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="horizontal">
-
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/FragSearchChipGroup"
                     android:layout_width="wrap_content"
@@ -101,18 +103,15 @@
                         android:tag="found"/>
 
                 </com.google.android.material.chip.ChipGroup>
-
                 <Space
-                    android:layout_width="30dp"
+                    android:layout_width="10dp"
                     android:layout_height="wrap_content" />
-
                 <Switch
                     android:id="@+id/FragSearchSwitchState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="State" />
             </LinearLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -121,46 +120,51 @@
 
                 <TextView
                     android:id="@+id/FragSearchEditTextRange"
-                    android:layout_width="107dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:text="Range: 10km" />
 
                 <SeekBar
                     android:id="@+id/FragSearchSeekBarRange"
-                    android:layout_width="255dp"
-                    android:layout_height="27dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:max="120"
                     android:min="1"
                     android:progress="10"
                 />
+                <Button
+                    android:id="@+id/FragSearchButtonSearch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search" />
 
             </LinearLayout>
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </com.google.android.material.chip.ChipGroup>
-
         </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/FragSearchRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    </androidx.cardview.widget.CardView>
 
 
-        </androidx.recyclerview.widget.RecyclerView>
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/FragSearchNoResults"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/no_results"
-            android:textSize="30dp"
-            android:visibility="gone" />
-    </LinearLayout>
+    </com.google.android.material.chip.ChipGroup>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/FragSearchRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/FragSearchNoResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/no_results"
+        android:textSize="30dp"
+        android:visibility="gone" />
+
+</LinearLayout>
