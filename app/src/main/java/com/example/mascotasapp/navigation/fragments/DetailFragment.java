@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -11,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mascotasapp.R;
+import com.example.mascotasapp.utils.MyTarget;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -44,10 +49,14 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.logging.type.HttpRequest;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -55,6 +64,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     FirebaseAuth mAuth;
@@ -109,6 +119,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         mMapView.getMapAsync(this);
 
         setData();
+
+        String url  = (String) post.get("photoUrl");
+        postPhoto.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                downloadAndSaveImage(context, url, "post_photo.jpg");
+                return true;
+            }
+        });
+
 
         return view;
     }
@@ -206,6 +226,17 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 });
     }
 
+
+    // Método para descargar y guardar la imagen en la memoria externa
+    private void downloadAndSaveImage(Context context, String imageUrl, String fileName) {
+        try {
+            Picasso.with(context)
+                    .load(imageUrl)
+                    .into((Target) new MyTarget(context, fileName));
+        }catch (Exception e){
+            Log.d("sada", e.getMessage());
+        }
+    }
 
     @Override
     public void onResume() {
