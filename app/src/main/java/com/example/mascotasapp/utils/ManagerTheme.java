@@ -18,8 +18,8 @@ public class ManagerTheme {
         if (!sharedPreference.contains("language") && !sharedPreference.contains("theme")) {
             // default
             SharedPreferences.Editor editPref = sharedPreference.edit();
-            editPref.putString("language", "en"); //en, es, ch
-            editPref.putString("theme", "dark"); //light, dark
+            editPref.putString("language", "es"); //en, es, ch
+            editPref.putString("theme", "light"); //light, dark
             editPref.apply();
         }
         return (Map<String,Object>) sharedPreference.getAll();

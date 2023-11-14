@@ -10,27 +10,21 @@
         android:tag="Search"
         android:orderInCategory="1"/>
     <item
-        android:id="@+id/nav_notify"
-        android:icon="@drawable/ic_notify"
-        android:title="@string/notify"
-        android:tag="Notify"
-        android:orderInCategory="2"/>
-    <item
         android:id="@+id/nav_add"
         android:icon="@drawable/ic_add"
         android:title="@string/add"
         android:tag="Add"
-        android:orderInCategory="3"/>
+        android:orderInCategory="2"/>
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_settings"
         android:title="@string/setting"
         android:tag="Setting"
-        android:orderInCategory="4"/>
+        android:orderInCategory="3"/>
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_profile"
         android:title="@string/profile"
         android:tag="Profile"
-        android:orderInCategory="5"/>
+        android:orderInCategory="4"/>
 </menu>

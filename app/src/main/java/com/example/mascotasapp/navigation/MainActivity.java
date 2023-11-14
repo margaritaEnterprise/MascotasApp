@@ -70,16 +70,13 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     replaceFragment(new SearchFragment(this));
                     break;
                 case "2":
-                    replaceFragment(new NotifyFragment());
-                    break;
-                case "3":
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
                     startActivity(intent);
                     break;
-                case "4":
+                case "3":
                     replaceFragment(new SettingFragment(dataUser, MainActivity.this));
                     break;
-                case "5":
+                case "4":
                     replaceFragment(new ProfileFragment(dataUser));
                     break;
             }

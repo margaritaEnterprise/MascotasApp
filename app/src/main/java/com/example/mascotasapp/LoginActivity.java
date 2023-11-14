@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mascotasapp.navigation.MainActivity;
 import com.example.mascotasapp.signup.SignUpActivity;
+import com.example.mascotasapp.utils.ManagerTheme;
 import com.example.mascotasapp.utils.Validator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -19,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,10 +33,12 @@ public class LoginActivity extends AppCompatActivity {
     EditText emailForm;
     EditText passwordForm;
     Validator validator = new Validator();
+    Map<String,Object> userPrefMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        userPrefMap = ManagerTheme.getUserPreference(this);
+        ManagerTheme.setUserPreference(this, userPrefMap);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
