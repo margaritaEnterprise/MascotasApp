@@ -112,6 +112,7 @@ public class PostActivity extends AppCompatActivity {
         savePost = findViewById(R.id.actPostBtnPost);
         savePost.setOnClickListener(v -> createPost(mAuth.getCurrentUser()));
     }
+
     private void createPost(FirebaseUser userAuth){
         if(!validatePost()){
             Toast.makeText(PostActivity.this, errorMessagge, Toast.LENGTH_SHORT).show();
@@ -279,6 +280,7 @@ public class PostActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
     //Obtener coordenadas
     private Boolean displayGpsStatus() {
         if (locationManager != null) {
@@ -288,6 +290,7 @@ public class PostActivity extends AppCompatActivity {
             return false;
         }
     }
+
     public class MyLocationListener implements LocationListener {
         private double longitude, latitude;
         @Override

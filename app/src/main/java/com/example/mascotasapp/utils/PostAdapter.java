@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.signup.fragments.RegisterAuthFragment;
 import com.google.android.material.chip.Chip;
+import com.google.android.material.color.MaterialColors;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

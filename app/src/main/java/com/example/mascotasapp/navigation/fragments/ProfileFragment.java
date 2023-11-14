@@ -37,12 +37,15 @@ public class ProfileFragment extends Fragment {
     RecyclerView recyclerView;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
-    TextView username;
-    TextView noResults;
+    TextView username, email, noResults;
     ImageView photoUser;
     Uri photoUserUri;
+    MyPostAdapter adapter;
+    Map<String,Object> dataUser;
 
-    public ProfileFragment() { }
+    public ProfileFragment(Map<String,Object> dataUser) {
+        this.dataUser = dataUser;
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,7 @@ public class ProfileFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         username = view.findViewById(R.id.frag_profile_username);
+        email = view.findViewById(R.id.FragProfileEmail);
         photoUser = view.findViewById(R.id.frag_profile_image);
         noResults = view.findViewById(R.id.FragProfileText);
 
@@ -68,36 +72,24 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-    public void getUser(){
-        CollectionReference collections = db.collection("users");
+    public void getUser() {
+        username.setText(dataUser.get("username").toString());
+        photoUserUri = Uri.parse(dataUser.get("photoUrl").toString());
+        Picasso.with(requireContext())
+                .load(photoUserUri)
+                .resize(50, 50)
+                .into(photoUser);
+        String mail = mAuth.getCurrentUser().getEmail();
+        email.setText(mail);
         String userId = mAuth.getCurrentUser().getUid();
-        Query query = collections.whereEqualTo("id", userId);
-        query
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
-                    username.setText(doc.get("username").toString());
-                    photoUserUri = Uri.parse(doc.get("photoUrl").toString());
-                    Picasso.with(requireContext())
-                            .load(photoUserUri)
-                            .resize(50, 50)
-                            .into(photoUser);
-                    getMyPosts();
-                })
-                    .addOnFailureListener(e ->{
-                        Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+        getMyPosts(userId);
     }
-
-    public void getMyPosts(){
-        String name = username.getText().toString();
-        String uri = photoUserUri.toString();
+    public void getMyPosts(String userId){
+        String name = dataUser.get("username").toString();
+        String uri = dataUser.get("photoUrl").toString();
 
         CollectionReference collections = db.collection("posts");
-
-        String userId = mAuth.getCurrentUser().getUid();
         Query query = collections.whereEqualTo("userId", userId);
-
         query
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -120,7 +112,7 @@ public class ProfileFragment extends Fragment {
                     }
 
                     if(!items.isEmpty()){
-                        MyPostAdapter adapter = new MyPostAdapter(items, requireContext());
+                        adapter = new MyPostAdapter(items, requireContext());
                         recyclerView.setAdapter(adapter);
                     } else {
                         noResults.setVisibility(View.VISIBLE);
@@ -131,6 +123,5 @@ public class ProfileFragment extends Fragment {
                     Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
-
 }
 

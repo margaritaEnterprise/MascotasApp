@@ -3,6 +3,7 @@ package com.example.mascotasapp.navigation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         updateUI(currentUser);
 
         replaceFragment(new SearchFragment(this));
-        ponerToolbar();
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item  -> {
             switch (Objects.requireNonNull(item.getTitle()).toString()) {
@@ -74,16 +74,17 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     replaceFragment(new SettingFragment(dataUser, MainActivity.this));
                     break;
                 case "Profile":
-                    replaceFragment(new ProfileFragment());//get
+                    replaceFragment(new ProfileFragment(dataUser));
                     break;
             }
             return true;
         });
     }
     private  void ponerToolbar() {
+        Uri uri = Uri.parse(dataUser.get("photoUrl").toString());
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_toolbar, new ToolbarFragment(dataUser))
+                .replace(R.id.frame_toolbar, new ToolbarFragment(uri))
                 .commit();
     }
     private  void replaceFragment(Fragment fragment) {
@@ -114,7 +115,8 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         dataUser = documentSnapshot.getData();
-                        //loadDataUI(dataUser, user);
+                        ponerToolbar();
+
                     } else {
                         goToSignUpActivity();
                     }
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
     @Override
     public void editSuccess() {
-        replaceFragment(new ProfileFragment());//get
+        replaceFragment(new ProfileFragment(dataUser));//get
     }
 
     public void registrarDispositivo(){
@@ -190,6 +192,5 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                 })
                 .addOnFailureListener(v -> Log.w("Messaging", "No se guardo deviceId"));
     }
-
 
 }

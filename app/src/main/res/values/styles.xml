@@ -8,7 +8,7 @@
     <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/fui_bgTwitter</item>
         <item name="android:textColor">@color/textPrimaryColor</item>
-
+        <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
@@ -16,6 +16,7 @@
         <item name="android:textColor">@color/colorLightBackWhite</item>
         <item name="android:background">@color/textPrimaryColor</item>
         <item name="colorPrimaryVariant">@color/fui_bgAnonymous</item>
+        <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="logoFont">
