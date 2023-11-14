@@ -117,6 +117,7 @@ public class SearchFragment extends Fragment {
         state = view.findViewById(R.id.FragSearchSwitchState);
         state.setChecked(true);
         btnSearch = view.findViewById(R.id.FragSearchButtonSearch);
+        btnSearch.setEnabled(false);
         btnFilter = view.findViewById(R.id.FragSearchButtonFilter);
         visibleFilter = false;
         TextView rangeText = view.findViewById(R.id.FragSearchEditTextRange);
@@ -202,6 +203,7 @@ public class SearchFragment extends Fragment {
                         List<String> idsList = new ArrayList<>(userIds);
                         searchUsers(idsList);
                     }else {
+                        btnSearch.setEnabled(true);
                         loader.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         noResults.setVisibility(View.VISIBLE);
@@ -251,9 +253,11 @@ public class SearchFragment extends Fragment {
         loader.setVisibility(View.GONE);
         PostAdapter postAdapter = new PostAdapter(mapList, context);
         recyclerView.setAdapter(postAdapter);
+        btnSearch.setEnabled(true);
     }
 
     public void firebaseSearchPublisFilters(View view){
+        btnSearch.setEnabled(false);
         recyclerView.setVisibility(View.GONE);
         loader.setVisibility(View.VISIBLE);
         noResults.setVisibility(View.GONE);
@@ -325,6 +329,7 @@ public class SearchFragment extends Fragment {
                         List<String> idsList = new ArrayList<>(userIds);
                         searchUsers(idsList);
                     }else {
+                        btnSearch.setEnabled(true);
                         loader.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.GONE);
                         noResults.setVisibility(View.VISIBLE);

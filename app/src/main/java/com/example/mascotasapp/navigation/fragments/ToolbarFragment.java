@@ -78,8 +78,7 @@ public class ToolbarFragment extends Fragment {
         toolbar.setNavigationOnClickListener(e -> {
             actionBar.setDisplayShowHomeEnabled(false);
             actionBar.setDisplayHomeAsUpEnabled(false);
-            Intent intent = new Intent(((AppCompatActivity)getActivity()), MainActivity.class);
-            startActivity(intent);
+            ((AppCompatActivity)getActivity()).onBackPressed();
         });
     }
 

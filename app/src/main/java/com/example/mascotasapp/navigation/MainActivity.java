@@ -1,5 +1,6 @@
 package com.example.mascotasapp.navigation;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.mascotasapp.LoginActivity;
 import com.example.mascotasapp.NotifyActivity;
@@ -117,10 +119,11 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                 .replace(R.id.frame_toolbar, toolbar)
                 .commit();
     }
-    private  void replaceFragment(Fragment fragment) {
-            getSupportFragmentManager()
+    private void replaceFragment(Fragment fragment) {
+       getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.frame_layout, fragment)
+                    .addToBackStack(null)
                     .commit();
     }
     @Override
@@ -226,5 +229,22 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                 })
                 .addOnFailureListener(v -> Log.w("Messaging", "No se guardo deviceId"));
     }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        if (fragmentManager.getBackStackEntryCount() > 1) {
+            Fragment currentFragment = fragmentManager.findFragmentById(R.id.frame_layout);
+            if (currentFragment instanceof EditFragment) {
+                toolbar.addArrow();
+            }
+            fragmentManager.popBackStack();
+        } else {
+            finish();
+        }
+    }
+
 
 }
