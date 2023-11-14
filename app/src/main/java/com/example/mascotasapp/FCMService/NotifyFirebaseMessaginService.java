@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import com.example.mascotasapp.NotifyActivity;
 import com.example.mascotasapp.R;
+import com.example.mascotasapp.navigation.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.squareup.picasso.Picasso;
@@ -29,36 +30,38 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage){
         Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
-        // Acceder a los datos del mensaje usando remoteMessage.getData()
         String type = remoteMessage.getData().get("type");
         String title = remoteMessage.getData().get("title");
         String photo = remoteMessage.getData().get("photo");
         String message = remoteMessage.getData().get("message");
         String deviceId = remoteMessage.getData().get("deviceId");
         String username = remoteMessage.getData().get("username");
+        String userPhoto = remoteMessage.getData().get("userPhoto");
         boolean state = false;
+        String phone = "";
         if (type.equals("2")) {
             state = Boolean.parseBoolean(remoteMessage.getData().get("state"));
+            if(state){
+                phone = remoteMessage.getData().get("phone");
+            }
         }
-        // Muestra la notificación o realiza otras acciones según tus necesidades
-        showNotification(type, title, photo, message, deviceId, username, state);
+        showNotification(type, title, photo, message, deviceId, username, state, userPhoto, phone);
     }
 
-    private void showNotification(String type, String title, String photo, String message, String deviceId, String username, boolean state) {
-        // Crear un Intent para la actividad principal de la aplicación
-        Intent intent = new Intent(this, NotifyActivity.class);
+    private void showNotification(String type, String title, String photo, String message, String deviceId, String username, boolean state,String userPhoto, String phone) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("fragment", "1");
         intent.putExtra("type", type);
         intent.putExtra("title", title);
         intent.putExtra("photoUrl", photo);
         intent.putExtra("message", message);
         intent.putExtra("deviceId", deviceId);
         intent.putExtra("username", username);
-        intent.putExtra("state", state);
-        // Asegúrate de que la bandera PendingIntent.FLAG_UPDATE_CURRENT se establezca para actualizar los extras si la notificación se ha creado previamente
+        intent.putExtra("notifyState", state);
+        intent.putExtra("userPhotoUrl", userPhoto);
+        intent.putExtra("phone", phone);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_MUTABLE);
-
-
-        // Crear un RemoteViews para la vista compacta
+        title = getString(R.string.notify_title);
         @SuppressLint("RemoteViewLayout") RemoteViews notificationLayoutCompact = new RemoteViews(getPackageName(), R.layout.notification_layout_compact);
         notificationLayoutCompact.setTextViewText(R.id.notification_title, title);
         if (type.equals("1")) {
@@ -70,12 +73,10 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
         }
         notificationLayoutCompact.setTextViewText(R.id.notification_message, username + " " + message);
 
-        // Crear un RemoteViews para la vista expandida
         @SuppressLint("RemoteViewLayout") RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_layout_expanded);
         notificationLayoutExpanded.setTextViewText(R.id.notification_title, title);
         notificationLayoutExpanded.setTextViewText(R.id.notification_message,username + " " + message);
 
-        // Cargar la imagen usando Picasso en ambas vistas
         if (photo != null && !photo.isEmpty()) {
             Bitmap bitmap = getBitmapFromUrl(photo);
             if (bitmap != null) {
@@ -86,7 +87,6 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
             }
         }
 
-        // Construir la notificación con las vistas compacta y expandida
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "channel_id")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setCustomContentView(notificationLayoutCompact)
@@ -94,22 +94,16 @@ public class NotifyFirebaseMessaginService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
 
-        // Obtener el servicio de notificación
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        // Comprobar si la versión de Android es mayor o igual a Oreo
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Crear un canal de notificación para versiones de Android 8.0 y superiores
             NotificationChannel channel = new NotificationChannel("channel_id", "Nombre del canal", NotificationManager.IMPORTANCE_DEFAULT);
             notificationManager.createNotificationChannel(channel);
         }
 
-        // Mostrar la notificación
+
         notificationManager.notify(0, notificationBuilder.build());
     }
-
-
-// Resto del código...
 
 
     private Bitmap getBitmapFromUrl(String url) {

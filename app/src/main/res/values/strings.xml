@@ -91,10 +91,6 @@
     <string name="input_email">Input email</string>
     <string name="input_a_valid_description">Input a valid description.</string>
 
-    <string name="emailForm">Correo electrónico</string>
-    <string name="passwordForm">Contraseña</string>
-    <string name="btnLogin">Iniciar sesión</string>
-    <string name="btnLogup">Registrarse</string>
     <string name="permission_storage">Permission denied</string>
     <string name="image_downloaded">Image downloaded</string>
     <string name="image_succes_downloaded">Image has been downloaded successfully</string>
@@ -104,5 +100,6 @@
     <string name="notify_text_post">Contact</string>
     <string name="state_post_active">Active</string>
     <string name="state_post_closed">Closed</string>
+    <string name="input_a_valid_phone">Input a valid phone!!!</string>
     <string name="exit">Log out</string>
 </resources>

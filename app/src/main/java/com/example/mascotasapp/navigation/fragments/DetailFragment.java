@@ -206,7 +206,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void sendNotification(String username,String myToken){
+    private void sendNotification(String username,String myToken, String userPhoto){
         RequestQueue myrequest= Volley.newRequestQueue(context);
         JSONObject json = new JSONObject();
 
@@ -219,6 +219,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             notificacion.put("username", username);
             notificacion.put("message", R.string.notify_message_type1);
             notificacion.put("deviceId", myToken);
+            notificacion.put("userPhoto", userPhoto);
 
             json.put("data",notificacion);
             String URL="https://fcm.googleapis.com/fcm/send";
@@ -247,7 +248,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     DocumentSnapshot doc = queryDocumentSnapshots.getDocuments().get(0);
-                    sendNotification( doc.get("username").toString(), doc.get("deviceId").toString() );
+                    sendNotification( doc.get("username").toString(), doc.get("deviceId").toString(), doc.get("photoUrl").toString() );
                 })
                 .addOnFailureListener(e ->{
                     Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();

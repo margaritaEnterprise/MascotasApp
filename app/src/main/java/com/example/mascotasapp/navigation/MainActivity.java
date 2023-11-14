@@ -9,9 +9,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 
 import com.example.mascotasapp.LoginActivity;
+import com.example.mascotasapp.NotifyActivity;
 import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.navigation.fragments.DetailFragment;
@@ -31,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
 
-        replaceFragment(new SearchFragment(this));
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item  -> {
             switch (Objects.requireNonNull(item.getTitle()).toString()) {
@@ -79,6 +81,31 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
             }
             return true;
         });
+        if (getIntent().getExtras() != null) {
+            String fragment = getIntent().getStringExtra("fragment");
+            if(fragment.equals("1")){
+                String username = getIntent().getStringExtra("username");
+                String photoUrl = getIntent().getStringExtra("photoUrl");
+                String type = getIntent().getStringExtra("type");
+                String message = getIntent().getStringExtra("message");
+                String deviceId = getIntent().getStringExtra("deviceId");
+                String userPhotoUrl = getIntent().getStringExtra("userPhotoUrl");
+                String phone = getIntent().getStringExtra("phone");
+                boolean state = !phone.isEmpty();
+                Map<String, Object> notify= new HashMap<>();
+                notify.put("username", username);
+                notify.put("photoUrl", photoUrl);
+                notify.put("type", type);
+                notify.put("message", message);
+                notify.put("deviceId", deviceId);
+                notify.put("userPhotoUrl", userPhotoUrl);
+                notify.put("phone", phone);
+                notify.put("state", state);
+                replaceFragment(new NotifyFragment(notify));
+                return;
+            }
+        }
+        replaceFragment(new SearchFragment(this));
     }
     private  void ponerToolbar() {
         Uri uri = Uri.parse(dataUser.get("photoUrl").toString());
