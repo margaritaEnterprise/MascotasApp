@@ -70,8 +70,17 @@ public class ToolbarFragment extends Fragment {
         return view;
     }
 
-    public Toolbar getToolbar() {
-        return toolbar;
+    public void addArrow() {
+        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        ActionBar actionBar =  ((AppCompatActivity)getActivity()).getSupportActionBar();
+        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(e -> {
+            actionBar.setDisplayShowHomeEnabled(false);
+            actionBar.setDisplayHomeAsUpEnabled(false);
+            Intent intent = new Intent(((AppCompatActivity)getActivity()), MainActivity.class);
+            startActivity(intent);
+        });
     }
 
     public void setDataUser(){

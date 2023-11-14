@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.mascotasapp.LoginActivity;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     BottomNavigationView bottomNavigationView;
     Map<String, Object> dataUser;
     Map<String, Object> userPrefMap;
+    ToolbarFragment toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userPrefMap = ManagerTheme.getUserPreference(this);
@@ -107,11 +111,13 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         }
         replaceFragment(new SearchFragment(this));
     }
+
     private  void ponerToolbar() {
         Uri uri = Uri.parse(dataUser.get("photoUrl").toString());
+        toolbar = new ToolbarFragment(uri, false, this);
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_toolbar, new ToolbarFragment(uri, false, this))
+                .replace(R.id.frame_toolbar, toolbar)
                 .commit();
     }
     private  void replaceFragment(Fragment fragment) {
@@ -144,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                         dataUser = documentSnapshot.getData();
                         ponerToolbar();
 
+
                     } else {
                         goToSignUpActivity();
                     }
@@ -165,18 +172,20 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
     @Override
     public void postClick(Map<String, Object> item) {
+        toolbar.addArrow();
         replaceFragment(new DetailFragment(item, this, this));
     }
 
     //Metodo del my post adapter: open photo
     @Override
     public void viewDetailMyPost(Map<String, Object> item) {
-
+        toolbar.addArrow();
         replaceFragment(new DetailFragment(item, this, this));
     }
     //abrir
     @Override
     public void btnClickEdit(Map<String, Object> item) {
+        toolbar.addArrow();
         replaceFragment(new EditFragment(item, this));
     }
 
