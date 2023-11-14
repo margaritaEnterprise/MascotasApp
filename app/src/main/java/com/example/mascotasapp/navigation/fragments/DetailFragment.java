@@ -3,6 +3,7 @@ package com.example.mascotasapp.navigation.fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -147,7 +148,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         postPhoto.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                downloadAndSaveImage();
+                showDialog();
                 return true;
             }
         });
@@ -156,7 +157,19 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-
+    public void showDialog() {
+        final CharSequence[] options = {context.getString(R.string.download_photo), context.getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(context.getString(R.string.are_you_sure));
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals(context.getString(R.string.download_photo))) {
+                downloadAndSaveImage();
+            } else if (options[item].equals(context.getString(R.string.cancel))) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;

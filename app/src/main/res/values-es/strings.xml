@@ -105,4 +105,6 @@
     <string name="add">Subir</string>
     <string name="setting">Configuracion</string>
     <string name="profile">Perfil</string>
+    <string name="download_photo">Descargar foto</string>
+
 </resources>

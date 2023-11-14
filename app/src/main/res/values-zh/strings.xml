@@ -104,4 +104,6 @@
     <string name="add">上传</string>
     <string name="setting">设置</string>
     <string name="profile">个人资料</string>
+    <string name="download_photo">下载照片</string>
+
 </resources>
