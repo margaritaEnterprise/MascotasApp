@@ -1,7 +1,7 @@
 package com.example.mascotasapp.navigation.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mascotasapp.LoginActivity;
-import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.navigation.MainActivity;
 import com.google.android.material.chip.Chip;
@@ -39,13 +38,13 @@ public class SettingFragment extends Fragment {
     FirebaseAuth mAuth;
     SharedPreferences sharedPreference;
     SharedPreferences.Editor editPref;
-    Context activity;
+    Context context;
     Map<String, Object> dataUser; //foto name
     Map<String, Object> userPrefMap; //las seteadas
 
-    public SettingFragment(Map<String, Object> dataUser, Context activity) {
+    public SettingFragment(Map<String, Object> dataUser, Context context) {
         this.dataUser = dataUser;
-        this.activity = (Context) activity;
+        this.context = (Context) context;
     }
 
     @SuppressLint("MissingInflatedId")
@@ -53,7 +52,7 @@ public class SettingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        sharedPreference = activity.getApplicationContext()
+        sharedPreference = context.getApplicationContext()
                 .getSharedPreferences("userPreferences", Context.MODE_PRIVATE);
         mAuth = FirebaseAuth.getInstance();
         editPref =  sharedPreference.edit();
@@ -66,7 +65,7 @@ public class SettingFragment extends Fragment {
         save = view.findViewById(R.id.frag_setting_save);
         logout = view.findViewById(R.id.frag_setting_logout);
 
-        logout.setOnClickListener(v -> logOut());
+        logout.setOnClickListener(v -> confirm());
         save.setOnClickListener(v -> savePreferences());
 
         setData();
@@ -100,7 +99,19 @@ public class SettingFragment extends Fragment {
         selectedTheme = themes.findViewWithTag(userPrefMap.get("theme").toString());
         selectedTheme.setChecked(true);
     }
-
+    public void confirm() {
+        final CharSequence[] options = {context.getString(R.string.exit), context.getString(R.string.cancel)};
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        builder.setTitle(context.getString(R.string.are_you_sure));
+        builder.setItems(options, (dialog, item) -> {
+            if (options[item].equals(context.getString(R.string.exit))) {
+                logOut();
+            } else if (options[item].equals(context.getString(R.string.cancel))) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
+    }
     public void logOut(){
         mAuth.signOut();
         Intent intent = new Intent(requireContext(), LoginActivity.class);

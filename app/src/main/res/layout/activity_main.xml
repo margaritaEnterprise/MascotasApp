@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".navigation.MainActivity"
-    android:paddingTop="15dp">
+    tools:context=".navigation.MainActivity">
 
     <FrameLayout
         android:id="@+id/frame_toolbar"

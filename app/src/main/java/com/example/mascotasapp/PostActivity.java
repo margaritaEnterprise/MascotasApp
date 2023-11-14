@@ -26,10 +26,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.mascotasapp.navigation.MainActivity;
+import com.example.mascotasapp.navigation.fragments.ToolbarFragment;
 import com.example.mascotasapp.utils.ImageHandler;
 import com.example.mascotasapp.utils.ManagerTheme;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,6 +53,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
@@ -83,6 +86,7 @@ public class PostActivity extends AppCompatActivity {
     Button savePost;
     Map<String, Object> userPrefMap;
     String errorMessagge;
+    ToolbarFragment toolbarFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userPrefMap = ManagerTheme.getUserPreference(this);
@@ -93,6 +97,8 @@ public class PostActivity extends AppCompatActivity {
         //Firestore
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+
+        setToolbar();
         //Location
         inputLocation = findViewById(R.id.actPostInputLocation);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -125,7 +131,6 @@ public class PostActivity extends AppCompatActivity {
             postPhoto.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) postPhoto.getDrawable()).getBitmap();
             uploadImageToFirebaseStorage(userAuth, bitmap);
-
         } catch (ClassCastException e) {
             Toast.makeText(PostActivity.this, R.string.upload_photo, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
@@ -195,12 +200,26 @@ public class PostActivity extends AppCompatActivity {
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(PostActivity.this, R.string.save_post_success, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(PostActivity.this, MainActivity.class);
-                    
                     startActivity(intent);
+                    finish();
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(PostActivity.this, R.string.save_post_fail, Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    public void setToolbar(){
+        String uid = mAuth.getCurrentUser().getUid();
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnSuccessListener(snap -> {
+            Uri uri = Uri.parse(snap.getData().get("photoUrl").toString());
+            toolbarFragment = new ToolbarFragment(uri, true, this);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.ActPostToolbar, toolbarFragment )
+                    .commit();
+        });
+
     }
 
     //Permisos

@@ -6,21 +6,78 @@
     </style>
 
     <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="colorPrimary">@color/fui_bgTwitter</item>
-        <item name="android:textColor">@color/textPrimaryColor</item>
         <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/colorViolet</item>
-        <item name="android:textColor">@color/colorLightBackWhite</item>
-        <item name="android:background">@color/textPrimaryColor</item>
-        <item name="colorPrimaryVariant">@color/fui_bgAnonymous</item>
         <item name="fontFamily">@font/poppins_regular</item>
     </style>
 
+    <style name="laig" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="colorPrimary">@color/fui_bgTwitter</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="android:textColor">@color/textPrimaryColor</item>
+        <item name="colorSecondary">@color/fui_bgTwitter</item><!-- spinner -->
+        <item name="colorSurface">@color/fui_bgTwitter</item> <!-- chip -->
+
+
+    </style>
+
+    <style name="dar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="android:textColor">@color/colorLightBackWhite</item>
+        <item name="colorSecondary">@color/fui_bgTwitter</item><!-- spinner -->
+        <item name="colorSurface">@color/fui_bgTwitter</item> <!-- chip -->
+        <item name="android:colorBackground">#111111</item> <!-- frag y tool, el nav no -->
+
+    </style>
+
+    <style name="Dark2" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="fontFamily">@font/poppins_regular</item>
+        <item name="colorPrimary">#3700B3</item>
+        <item name="colorPrimaryVariant">#FFFFFF</item>
+        <item name="colorSecondary">#03DAC6</item>
+        <item name="colorSecondaryVariant">#018786</item>
+        <item name="colorOnSecondary">#000000</item>
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="colorOnBackground">#000000</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#000000</item>
+        <item name="colorError">#B00020</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <!--
+        <item name="backgroundTintMode"></item>
+        <item name="android:background">#212121</item>
+        <item name="android:backgroundTint"></item>
+        <item name="android:backgroundDimAmount"></item>
+        <item name="android:backgroundDimEnabled"></item>
+        <item name="android:backgroundStacked"></item>
+        <item name="android:backgroundSplit"></item>
+        -->
+    </style>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryVariant">#000000</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#2962FF</item>
+        <item name="colorSecondaryVariant">#0039CB</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorError">#F44336</item>
+        <item name="colorOnError">#FFFFFF</item>
+        <item name="colorOnSurface">#212121</item>
+        <item name="android:colorBackground">@color/background</item>
+        <item name="colorOnBackground">#212121</item>
+    </style>
+    <color name="background">#FAFAFA</color>
     <style name="logoFont">
         <item name="android:fontFamily"></item>
         <!-- Otros atributos de estilo que desees aplicar -->
+        <item name="colorSecondary">@color/fui_bgAnonymous</item><!-- spinner -->
+        <item name="colorSurface">#FFFFFF</item> <!-- chip -->
+        <item name="android:colorBackground">#111111</item> <!-- frag y tool, el nav no -->
+
     </style>
 </resources>

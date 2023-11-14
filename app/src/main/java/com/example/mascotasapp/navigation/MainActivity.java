@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
         Uri uri = Uri.parse(dataUser.get("photoUrl").toString());
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_toolbar, new ToolbarFragment(uri))
+                .replace(R.id.frame_toolbar, new ToolbarFragment(uri, false, this))
                 .commit();
     }
     private  void replaceFragment(Fragment fragment) {
