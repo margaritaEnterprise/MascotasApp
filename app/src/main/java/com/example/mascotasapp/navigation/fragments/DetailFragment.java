@@ -184,7 +184,23 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         username.setText((CharSequence) post.get("username"));
         description.setText((CharSequence) post.get("description"));
-        category.setText((CharSequence)post.get("category"));
+        String value = (String) post.get("category");
+        String text = "";
+        switch (value){
+            case "adoption":
+                text = context.getString(R.string.adoption);
+                break;
+            case "lost":
+                text = context.getString(R.string.lost);
+                break;
+            case "found":
+                text = context.getString(R.string.found);
+                break;
+            case "couple":
+                text = context.getString(R.string.couple);
+                break;
+        }
+        category.setText(text);
 
         Uri userPhotoUrl = Uri.parse((String) post.get("userPhotoUrl"));
         Picasso.with(requireContext())

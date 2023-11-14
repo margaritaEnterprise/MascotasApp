@@ -86,11 +86,12 @@
                 <Space
                     android:layout_width="10dp"
                     android:layout_height="wrap_content" />
+
                 <Switch
                     android:id="@+id/FragSearchSwitchState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="State" />
+                    android:text="@string/state" />
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -102,7 +103,7 @@
                     android:id="@+id/FragSearchEditTextRange"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Range: 10km" />
+                    android:text=" " />
 
                 <SeekBar
                     android:id="@+id/FragSearchSeekBarRange"

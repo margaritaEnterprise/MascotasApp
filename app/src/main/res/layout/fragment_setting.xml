@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text="@string/chinese"
-                    android:tag="ch"
+                    android:tag="zh"
                     android:checkable="true"/>
             </com.google.android.material.chip.ChipGroup>
         </LinearLayout>
