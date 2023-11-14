@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,12 +41,12 @@ public class ProfileFragment extends Fragment {
     TextView username, email, noResults;
     ImageView photoUser;
     Uri photoUserUri;
-    MyPostAdapter adapter;
     Map<String,Object> dataUser;
 
     public ProfileFragment(Map<String,Object> dataUser) {
         this.dataUser = dataUser;
     }
+    ProgressBar loader;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,7 @@ public class ProfileFragment extends Fragment {
         email = view.findViewById(R.id.FragProfileEmail);
         photoUser = view.findViewById(R.id.frag_profile_image);
         noResults = view.findViewById(R.id.FragProfileText);
+        loader = view.findViewById(R.id.frag_profile_progressbar);
 
         recyclerView = view.findViewById(R.id.frag_profile_recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
@@ -112,9 +114,11 @@ public class ProfileFragment extends Fragment {
                     }
 
                     if(!items.isEmpty()){
-                        adapter = new MyPostAdapter(items, requireContext());
+                        loader.setVisibility(View.GONE);
+                        MyPostAdapter adapter = new MyPostAdapter(items, requireContext());
                         recyclerView.setAdapter(adapter);
                     } else {
+                        loader.setVisibility(View.GONE);
                         noResults.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }

@@ -98,4 +98,6 @@
     <string name="permission_storage">Permission denied</string>
     <string name="image_downloaded">Image downloaded</string>
     <string name="image_succes_downloaded">Image has been downloaded successfully</string>
+    <string name="input_a_valid_location">Input a valid location !!!</string>
+    <string name="input_a_valid_category">Input a valid category !!!</string>
 </resources>

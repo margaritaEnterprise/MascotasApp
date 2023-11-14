@@ -71,6 +71,12 @@
             android:textAlignment="center"
             android:textSize="30dp"
             android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/frag_profile_progressbar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </ScrollView>
