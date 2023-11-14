@@ -12,14 +12,14 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:elevation="4dp"
             android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/FragPostImagePost"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/FragPostImagePost">
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
@@ -43,9 +43,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="username"
-                android:textSize="20dp"
                 android:textAlignment="center"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:textSize="20dp" />
 
             <Space
                 android:layout_width="15dp"
@@ -64,6 +64,7 @@
             <Space
                 android:layout_width="15dp"
                 android:layout_height="wrap_content" />
+
             <com.google.android.material.chip.Chip
                 android:id="@+id/FragPostChipState"
                 android:layout_width="wrap_content"
@@ -74,22 +75,67 @@
                 android:textSize="15dp"
                 tools:ignore="TextSizeCheck" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:elevation="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/FragPostImagePost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FragDetailTextViewEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/edit_text_post"
+                android:textSize="20dp"
+                android:visibility="gone" />
+
             <ImageButton
                 android:id="@+id/FragDetailBtnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/click_para_editar"
                 android:src="@drawable/ico_edit"
-                android:visibility="gone"
-                android:contentDescription="@string/click_para_editar" />
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:elevation="4dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/FragPostImagePost"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/FragDetailTextViewNotify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:text="@string/notify_text_post"
+                android:textSize="20dp"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/FragDetailBtnNotify"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/ic_notify"
-                android:visibility="gone"
-                android:contentDescription="@string/reaction" />
+                android:contentDescription="@string/reaction"
+                android:src="@drawable/baseline_message_24"
+                android:visibility="gone" />
         </LinearLayout>
         <TextView
             android:id="@+id/FragPostTextDesc"
@@ -98,16 +144,38 @@
             android:textSize="18sp"
             android:text="@string/description"
             android:layout_margin="15dp"/>
-        <ImageView
-            android:id="@+id/FragPostImagePost"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:padding="5dp">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="15dp">
+
+                <ImageView
+                    android:id="@+id/FragPostImagePost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+                    app:srcCompat="@drawable/baseline_photo_camera_24"
+                    tools:src="@drawable/baseline_photo_camera_24" />
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            app:srcCompat="@drawable/baseline_photo_camera_24"
-            tools:src="@drawable/baseline_photo_camera_24" />
+            android:layout_marginTop="10dp"
+            android:text="@string/location"
+            android:textSize="30dp" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"

@@ -100,4 +100,8 @@
     <string name="image_succes_downloaded">Image has been downloaded successfully</string>
     <string name="input_a_valid_location">Input a valid location !!!</string>
     <string name="input_a_valid_category">Input a valid category !!!</string>
+    <string name="edit_text_post">Edit post</string>
+    <string name="notify_text_post">Contact</string>
+    <string name="state_post_active">Active</string>
+    <string name="state_post_closed">Closed</string>
 </resources>

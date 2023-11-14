@@ -144,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
     //Metodo del my post adapter: open photo
     @Override
     public void viewDetailMyPost(Map<String, Object> item) {
+
         replaceFragment(new DetailFragment(item, this, this));
     }
     //abrir

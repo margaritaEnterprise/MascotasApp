@@ -87,8 +87,8 @@ import java.util.UUID;
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     FirebaseAuth mAuth;
     ImageView userPhoto, postPhoto;
-    TextView username, description;
-    Chip category;
+    TextView username, description, notifyText, editText;
+    Chip category, state;
     MapView mMapView;
     Context context;
     Activity activity;
@@ -122,12 +122,17 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         category = view.findViewById(R.id.FragPostChipCategory);
         edit = view.findViewById(R.id.FragDetailBtnEdit);
         notify = view.findViewById(R.id.FragDetailBtnNotify);
+        editText = view.findViewById(R.id.FragDetailTextViewEdit);
+        notifyText = view.findViewById(R.id.FragDetailTextViewNotify);
+        state = view.findViewById(R.id.FragPostChipState);
 
         String postUserId = post.get("userId").toString();
         if(mAuth.getCurrentUser().getUid().equals(postUserId)) {
+            editText.setVisibility(View.VISIBLE);
             edit.setVisibility(View.VISIBLE);
             edit.setOnClickListener(v -> buttonEditOnClic.btnClickEdit(this.post));
         }else {
+            notifyText.setVisibility(View.VISIBLE);
             notify.setVisibility(View.VISIBLE);
             notify.setOnClickListener(v -> getUser());
         }
@@ -193,6 +198,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .load(photoUrl)
                 .resize(450, 450)
                 .into(postPhoto);
+
+        if((boolean) post.get("state")){
+            state.setText(R.string.state_post_active);
+        }else {
+            state.setText(R.string.state_post_closed);
+        }
     }
 
     private void sendNotification(String username,String myToken){
@@ -286,10 +297,9 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingGalleryIntent)  // Asignar el PendingIntent al hacer clic en la notificación
-                .setAutoCancel(true);  // Cerrar la notificación al hacer clic
+                .setContentIntent(pendingGalleryIntent)
+                .setAutoCancel(true);
 
-        // Lanzar la notificación
         notificationManager.notify(1, builder.build());
     }
 

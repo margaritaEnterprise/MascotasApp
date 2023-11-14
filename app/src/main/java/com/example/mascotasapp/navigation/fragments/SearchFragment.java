@@ -67,7 +67,6 @@ public class SearchFragment extends Fragment {
     GeoPoint geo;
     Context context;
     Boolean first;
-
     ProgressBar loader;
 
     public SearchFragment(Context context) {
@@ -92,9 +91,6 @@ public class SearchFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-
-
-
         recyclerView = view.findViewById(R.id.FragSearchRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         noResults = view.findViewById(R.id.FragSearchNoResults);
@@ -104,7 +100,12 @@ public class SearchFragment extends Fragment {
             @Override
             public void onLocationChanged(Location location) {
                 if (first) {
-                    geo = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    if(location.getLatitude() > 0 || Math.floor(location.getLongitude()) == -122){
+                        geo = new GeoPoint(-34.77590260925053, -58.26947642872307);
+                    }else {
+                        geo = new GeoPoint(location.getLatitude(), location.getLongitude());
+                    }
+
                     firebaseGetPublis();
                     first = false;
                 }
@@ -141,7 +142,8 @@ public class SearchFragment extends Fragment {
         range.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                rangeText.setText(R.string.range + progress + " km");
+                String range = getString(R.string.range)  + " ";
+                rangeText.setText(range + progress + " km");
             }
 
             @Override
@@ -154,8 +156,6 @@ public class SearchFragment extends Fragment {
 
             }
         });
-
-
         return view;
     }
 
@@ -165,9 +165,7 @@ public class SearchFragment extends Fragment {
         Set<String> userIds = new HashSet<>();
 
         double latitude = geo.getLatitude() ;
-        latitude =  -34.77590260925053;
         double longitude = geo.getLongitude();
-        longitude =  -58.26947642872307;
         double radiusInKilometers = 10;  // Radio de 10 km por defecto
         double latitudeMin = latitude - (180.0 * radiusInKilometers) / (40075.0);
         double latitudeMax = latitude + (180.0 * radiusInKilometers) / (40075.0);
@@ -259,6 +257,7 @@ public class SearchFragment extends Fragment {
     public void firebaseSearchPublisFilters(View view){
         recyclerView.setVisibility(View.GONE);
         loader.setVisibility(View.VISIBLE);
+        noResults.setVisibility(View.GONE);
         CharSequence text = search.getQuery();
         ArrayList<String> filterCategories = categories.getCheckedChipIds()
                 .stream()
@@ -277,13 +276,12 @@ public class SearchFragment extends Fragment {
         Set<String> userIds = new HashSet<>();
 
         double latitude = geo.getLatitude() ;
-        double longitude = geo.getLatitude();
+        double longitude = geo.getLongitude();
         double radiusInKilometers = range;  // Radio de 10 km por defecto
         double latitudeMin = latitude - (180.0 * radiusInKilometers) / (40075.0);
         double latitudeMax = latitude + (180.0 * radiusInKilometers) / (40075.0);
         double longitudeMin = longitude - (180.0 * radiusInKilometers) / (40075.0) / Math.cos(Math.toRadians(latitude));
         double longitudeMax = longitude + (180.0 * radiusInKilometers) / (40075.0) / Math.cos(Math.toRadians(latitude));
-
 
         Query query = collections.whereGreaterThanOrEqualTo("location", new GeoPoint(latitudeMin, longitudeMin))
                 .whereLessThanOrEqualTo("location", new GeoPoint(latitudeMax, longitudeMax));
