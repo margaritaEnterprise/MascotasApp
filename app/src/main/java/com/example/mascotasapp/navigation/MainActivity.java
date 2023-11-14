@@ -61,21 +61,21 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item  -> {
-            switch (Objects.requireNonNull(item.getTitle()).toString()) {
-                case "Search":
+            switch (Objects.requireNonNull(item.getOrder()).toString()) {
+                case "1":
                     replaceFragment(new SearchFragment(this));
                     break;
-                case "Notify":
+                case "2":
                     replaceFragment(new NotifyFragment());
                     break;
-                case "Add":
+                case "3":
                     Intent intent = new Intent(MainActivity.this, PostActivity.class);
                     startActivity(intent);
                     break;
-                case "Setting":
+                case "4":
                     replaceFragment(new SettingFragment(dataUser, MainActivity.this));
                     break;
-                case "Profile":
+                case "5":
                     replaceFragment(new ProfileFragment(dataUser));
                     break;
             }

@@ -87,6 +87,10 @@
     <string name="gps_disable">GPS is disabled</string>
     <string name="my_location">My Location</string>
     <string name="search">Search</string>
+    <string name="notify">Notify</string>
+    <string name="add">Add</string>
+    <string name="setting">Setting</string>
+    <string name="profile">Profile</string>
     <string name="filter">Filter</string>
     <string name="input_email">Input email</string>
     <string name="input_a_valid_description">Input a valid description.</string>

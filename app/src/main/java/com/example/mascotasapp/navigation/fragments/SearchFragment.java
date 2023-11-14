@@ -1,7 +1,6 @@
 package com.example.mascotasapp.navigation.fragments;
 
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -28,7 +27,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.mascotasapp.PostActivity;
 import com.example.mascotasapp.R;
 import com.example.mascotasapp.utils.PostAdapter;
 import com.google.android.material.chip.Chip;
@@ -122,6 +120,7 @@ public class SearchFragment extends Fragment {
         btnFilter = view.findViewById(R.id.FragSearchButtonFilter);
         visibleFilter = false;
         TextView rangeText = view.findViewById(R.id.FragSearchEditTextRange);
+        rangeText.setText(getString(R.string.range) + ": 10km");
 
         loader = view.findViewById(R.id.FragSearchProgressBar);
         loader.setVisibility(View.VISIBLE);

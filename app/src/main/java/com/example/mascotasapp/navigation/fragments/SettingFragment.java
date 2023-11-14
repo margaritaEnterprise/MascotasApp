@@ -78,7 +78,7 @@ public class SettingFragment extends Fragment {
         String setTheme = themes.findViewById(chipThem).getTag().toString();
         if (setTheme != userPrefMap.get("theme") || setLang != userPrefMap.get("language")) {
             editPref.putString("theme", setTheme); //light, dark
-            editPref.putString("language", setLang); //en, es, ch
+            editPref.putString("language", setLang); //en, es, zh
             editPref.commit();
         }
         Intent intent = new Intent(requireContext(), MainActivity.class);

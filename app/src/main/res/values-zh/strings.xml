@@ -1,0 +1,107 @@
+<resources>
+    <string name="app_name">宠物应用</string>
+
+    <string name="accept">接受</string>
+    <string name="decline">拒绝</string>
+    <string name="send">发送</string>
+    <string name="adoption">领养</string>
+    <string name="couple">配对</string>
+    <string name="found">找到</string>
+    <string name="lost">丢失</string>
+    <string name="upload_photo">上传照片</string>
+    <string name="description">描述</string>
+    <string name="ubication">位置</string>
+    <string name="upload_post">上传帖子</string>
+    <string name="category">类别</string>
+    <string name="state">状态</string>
+    <string name="click_para_editar">点击进行编辑</string>
+    <string name="reaction">反应</string>
+    <string name="input_username">输入用户名</string>
+    <string name="input_password">输入密码</string>
+    <string name="log_in">登录</string>
+    <string name="sign_up">注册</string>
+    <string name="welcome">欢迎</string>
+    <string name="input_same_password">输入相同的密码</string>
+    <string name="pick_birthday">选择生日</string>
+    <string name="finish">完成</string>
+    <string name="input_mail">输入邮箱</string>
+    <string name="location">位置</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    <string name="username">用户名</string>
+    <string name="ready_to_upload">准备上传</string>
+    <string name="message">消息</string>
+    <string name="title">标题</string>
+    <string name="next">下一个</string>
+    <string name="language">语言</string>
+    <string name="no_results">无结果</string>
+    <string name="english">英语</string>
+    <string name="spanish">西班牙语</string>
+    <string name="chinese">中文</string>
+    <string name="theme">主题</string>
+    <string name="light">亮</string>
+    <string name="dark">暗</string>
+    <string name="logout">登出</string>
+
+    <!-- Toast消息 -->
+    <string name="auth_fail">认证失败</string>
+    <string name="error_mail">无效的电子邮件</string>
+    <string name="error_password">无效的密码</string>
+    <string name="create_fail">创建用户失败</string>
+    <string name="username_already_exists">用户名已存在</string>
+
+    <!-- 通知 -->
+    <string name="notify_title">新通知</string>
+    <string name="notify_message_type1">想与您交流</string>
+    <string name="accept_notification_type2">接受交流</string>
+    <string name="decline_notification_type2">拒绝交流</string>
+
+    <!-- 编辑 -->
+    <string name="input_description">输入描述</string>
+    <string name="cancel">取消</string>
+    <string name="are_you_sure">您确定吗？</string>
+    <string name="delete_fail">删除失败</string>
+    <string name="delete_success">删除成功</string>
+    <string name="edit_fail">编辑失败</string>
+    <string name="edit_success">编辑成功</string>
+
+    <!-- 编辑 -->
+    <string name="range">范围</string>
+    <string name="pass_dont_match">密码不匹配</string>
+    <string name="create_user">创建用户</string>
+    <string name="an_error_photo">上传照片时发生错误</string>
+    <string name="an_error_photoUrl">上传URL照片时发生错误</string>
+    <string name="permission_photo">需要相机权限以拍照</string>
+    <string name="take_photo">拍照</string>
+    <string name="choose_photo">从相册选择</string>
+    <string name="select_an_option">选择一个选项</string>
+    <string name="crop">裁剪</string>
+    <string name="select_location">选择位置</string>
+    <string name="unknown_location">未知位置</string>
+    <string name="save_post_success">已保存发布</string>
+    <string name="save_post_fail">发布保存失败</string>
+    <string name="choose_ubication">选择一个位置</string>
+    <string name="choose_actual_ubication">选择当前位置</string>
+    <string name="gps_disable">GPS已禁用</string>
+    <string name="my_location">我的位置</string>
+    <string name="search">搜索</string>
+    <string name="filter">过滤</string>
+    <string name="input_email">输入电子邮件</string>
+    <string name="input_a_valid_description">输入有效的描述。</string>
+
+    <string name="permission_storage">权限被拒绝</string>
+    <string name="image_downloaded">图片已下载</string>
+    <string name="image_succes_downloaded">图片已成功下载</string>
+    <string name="input_a_valid_location">输入有效的位置！</string>
+    <string name="input_a_valid_category">输入有效的类别！</string>
+    <string name="edit_text_post">编辑帖子</string>
+    <string name="notify_text_post">联系方式</string>
+    <string name="state_post_active">活跃</string>
+    <string name="state_post_closed">已关闭</string>
+    <string name="input_a_valid_phone">输入有效的电话号码！</string>
+    <string name="exit">退出</string>
+    <string name="notify">通知</string>
+    <string name="add">上传</string>
+    <string name="setting">设置</string>
+    <string name="profile">个人资料</string>
+</resources>
