@@ -160,6 +160,14 @@
             android:layout_width="192dp"
             android:layout_height="wrap_content"
             android:text="@string/upload_post" />
+
+        <ProgressBar
+            android:id="@+id/ActPostProgressBar"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

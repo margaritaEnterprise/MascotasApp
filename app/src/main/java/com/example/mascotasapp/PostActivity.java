@@ -1,5 +1,6 @@
 package com.example.mascotasapp;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,8 +13,10 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -75,6 +78,9 @@ public class PostActivity extends AppCompatActivity {
     Map<String, Object> userPrefMap;
     String errorMessagge;
     ToolbarFragment toolbarFragment;
+    ProgressBar loader; //ActPostProgressBar
+
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userPrefMap = ManagerTheme.getUserPreference(this);
@@ -104,7 +110,9 @@ public class PostActivity extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.actPostTextDescription);
         categories = findViewById(R.id.actPostChipCat_all);
 
+
         //SavePost
+        loader = findViewById(R.id.ActPostProgressBar);
         savePost = findViewById(R.id.actPostBtnPost);
         savePost.setOnClickListener(v -> createPost(mAuth.getCurrentUser()));
     }
@@ -115,13 +123,22 @@ public class PostActivity extends AppCompatActivity {
             return;
         }
         try {
+            loader.setVisibility(View.VISIBLE);
+            savePost.setEnabled(false);
+
             postPhoto.setDrawingCacheEnabled(true);
             postPhoto.buildDrawingCache();
             Bitmap bitmap = ((BitmapDrawable) postPhoto.getDrawable()).getBitmap();
             uploadImageToFirebaseStorage(userAuth, bitmap);
         } catch (ClassCastException e) {
+            loader.setVisibility(View.GONE);
+            savePost.setEnabled(true);
+
             Toast.makeText(PostActivity.this, R.string.upload_photo, Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
+            loader.setVisibility(View.GONE);
+            savePost.setEnabled(true);
+
             Toast.makeText(PostActivity.this, R.string.upload_photo, Toast.LENGTH_SHORT).show();
         }
     }
@@ -160,6 +177,8 @@ public class PostActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception exception) {
                 int errorCode = ((StorageException) exception).getErrorCode();
                 String errorMessage = exception.getMessage();
+                loader.setVisibility(View.GONE);
+                savePost.setEnabled(true);
                 Toast.makeText(PostActivity.this, R.string.an_error_photo, Toast.LENGTH_SHORT).show();
             }
         }).addOnSuccessListener(taskSnapshot -> storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -169,7 +188,12 @@ public class PostActivity extends AppCompatActivity {
                 imageChange = false;
                 savePost(uriPhoto);
             }
-        }).addOnFailureListener(exception -> Toast.makeText(PostActivity.this, R.string.an_error_photoUrl, Toast.LENGTH_SHORT).show()));
+        }).addOnFailureListener(exception -> {
+            loader.setVisibility(View.GONE);
+            savePost.setEnabled(true);
+            Toast.makeText(PostActivity.this, R.string.an_error_photoUrl, Toast.LENGTH_SHORT).show();
+        }));
+
     }
     public void savePost(String uriPhoto) {
         Chip selectedChip = findViewById(categories.getCheckedChipId());
@@ -192,6 +216,8 @@ public class PostActivity extends AppCompatActivity {
                     finish();
                 })
                 .addOnFailureListener(e -> {
+                    loader.setVisibility(View.GONE);
+                    savePost.setEnabled(true);
                     Toast.makeText(PostActivity.this, R.string.save_post_fail, Toast.LENGTH_SHORT).show();
                 });
     }

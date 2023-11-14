@@ -7,10 +7,13 @@
 
     <style name="AppTheme.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="fontFamily">@font/poppins_regular</item>
+        <item name="colorSecondary">@color/colorViolet</item><!-- spinner -->
+
     </style>
 
     <style name="AppTheme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="fontFamily">@font/poppins_regular</item>
+        <item name="colorSecondary">@color/colorViolet</item><!-- spinner -->
     </style>
 
     <style name="laig" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -18,7 +21,7 @@
         <item name="colorPrimary">@color/fui_bgTwitter</item>
         <item name="colorPrimaryVariant">#3700B3</item>
         <item name="android:textColor">@color/textPrimaryColor</item>
-        <item name="colorSecondary">@color/fui_bgTwitter</item><!-- spinner -->
+        <item name="colorSecondary">@color/colorViolet</item><!-- spinner -->
         <item name="colorSurface">@color/fui_bgTwitter</item> <!-- chip -->
 
 
