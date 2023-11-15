@@ -1,6 +1,8 @@
 package com.example.mascotasapp.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         return new PostViewHolder(view);
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
         Map<String, Object> map = listMap.get(position);
@@ -51,21 +54,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         //holder.userId.setText((CharSequence) map.get("userId"));
         String value = (String) map.get("category");
         String text = "";
+        int color = 0;
         switch (value){
             case "adoption":
                 text = context.getString(R.string.adoption);
+                color = context.getColor(R.color.adoptionChipColor);
                 break;
             case "lost":
                 text = context.getString(R.string.lost);
+                color = context.getColor(R.color.lostChipColor);
                 break;
             case "found":
                 text = context.getString(R.string.found);
+                color = context.getColor(R.color.foundChipColor);
                 break;
             case "couple":
                 text = context.getString(R.string.couple);
+                color = context.getColor(R.color.coupleChipColor);
                 break;
         }
         holder.category.setText(text);
+        holder.category.setChipBackgroundColor(ColorStateList.valueOf(color));
 
         Uri userPhotoUrl = Uri.parse((String) map.get("userPhotoUrl"));
         Picasso.with(context)

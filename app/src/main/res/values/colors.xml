@@ -20,4 +20,10 @@
     <!-- Color de texto secundario -->
     <color name="textSecondaryColor">#757575</color>
 
+
+    <color name="defaultChipColor">#CCCCCC</color>
+    <color name="adoptionChipColor">#70B8D8</color>
+    <color name="lostChipColor">#DA4C58</color>
+    <color name="foundChipColor">#75C675</color>
+    <color name="coupleChipColor">#995FA3</color>
 </resources>

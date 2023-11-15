@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -199,21 +200,27 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         description.setText((CharSequence) post.get("description"));
         String value = (String) post.get("category");
         String text = "";
+        int color = 0;
         switch (value){
             case "adoption":
                 text = context.getString(R.string.adoption);
+                color = context.getColor(R.color.adoptionChipColor);
                 break;
             case "lost":
                 text = context.getString(R.string.lost);
+                color = context.getColor(R.color.lostChipColor);
                 break;
             case "found":
                 text = context.getString(R.string.found);
+                color = context.getColor(R.color.foundChipColor);
                 break;
             case "couple":
                 text = context.getString(R.string.couple);
+                color = context.getColor(R.color.coupleChipColor);
                 break;
         }
         category.setText(text);
+        category.setChipBackgroundColor(ColorStateList.valueOf(color));
 
         Uri userPhotoUrl = Uri.parse((String) post.get("userPhotoUrl"));
         Picasso.with(requireContext())
