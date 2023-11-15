@@ -1,14 +1,21 @@
 package com.example.mascotasapp;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.example.mascotasapp.navigation.MainActivity;
 import com.example.mascotasapp.signup.SignUpActivity;
@@ -67,6 +74,9 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1);
+        }
     }
 
     @Override
@@ -114,4 +124,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
+
+    private final ActivityResultLauncher<String> requestNotificationPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+
+                } else {
+                    Toast.makeText(this, R.string.permission_photo, Toast.LENGTH_SHORT).show();
+                }
+            });
 }

@@ -121,6 +121,7 @@ public class ProfileFragment extends Fragment {
                         recyclerView.setVisibility(View.VISIBLE);
                         MyPostAdapter adapter = new MyPostAdapter(items, context);
                         recyclerView.setAdapter(adapter);
+
                     } else {
                         noResults.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
