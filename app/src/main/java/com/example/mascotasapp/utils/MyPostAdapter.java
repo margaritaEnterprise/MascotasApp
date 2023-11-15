@@ -22,14 +22,14 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.PostViewHo
     private List<Map<String, Object>> listMap;
     private Context context;
 
-    public interface PostClickListener{
+    public interface MyPostClickListener{
         void viewDetailMyPost(Map<String, Object> item);
     }
-    PostClickListener postClickListener;
+    MyPostClickListener postClickListener;
     public MyPostAdapter(List<Map<String, Object>> listMap, Context context) {
         this.listMap = listMap;
         this.context = context;
-        this.postClickListener = (PostClickListener) context;
+        this.postClickListener = (MyPostClickListener) context;
     }
     @NonNull
     @Override

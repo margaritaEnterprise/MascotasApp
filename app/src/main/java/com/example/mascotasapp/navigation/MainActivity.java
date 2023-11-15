@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.PostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
+public class MainActivity extends AppCompatActivity implements PostAdapter.PostClickListener, MyPostAdapter.MyPostClickListener, DetailFragment.ButtonEdit, EditFragment.BackToProfile {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db; //viewDetailMyPost
     BottomNavigationView bottomNavigationView;
@@ -67,20 +67,22 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item  -> {
-            switch (Objects.requireNonNull(item.getOrder()).toString()) {
-                case "1":
-                    replaceFragment(new SearchFragment(this));
-                    break;
-                case "2":
-                    Intent intent = new Intent(MainActivity.this, PostActivity.class);
-                    startActivity(intent);
-                    break;
-                case "3":
-                    replaceFragment(new SettingFragment(dataUser, MainActivity.this));
-                    break;
-                case "4":
-                    replaceFragment(new ProfileFragment(dataUser));
-                    break;
+            if(dataUser != null){
+                switch (Objects.requireNonNull(item.getOrder()).toString()) {
+                    case "1":
+                        replaceFragment(new SearchFragment(this));
+                        break;
+                    case "2":
+                        Intent intent = new Intent(MainActivity.this, PostActivity.class);
+                        startActivity(intent);
+                        break;
+                    case "3":
+                        replaceFragment(new SettingFragment(dataUser, MainActivity.this));
+                        break;
+                    case "4":
+                        replaceFragment(new ProfileFragment(dataUser, this));
+                        break;
+                }
             }
             return true;
         });
@@ -149,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
                     if (documentSnapshot.exists()) {
                         dataUser = documentSnapshot.getData();
                         ponerToolbar();
-
-
                     } else {
                         goToSignUpActivity();
                     }
@@ -191,7 +191,7 @@ public class MainActivity extends AppCompatActivity implements PostAdapter.PostC
 
     @Override
     public void editSuccess() {
-        replaceFragment(new ProfileFragment(dataUser));//get
+        replaceFragment(new ProfileFragment(dataUser, this));//get
     }
 
     public void registrarDispositivo(){

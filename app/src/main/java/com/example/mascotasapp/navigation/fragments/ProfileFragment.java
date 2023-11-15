@@ -1,6 +1,7 @@
 package com.example.mascotasapp.navigation.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -42,9 +43,11 @@ public class ProfileFragment extends Fragment {
     ImageView photoUser;
     Uri photoUserUri;
     Map<String,Object> dataUser;
+    Context context;
 
-    public ProfileFragment(Map<String,Object> dataUser) {
+    public ProfileFragment(Map<String,Object> dataUser, Context context) {
         this.dataUser = dataUser;
+        this.context = context;
     }
     ProgressBar loader;
     @Override
@@ -60,31 +63,31 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
+        recyclerView = view.findViewById(R.id.frag_profile_recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(context ,3));
+
         username = view.findViewById(R.id.frag_profile_username);
         email = view.findViewById(R.id.FragProfileEmail);
         photoUser = view.findViewById(R.id.frag_profile_image);
         noResults = view.findViewById(R.id.FragProfileText);
         loader = view.findViewById(R.id.frag_profile_progressbar);
 
-        recyclerView = view.findViewById(R.id.frag_profile_recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(requireContext(), 3));
-
         getUser();
-
+        String userId = mAuth.getCurrentUser().getUid();
+        getMyPosts(userId);
         return view;
     }
 
     public void getUser() {
         username.setText(dataUser.get("username").toString());
         photoUserUri = Uri.parse(dataUser.get("photoUrl").toString());
-        Picasso.with(requireContext())
+        Picasso.with(context)
                 .load(photoUserUri)
                 .resize(50, 50)
                 .into(photoUser);
         String mail = mAuth.getCurrentUser().getEmail();
         email.setText(mail);
-        String userId = mAuth.getCurrentUser().getUid();
-        getMyPosts(userId);
+
     }
     public void getMyPosts(String userId){
         String name = dataUser.get("username").toString();
@@ -112,13 +115,13 @@ public class ProfileFragment extends Fragment {
 
                             items.add(item);
                     }
+                    loader.setVisibility(View.GONE);
 
                     if(!items.isEmpty()){
-                        loader.setVisibility(View.GONE);
-                        MyPostAdapter adapter = new MyPostAdapter(items, requireContext());
+                        recyclerView.setVisibility(View.VISIBLE);
+                        MyPostAdapter adapter = new MyPostAdapter(items, context);
                         recyclerView.setAdapter(adapter);
                     } else {
-                        loader.setVisibility(View.GONE);
                         noResults.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }
