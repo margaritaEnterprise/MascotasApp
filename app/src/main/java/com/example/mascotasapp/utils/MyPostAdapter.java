@@ -48,7 +48,11 @@ public class MyPostAdapter extends RecyclerView.Adapter<MyPostAdapter.PostViewHo
         Picasso.with(context)
                 .load(photoUrl)
                 .resize(250, 250)
+                .centerCrop()
+                .placeholder(R.drawable.ic_add_photo_foreground)
+                .error(R.drawable.baseline_photo_camera_24)
                 .into(holder.cardPhoto);
+
         holder.cardPhoto.setOnClickListener(v -> postClickListener.viewDetailMyPost(map));
     }
 

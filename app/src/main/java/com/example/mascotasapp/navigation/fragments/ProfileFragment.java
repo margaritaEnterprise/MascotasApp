@@ -45,6 +45,8 @@ public class ProfileFragment extends Fragment {
     Map<String,Object> dataUser;
     Context context;
 
+    List<Map<String,Object>> posts;
+
     public ProfileFragment(Map<String,Object> dataUser, Context context) {
         this.dataUser = dataUser;
         this.context = context;
@@ -117,19 +119,26 @@ public class ProfileFragment extends Fragment {
                     }
                     loader.setVisibility(View.GONE);
 
-                    if(!items.isEmpty()){
-                        recyclerView.setVisibility(View.VISIBLE);
-                        MyPostAdapter adapter = new MyPostAdapter(items, context);
-                        recyclerView.setAdapter(adapter);
+                    this.posts = items;
 
-                    } else {
-                        noResults.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                    }
+                    loadMyPosts();
+
                 })
                 .addOnFailureListener(e ->{
                     Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+    }
+
+    public void loadMyPosts(){
+        if(!this.posts.isEmpty()){
+            recyclerView.setVisibility(View.VISIBLE);
+            MyPostAdapter adapter = new MyPostAdapter(this.posts, context);
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        } else {
+            noResults.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
     }
 }
 
